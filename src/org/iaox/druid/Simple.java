@@ -19,6 +19,7 @@ import org.iaox.druid.travel.TravelException;
 import org.iaox.druid.travel.TravelType;
 import org.osbot.rs07.api.map.constants.Banks;
 import org.osbot.rs07.api.model.Entity;
+import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.api.util.GraphicUtilities;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
@@ -28,7 +29,6 @@ import com.thoughtworks.xstream.io.path.Path;
 @ScriptManifest(name = "Druid", author = "Suxen", version = 1.0, info = "", logo = "") 
 public class Simple extends Script{
 
-	public static Entity ENTITY;
 	public static CombatAssignment CURRENT_ASSIGNMENT;
 	public List<Node> nodeHandler;
 	
@@ -66,6 +66,10 @@ public class Simple extends Script{
 		nodeHandler.add(new WalkToBank().init(this));
 		nodeHandler.add(new WalkToFight().init(this));
 		
+		//initialize experience tracker for strength
+		
+		experienceTracker.getExperienceTracker().start(Skill.STRENGTH);
+		
 	}
 	
 	@Override
@@ -80,9 +84,9 @@ public class Simple extends Script{
 	
 	@Override
 	public void onPaint(Graphics2D g) {
-		if(ENTITY != null && ENTITY.exists()){
-		 g.draw(GraphicUtilities.getModelArea(this.bot, ENTITY.getGridX(), ENTITY.getGridY(), ENTITY.getZ(), ENTITY.getModel()));
-		}
+		//Print information about experience
+		g.drawString("XP Gained: " + experienceTracker.getGainedXP(Skill.STRENGTH), 50, 50);
+		g.drawString("XP Per Hour: " + experienceTracker.getGainedXPPerHour(Skill.STRENGTH), 50, 75);
 	}
 
 }

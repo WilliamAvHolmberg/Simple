@@ -183,6 +183,26 @@ public class CombatProvider {
 	public boolean playerIsAttacking() {
 		return methodProvider.combat.isFighting();
 	}
+	
+	/**
+	 * We need a method to check so that the npc that we are trying to interact with is not
+	 * In combat with someone else.
+	 * @return whether the npc that we are trying to interact with is available for combat or not
+	 */
+	public boolean interactingNpcIsAvailable() {
+		target = (NPC) methodProvider.myPlayer().getInteracting();
+		//return false if target does not exist.
+		//If we are not interacting an npc, then we are not attacking an npc.
+		if(target == null) {
+			return false;
+		}
+		// return false if the target that we are trying to attack is interacting with another player
+		// We can not attack the npc if it is already in combat with someone else
+		else if(target.getInteracting() != methodProvider.myPlayer()) {
+			return false;
+		}
+		return true;
+	}
 
 	/**
 	 * @return if player is under attack
@@ -200,15 +220,15 @@ public class CombatProvider {
 	}
 
 	/**
-	 * Shall conditional sleep if player is
-	 * Moving
-	 * Attacking
-	 * NPC is not null
-	 * Does not have to eat
+	 * Shall break combat sleep if player is
+	 * not attacking
+	 * npc is null
+	 * npc hp is 0
+	 * have to eat
 	 */
 	public void combatSleep(){
 		Timing.waitCondition(
-				() -> (!methodProvider.myPlayer().isMoving() && !playerIsAttacking()) && getInteractingNPC() != null  || shouldEat(), 1000,
+				() -> (!playerIsAttacking()) || getInteractingNPC() == null || getInteractingNPC().getHealthPercent() == 0 || shouldEat(), 300,
 				3000);
 	}
 	
@@ -220,8 +240,7 @@ public class CombatProvider {
 	public void attackNewTarget() {
 		methodProvider.log("lets attack a new target");
 		target = getClosestFreeNPC(getAssignment().getNpcName());
-		Simple.ENTITY = target;
-		if (Simple.ENTITY != null && Simple.ENTITY.interact("Attack")) {
+		if (target!= null && target.interact("Attack")) {
 			methodProvider.log("lets sleep");
 			//combatSleep();
 			//Sleep until player is interacting npc or npc is interacting someone else than our player
@@ -237,8 +256,8 @@ public class CombatProvider {
 	 */
 	public void attackExistingTarget() {
 		methodProvider.log("lets attack the current target");
-		Simple.ENTITY = getInteractingNPC();
-		if (Simple.ENTITY != null && Simple.ENTITY.interact("Attack")) {
+		target = getInteractingNPC();
+		if (target != null && target.interact("Attack")) {
 			methodProvider.log("lets sleep");
 			//Sleep a second after click to not spam click
 			Timing.sleep(1000);

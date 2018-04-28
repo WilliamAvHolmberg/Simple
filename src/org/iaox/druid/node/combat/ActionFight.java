@@ -25,7 +25,9 @@ public class ActionFight extends Node{
 		}else if(!combatProvider.rightStyle()){
 			combatProvider.changeStyle();
 		}
-		else if(combatProvider.playerIsAttacking()){
+		//Todo - att to check if the npc that player is trying to attack is under attack by other player
+		//move on to attack new npc
+		else if(combatProvider.playerIsAttacking() && combatProvider.interactingNpcIsAvailable()){
 			//check for new druid
 			methodProvider.log("We are already attacking");
 			combatProvider.combatSleep();

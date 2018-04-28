@@ -23,7 +23,7 @@ public class TravelException {
 	public TravelException(TravelType type, Area area, String teleportName){
 		this.type = type;
 		this.area = area;
-		this.teleportName = teleportName;;
+		this.teleportName = teleportName;
 	}
 	
 	public TravelException(TravelType type, Area area, Area webWalkArea){

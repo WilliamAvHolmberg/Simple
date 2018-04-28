@@ -70,6 +70,7 @@ public class CombatAssignment {
 		return travelExceptions;
 	}
 
+	//
 	
 	
 
