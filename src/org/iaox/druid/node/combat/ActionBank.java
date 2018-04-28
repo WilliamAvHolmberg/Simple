@@ -52,9 +52,24 @@ public class ActionBank extends Node{
 	 * @param item
 	 */
 	private void withdraw(RequiredItem item) {
+		//calculate the quantity that has to be withdrawn
 		int amount = (int) (item.getAmount() - methodProvider.inventory.getAmount(item.getItemID()));
-		methodProvider.bank.withdraw(item.getItemID(), amount);
-		Timing.waitCondition(() -> methodProvider.inventory.getAmount(item.getItemID()) == item.getAmount(), 600, 3000);		
+		//check if bank contains the item that is going to be withdrawn
+		//if bank does not contain the item, stop script.
+		//For the future - add item to withdraw list
+		if(methodProvider.bank.getAmount(item.getItemID()) >= amount) {
+			methodProvider.bank.withdraw(item.getItemID(), amount);
+			//sleep until inventory contains the item
+			Timing.waitCondition(() -> methodProvider.inventory.getAmount(item.getItemID()) == item.getAmount(), 600, 3000);		
+		}else {
+			methodProvider.log("Stop script due to bank not containing the required item: " + item.getIaoxItem().getName());
+			try {
+				methodProvider.getBot().getScriptExecutor().stop();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

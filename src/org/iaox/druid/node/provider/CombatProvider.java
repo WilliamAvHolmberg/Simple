@@ -23,6 +23,7 @@ public class CombatProvider {
 	private GroundItem item;
 	private Item food;
 	private int foodAmount;
+	private NPC target;
 	public CombatProvider(MethodProvider methodProvider) {
 		this.methodProvider = methodProvider;
 	}
@@ -218,12 +219,14 @@ public class CombatProvider {
 	 */
 	public void attackNewTarget() {
 		methodProvider.log("lets attack a new target");
-		Simple.ENTITY = getClosestFreeNPC(getAssignment().getNpcName());
+		target = getClosestFreeNPC(getAssignment().getNpcName());
+		Simple.ENTITY = target;
 		if (Simple.ENTITY != null && Simple.ENTITY.interact("Attack")) {
 			methodProvider.log("lets sleep");
-			//Sleep a second after click to not spam click
-			Timing.sleep(1000);
-			combatSleep();
+			//combatSleep();
+			//Sleep until player is interacting npc or npc is interacting someone else than our player
+			//perhaps change so target.isUnderAttack?
+			Timing.waitCondition(() -> target.isUnderAttack(), 300,5000);
 		}
 	}
 

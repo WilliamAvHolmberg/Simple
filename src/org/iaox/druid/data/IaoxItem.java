@@ -27,7 +27,9 @@ public enum IaoxItem {
 	GRIMY_RANARR_WEED("Grimy ranarr weed", 207), 
 	
 	//food
+	TROUT("Trout", 333),
 	TUNA("Tuna", 361);
+	
 	
 	
 	private String itemName;
