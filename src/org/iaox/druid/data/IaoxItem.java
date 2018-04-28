@@ -34,6 +34,7 @@ public enum IaoxItem {
 	
 	private String itemName;
 	private int itemID;
+	private int itemPrice = 0;
 	
 	IaoxItem(String itemName, int itemID){
 		this.itemName = itemName;
@@ -53,6 +54,19 @@ public enum IaoxItem {
 	 */
 	public int getID() {
 		return itemID;
+	}
+	/**
+	 * @param price to set a price of the item
+	 */
+	public void setItemPrice(int price) {
+		this.itemPrice = price;
+	}
+	
+	/**
+	 * @return price of item, 0 as default
+	 */
+	public int getItemPrice() {
+		return this.itemPrice;
 	}
 	
 	/**
@@ -79,6 +93,16 @@ public enum IaoxItem {
 			list.add(item.getID());
 		});
 		return list;
+	}
+
+
+	public static IaoxItem getByName(String name) {
+		for(IaoxItem item: values()) {
+			if(item.getName().equals(name)) {
+				return item;
+			}
+		}
+		return null;
 	}
 
 

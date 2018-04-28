@@ -6,7 +6,8 @@ import org.iaox.druid.Simple;
 import org.iaox.druid.Timing;
 import org.iaox.druid.data.Areas;
 import org.iaox.druid.data.IaoxItem;
-import org.iaox.druid.data.Loot;
+import org.iaox.druid.data.LootItems;
+import org.iaox.druid.loot.Loot;
 import org.iaox.druid.node.assignment.CombatAssignment;
 import org.osbot.rs07.api.map.constants.Banks;
 import org.osbot.rs07.api.model.Entity;
@@ -24,6 +25,10 @@ public class CombatProvider {
 	private Item food;
 	private int foodAmount;
 	private NPC target;
+	private int amountBeforeLoot;
+	private int amountAfterLoot;
+	private int lootAmount;
+	private IaoxItem iaoxItem;
 	public CombatProvider(MethodProvider methodProvider) {
 		this.methodProvider = methodProvider;
 	}
@@ -279,8 +284,25 @@ public class CombatProvider {
 	 */
 	public void loot(GroundItem item) {
 		if (item != null && item.interact("Take")) {
-			int amountBeforeLoot = (int) methodProvider.getInventory().getAmount(item.getId());
+			amountBeforeLoot = (int) methodProvider.getInventory().getAmount(item.getId());
 			Timing.waitCondition(() -> methodProvider.inventory.getAmount(item.getId()) > amountBeforeLoot, 300, 4000);
+			amountAfterLoot = (int) methodProvider.getInventory().getAmount(item.getId());
+			
+			//if successfull loot
+			if(amountAfterLoot > amountBeforeLoot) {
+				methodProvider.log("Successfull loot");
+				
+				//calculate the quantity
+				lootAmount = amountAfterLoot - amountBeforeLoot;
+				//get iaoxItem
+				iaoxItem = IaoxItem.getByName(item.getName());
+				//nullcheck if we found the item
+				if(iaoxItem != null) {
+				Simple.LOOT_HANDLER.addLoot(new Loot(iaoxItem, lootAmount));
+				}else {
+					methodProvider.log("could not find item: " + item.getName());
+				}
+			}
 		}
 	}
 

@@ -1,5 +1,5 @@
 package org.iaox.druid.data;
-public class Loot {
+public class LootItems {
 
 
 	public static IaoxItem[] CHAOS_DRUID_LOOT = {IaoxItem.GRIMY_AVANTOE, IaoxItem.GRIMY_RANARR_WEED,

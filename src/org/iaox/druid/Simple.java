@@ -1,14 +1,17 @@
 package org.iaox.druid;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.iaox.druid.data.Areas;
 import org.iaox.druid.data.IaoxItem;
-import org.iaox.druid.data.Loot;
+import org.iaox.druid.data.LootItems;
 import org.iaox.druid.data.Paths;
+import org.iaox.druid.exchange.RSExchange;
 import org.iaox.druid.inventory.IaoxInventory;
 import org.iaox.druid.inventory.RequiredItem;
+import org.iaox.druid.loot.LootHandler;
 import org.iaox.druid.node.Node;
 import org.iaox.druid.node.assignment.CombatAssignment;
 import org.iaox.druid.node.combat.ActionBank;
@@ -31,10 +34,25 @@ public class Simple extends Script{
 
 	public static CombatAssignment CURRENT_ASSIGNMENT;
 	public List<Node> nodeHandler;
+	public static LootHandler LOOT_HANDLER;
 	
 	
 	@Override
 	public void onStart() throws InterruptedException {
+		//initialize item prices
+		log("Initializing item prices");
+		final RSExchange rsExchange = new RSExchange();
+		int price = 0;
+		//Loop through every single item and set item price according to sell average from the GE
+		for(IaoxItem item : IaoxItem.values()) {
+			price = rsExchange.getExchangeItem(item.getName()).get().getSellAverage();
+			item.setItemPrice(price);
+		}
+		log("Finished with initialzing item prices");
+		
+		//initialize lootHandler		
+		LOOT_HANDLER = new LootHandler();
+		
 		//initialize all required items
 		RequiredItem faladorTeleport = new RequiredItem(1, IaoxItem.FALADOR_TELEPORT, false, () -> false);
 		RequiredItem food = new RequiredItem(5, IaoxItem.TROUT, true, () -> Areas.TAVERLEY_DRUIDS.contains(myPlayer()));
@@ -56,7 +74,7 @@ public class Simple extends Script{
 																Banks.FALADOR_WEST, 
 																druidInventory, 
 																IaoxItem.TROUT, 
-																Loot.CHAOS_DRUID_LOOT,
+																LootItems.CHAOS_DRUID_LOOT,
 																new TravelException[]{surfaceToTaverleyDungeon, taverleyDungeonToDruids});
 		CURRENT_ASSIGNMENT = druidAssignment;
 			
@@ -87,6 +105,10 @@ public class Simple extends Script{
 		//Print information about experience
 		g.drawString("XP Gained: " + experienceTracker.getGainedXP(Skill.STRENGTH), 50, 50);
 		g.drawString("XP Per Hour: " + experienceTracker.getGainedXPPerHour(Skill.STRENGTH), 50, 75);
+		
+		//Print information about loot
+		g.drawString("Total loot: " + LOOT_HANDLER.getValueOfLoot(), 50, 100);
+
 	}
 
 }
