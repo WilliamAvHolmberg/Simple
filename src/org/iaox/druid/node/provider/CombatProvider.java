@@ -72,8 +72,8 @@ public class CombatProvider {
 	 * @return if player need to withdraw food
 	 */
 	public boolean needFood() {
-		if(inFightArea() && !inventoryContainFood() && !shouldEat()){
-			return true;
+		if(inFightArea() &&!shouldEat() && !inventoryContainFood()){
+			return false;
 		}
 		return !inventoryContainFood();
 	}
@@ -94,7 +94,7 @@ public class CombatProvider {
 	 * @return if player is ready to fight
 	 */
 	public boolean shouldFight() {
-		return !needFood() && !needDepositItems() && getAssignment().getRequiredInventory().hasValidInventory();
+		return !needDepositItems() && getAssignment().getRequiredInventory().hasValidInventory();
 	}
 
 
@@ -233,7 +233,7 @@ public class CombatProvider {
 	 */
 	public void combatSleep(){
 		Timing.waitCondition(
-				() -> (!playerIsAttacking()) || getInteractingNPC() == null || getInteractingNPC().getHealthPercent() == 0 || shouldEat(), 300,
+				() -> (!playerIsAttacking()) || getInteractingNPC() == null || getInteractingNPC().getHealthPercent() == 0 || shouldEat(), 150,
 				3000);
 	}
 	
@@ -250,7 +250,7 @@ public class CombatProvider {
 			//combatSleep();
 			//Sleep until player is interacting npc or npc is interacting someone else than our player
 			//perhaps change so target.isUnderAttack?
-			Timing.waitCondition(() -> target.isUnderAttack(), 300,5000);
+			Timing.waitCondition(() -> target.isUnderAttack(), 150,5000);
 		}
 	}
 
@@ -305,6 +305,18 @@ public class CombatProvider {
 			}
 		}
 	}
+	/**
+	 * Get food
+	 * Check amount of food so we can create an conditionsleep relying on that
+	 * When amount of food is below what it was before we tried to eat
+	 * We shall break, since we are done eating
+	 */
+	public void eat() {
+		food = methodProvider.inventory.getItem(getAssignment().getFood().getID());
+		foodAmount = (int) methodProvider.inventory.getAmount(food.getId());
+		food.interact("Eat");
+		Timing.waitCondition(() -> methodProvider.inventory.getAmount(food.getId()) < foodAmount, 600, 3000);	
+	}
 
 	/**
 	 * Shall loot if there if inventory is
@@ -317,12 +329,11 @@ public class CombatProvider {
 		if(!methodProvider.inventory.isFull() || (item.getDefinition().getNotedId() == -1 && methodProvider.inventory.contains(item.getId()))) {
 			loot(item);	
 		}else{
-			food = methodProvider.inventory.getItem(getAssignment().getFood().getID());
-			foodAmount = (int) methodProvider.inventory.getAmount(food.getId());
-			food.interact("Eat");
-			Timing.waitCondition(() -> methodProvider.inventory.getAmount(food.getId()) < foodAmount, 600, 3000);	
+			eat();
 		}
 		
 	}
+
+	
 
 }

@@ -21,13 +21,13 @@ public class ActionFight extends Node{
 	public void run() {
 		methodProvider.log("we are in fight area");
 		if(combatProvider.shouldEat()){
-			//eat
+			combatProvider.eat();
 		}else if(!combatProvider.rightStyle()){
 			combatProvider.changeStyle();
-		}
-		//Todo - att to check if the npc that player is trying to attack is under attack by other player
-		//move on to attack new npc
-		else if(combatProvider.playerIsAttacking() && combatProvider.interactingNpcIsAvailable()){
+		}else if(!methodProvider.getSettings().isRunning() && methodProvider.getSettings().getRunEnergy() > 5) {
+			methodProvider.getSettings().setRunning(true);
+			Timing.waitCondition(() -> methodProvider.getSettings().isRunning(), 150, 3000);
+		}else if(combatProvider.playerIsAttacking() && combatProvider.interactingNpcIsAvailable()){
 			//check for new druid
 			methodProvider.log("We are already attacking");
 			combatProvider.combatSleep();

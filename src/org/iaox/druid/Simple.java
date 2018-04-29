@@ -55,7 +55,8 @@ public class Simple extends Script{
 		
 		//initialize all required items
 		RequiredItem faladorTeleport = new RequiredItem(1, IaoxItem.FALADOR_TELEPORT, false, () -> false);
-		RequiredItem food = new RequiredItem(5, IaoxItem.TROUT, true, () -> Areas.TAVERLEY_DRUIDS.contains(myPlayer()));
+		//exception: if player is in fight place and does not have to eat, then food is not required
+		RequiredItem food = new RequiredItem(5, IaoxItem.TROUT, true, () -> Areas.TAVERLEY_DRUIDS.contains(myPlayer()) && myPlayer().getHealthPercent() > 40);
 		//initialize the required inventory
 		IaoxInventory druidInventory = new IaoxInventory(new RequiredItem[]{faladorTeleport, food}, this);
 		//initialize a travel exception for when the player is not in taverley dungeon
