@@ -28,7 +28,10 @@ public enum IaoxItem {
 	
 	//food
 	TROUT("Trout", 333),
-	TUNA("Tuna", 361);
+	TUNA("Tuna", 361),
+	
+	//weapons
+	RUNE_SCIMITAR("Rune scimitar", 1333);
 	
 	
 	

@@ -55,7 +55,4 @@ public class TravelException {
 	public String getTeleportName() {
 		return teleportName;
 	}
-	
-	
-
 }

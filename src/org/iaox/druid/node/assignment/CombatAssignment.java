@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.iaox.druid.data.IaoxItem;
+import org.iaox.druid.gear.IaoxEquipment;
 import org.iaox.druid.inventory.IaoxInventory;
 import org.iaox.druid.travel.TravelException;
 import org.osbot.rs07.api.filter.Filter;
@@ -17,6 +18,7 @@ public class CombatAssignment {
 	private Area npcArea;
 	private Area bankArea;
 	private IaoxInventory requiredInventory;
+	private IaoxEquipment requiredEquipment;
 	private IaoxItem food;
 	private List<IaoxItem> loot;
 	private List<TravelException> travelExceptions;
@@ -32,11 +34,12 @@ public class CombatAssignment {
 	 * @param travelExceptions if there is any case when webwalking should not be used we can use
 	 * 		  a custom method called travelException that overrides the usual webwalking method
 	 */
-	public CombatAssignment(String npcName, Area npcArea, Area bankArea, IaoxInventory requiredInventory, IaoxItem food, IaoxItem[] loot, TravelException[] travelExceptions){
+	public CombatAssignment(String npcName, Area npcArea, Area bankArea, IaoxInventory requiredInventory, IaoxEquipment requiredEquipment, IaoxItem food, IaoxItem[] loot, TravelException[] travelExceptions){
 		this.npcName = npcName;
 		this.npcArea = npcArea;
 		this.bankArea = bankArea;
 		this.requiredInventory = requiredInventory;
+		this.requiredEquipment = requiredEquipment;
 		this.food = food;
 		this.loot = Arrays.asList(loot);
 		this.travelExceptions = Arrays.asList(travelExceptions);
@@ -52,6 +55,10 @@ public class CombatAssignment {
 	
 	public Area getBankArea(){
 		return bankArea;
+	}
+	
+	public IaoxEquipment getRequiredEquipment() {
+		return requiredEquipment;
 	}
 	
 	public IaoxInventory getRequiredInventory(){
@@ -70,7 +77,9 @@ public class CombatAssignment {
 		return travelExceptions;
 	}
 
-	//
+	
+
+	
 	
 	
 
