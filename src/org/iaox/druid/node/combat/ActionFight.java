@@ -31,7 +31,7 @@ public class ActionFight extends Node{
 			//check for new druid
 			methodProvider.log("We are already attacking");
 			combatProvider.combatSleep();
-		}else if(combatProvider.underAttack() || combatProvider.getInteractingNPC() != null && !combatProvider.playerIsAttacking()){
+		}else if(combatProvider.underAttack() || combatProvider.getInteractingNPC() != null && !combatProvider.playerIsAttacking() && combatProvider.getInteractingNPC().hasAction("Attack")){
 			//attack entity that is attacking us
 			methodProvider.log("We are under attack and not fighting back");
 			combatProvider.attackExistingTarget();

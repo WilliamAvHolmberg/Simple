@@ -63,7 +63,7 @@ public class Simple extends Script {
 		WITHDRAW_LIST = new ArrayList<RequiredItem>();
 
 		// initialize all required items
-		RequiredItem faladorTeleport = new RequiredItem(1, IaoxItem.FALADOR_TELEPORT, false, () -> false);
+		RequiredItem faladorTeleport = new RequiredItem(1, IaoxItem.FALADOR_TELEPORT, false, () -> inventory.contains(IaoxItem.FALADOR_TELEPORT.getName()));
 		// exception: if player is in fight place and does not have to eat, then food is
 		// not required
 		RequiredItem food = new RequiredItem(5, IaoxItem.TROUT, true,
@@ -104,20 +104,12 @@ public class Simple extends Script {
 
 	@Override
 	public int onLoop() throws InterruptedException {
-		if (!WITHDRAW_LIST.isEmpty()) {
-			log("handle withdraw list");
-		} 
-		else if (!CURRENT_ASSIGNMENT.getRequiredEquipment().hasValidEquipment()) {
-			log("equip");
-			handleEquipmentList();
-		}else {
 			log("node handler");
 			for (Node node : nodeHandler) {
 				if (node.active()) {
 					node.run();
 				}
 			}
-		}
 		return 200;
 	}
 

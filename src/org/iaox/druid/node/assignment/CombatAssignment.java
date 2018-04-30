@@ -1,4 +1,4 @@
-package org.iaox.druid.node.assignment;
+	package org.iaox.druid.node.assignment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +22,7 @@ public class CombatAssignment {
 	private IaoxItem food;
 	private List<IaoxItem> loot;
 	private List<TravelException> travelExceptions;
+	private ArrayList<Item> unecessaryItems;
 	
 
 	/**
@@ -76,10 +77,6 @@ public class CombatAssignment {
 	public List<TravelException> getTravelExceptions() {
 		return travelExceptions;
 	}
-
-	
-
-	
 	
 	
 

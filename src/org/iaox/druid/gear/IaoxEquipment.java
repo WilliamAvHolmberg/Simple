@@ -13,6 +13,9 @@ public class IaoxEquipment {
 	
 	private List<RequiredEquipment> requiredEquipment;
 	private MethodProvider methodProvider;
+	private ArrayList<RequiredEquipment> neededItems;
+	private ArrayList<Integer> requiredItemIDs;
+	private ArrayList<Item> unecessaryItems;
 
 	/**
 	 * IaoxEquipmentis an object that contains information about which equipment that are required
@@ -53,50 +56,16 @@ public class IaoxEquipment {
 	 * @return a list of items that are required but that player does not have in his inventory
 	 */
 	public List<RequiredEquipment> getNeededItems(){
-		List<RequiredEquipment> neededItems = new ArrayList<RequiredEquipment>();
+		neededItems = new ArrayList<RequiredEquipment>();
 		for(RequiredEquipment item : requiredEquipment){
-			if(methodProvider.equipment.isWearingItem(item.getSlot(), item.getItemName())){
+			if(!methodProvider.equipment.isWearingItem(item.getSlot(), item.getItemName())){
 				neededItems.add(item);
 			}
 		}
 		return neededItems;
 	}
-	/**
-	 * @return a complete list of all item ids that are required
-	 */
-	private List<Integer> getRequiredItemIDs(){
-		List<Integer> requiredItemIDs = new ArrayList<Integer>();
-		requiredEquipment.forEach(item -> {
-			requiredItemIDs.add(item.getItemID());
-		});
-		return requiredItemIDs;
-	}
+
 	
-	/**
-	 * Shall return a list of items that shall be deposited from the players inventory
-	 * @return a complete list of items that inventory contains which is not required
-	 */
-	public List<Item> getUnecessaryItems(){
-		List<Item> unecessaryItems = new ArrayList<Item>();
-		//get all items from inventory
-		Item[] inventoryItems = methodProvider.inventory.getItems();
-		//check if inventory contains any items
-		if(inventoryItems != null && inventoryItems.length > 0 && getRequiredItemIDs() != null && !getRequiredItemIDs().isEmpty()){
-		//loop through each item and check if it is a required item
-			for(Item item : inventoryItems){
-				//if it is not a required item ,it shall be added to the list of unecessary items
-				if(item != null && !getRequiredItemIDs().contains(item.getId()))
-					unecessaryItems.add(item);
-			}
-		}
-		return unecessaryItems;
-	}
-	
-	
-	public boolean inventoryContainsUnecessaryItems(){
-		List<Item> unecessaryItems = getUnecessaryItems();
-		return unecessaryItems != null && !unecessaryItems.isEmpty();
-	}
 	
 
 }

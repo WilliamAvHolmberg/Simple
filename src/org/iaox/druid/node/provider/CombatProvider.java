@@ -1,12 +1,15 @@
 package org.iaox.druid.node.provider;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.iaox.druid.Simple;
 import org.iaox.druid.Timing;
 import org.iaox.druid.data.Areas;
 import org.iaox.druid.data.IaoxItem;
 import org.iaox.druid.data.LootItems;
+import org.iaox.druid.gear.RequiredEquipment;
 import org.iaox.druid.loot.Loot;
 import org.iaox.druid.node.assignment.CombatAssignment;
 import org.osbot.rs07.api.map.constants.Banks;
@@ -29,6 +32,12 @@ public class CombatProvider {
 	private int amountAfterLoot;
 	private int lootAmount;
 	private IaoxItem iaoxItem;
+	private boolean equiped;
+	private List<RequiredEquipment> equipment;
+	private boolean valid;
+	private ArrayList<Item> unecessaryItems;
+	private ArrayList<Integer> requiredItemIDs;
+	private Item[] inventoryItems;
 	public CombatProvider(MethodProvider methodProvider) {
 		this.methodProvider = methodProvider;
 	}
@@ -94,9 +103,54 @@ public class CombatProvider {
 	 * @return if player is ready to fight
 	 */
 	public boolean shouldFight() {
-		return !needDepositItems() && getAssignment().getRequiredInventory().hasValidInventory();
+		return !needDepositItems() && getAssignment().getRequiredInventory().hasValidInventory() && hasValidEquipment();
 	}
 
+
+	/**
+	 * Loop through each required item
+	 * if player is wearing item - do nothing - PROBABLY HAVE TO FIX THIS TO MAKE IT CLEANER
+	 * if player has item in inventory - equip
+	 * else means that player does not have item equipped nor in inventory
+	 * @return
+	 */
+	private boolean hasValidEquipment() {
+		equipment = getAssignment().getRequiredEquipment().getNeededItems();
+		valid = true;
+		for(RequiredEquipment equipment : equipment){
+			if(methodProvider.equipment.isWearingItem(equipment.getSlot(), equipment.getItemName())) {
+				//everything is fine :)
+			}else if(methodProvider.inventory.contains(equipment.getItemName())){
+				equip(equipment);
+				valid = false;
+			}else{
+				valid = false;
+			}
+		}
+		return valid;
+	}
+	
+
+	/**
+	 * Shall equip item Close bank if bank is open, sleep until it is closed Equip
+	 * again Equip item if bank is not open
+	 * 
+	 * @param equipment
+	 */
+	public void equip(RequiredEquipment equipment) {
+		if (methodProvider.bank.isOpen()) {
+			methodProvider.log("closing bank");
+			methodProvider.bank.close();
+			Timing.waitCondition(() -> !methodProvider.bank.isOpen(), 300, 5000);
+			equip(equipment);
+		} else {
+			methodProvider.log("Equipping item");
+			methodProvider.getEquipment().equip(equipment.getSlot(), equipment.getItemName());
+			Timing.waitCondition(() -> methodProvider.getEquipment().isWearingItem(equipment.getSlot(), equipment.getItemName()), 300,
+					5000);
+		}
+
+	}
 
 	/**
 	 * @return if current attack style is equal to the preferred attack style
@@ -330,9 +384,56 @@ public class CombatProvider {
 			loot(item);	
 		}else{
 			eat();
-		}
-		
+		}		
 	}
+	
+	
+	/**
+	 * @return a complete list of all item ids that are required
+	 */
+	private List<Integer> getRequiredItemIDs(){
+		requiredItemIDs = new ArrayList<Integer>();
+		getAssignment().getRequiredInventory().getRequiredItems().forEach(item -> {
+			requiredItemIDs.add(item.getItemID());
+		});
+		getAssignment().getRequiredEquipment().getRequiredEquipment().forEach(item -> {
+			requiredItemIDs.add(item.getItemID());
+		});
+		return requiredItemIDs;
+	}
+	
+	
+	/**
+	 * Shall return a list of items that shall be deposited from the players inventory
+	 * @return a complete list of items that inventory contains which is not required
+	 */
+	public List<Item> getUnecessaryItems(){
+		unecessaryItems = new ArrayList<Item>();
+		//get all items from inventory
+		inventoryItems = methodProvider.inventory.getItems();
+		//check if inventory contains any items
+		if(inventoryItems != null && inventoryItems.length > 0 && getRequiredItemIDs() != null && !getRequiredItemIDs().isEmpty()){
+		//loop through each item and check if it is a required item
+			for(Item item : inventoryItems){
+				//if it is not a required item ,it shall be added to the list of unecessary items
+				if(item != null && !getRequiredItemIDs().contains(item.getId())) {
+					methodProvider.log("unecessary item" + item.getName());
+					unecessaryItems.add(item);
+				}
+			}
+		}
+		return unecessaryItems;
+	}
+	
+	
+	public boolean inventoryContainsUnecessaryItems(){
+		unecessaryItems = (ArrayList<Item>) getUnecessaryItems();
+		return unecessaryItems != null && !unecessaryItems.isEmpty();
+	}
+	
+	
+	
+	
 
 	
 

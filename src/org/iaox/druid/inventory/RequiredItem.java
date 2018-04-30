@@ -29,6 +29,8 @@ public class RequiredItem {
 		this.exception = exception;
 	}
 	
+
+
 	public int getAmount(){
 		return amount;
 	}
