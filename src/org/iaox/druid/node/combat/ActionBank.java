@@ -26,9 +26,9 @@ public class ActionBank extends Node {
 			openBank();
 		} else if (combatProvider.inventoryContainsUnecessaryItems()) {
 			depositUnecessaryItems();
-		}else if (!combatProvider.getAssignment().getRequiredEquipment().hasValidEquipment()) {
+		}else if (!combatProvider.hasValidEquipment()) {
 			withdrawAndEquip();
-		}else if (!combatProvider.getAssignment().getRequiredInventory().hasValidInventory()) {
+		}else if (!combatProvider.hasValidInventory()) {
 			withdrawInventory();
 		}
 	}
@@ -38,7 +38,7 @@ public class ActionBank extends Node {
 	 * Gets inventoryItems from currentAssignment
 	 */
 	private void withdrawInventory() {
-		combatProvider.getAssignment().getRequiredInventory().getNeededItems().forEach(item -> {
+		combatProvider.getNeededInventoryItems().forEach(item -> {
 			amountOfItemInInventory = methodProvider.inventory.getAmount(item.getItemID());
 			if (amountOfItemInInventory < item.getAmount()) {
 				withdraw(item);
@@ -53,7 +53,7 @@ public class ActionBank extends Node {
 	 * Gets requiredEquipment fmor currentAsignment
 	 */
 	private void withdrawAndEquip() {
-		combatProvider.getAssignment().getRequiredEquipment().getNeededItems().forEach(item -> {
+		combatProvider.getNeededEquipmentItems().forEach(item -> {
 			if (methodProvider.inventory.contains(item.getItemID())) {
 				combatProvider.equip(item);
 			} else {

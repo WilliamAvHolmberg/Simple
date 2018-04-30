@@ -10,6 +10,7 @@ import org.iaox.druid.data.Areas;
 import org.iaox.druid.data.IaoxItem;
 import org.iaox.druid.data.LootItems;
 import org.iaox.druid.gear.RequiredEquipment;
+import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.loot.Loot;
 import org.iaox.druid.node.assignment.CombatAssignment;
 import org.osbot.rs07.api.map.constants.Banks;
@@ -38,6 +39,8 @@ public class CombatProvider {
 	private ArrayList<Item> unecessaryItems;
 	private ArrayList<Integer> requiredItemIDs;
 	private Item[] inventoryItems;
+	private ArrayList<RequiredEquipment> neededEquipmentItems;
+	private ArrayList<RequiredItem> neededInventoryItems;
 	public CombatProvider(MethodProvider methodProvider) {
 		this.methodProvider = methodProvider;
 	}
@@ -103,7 +106,7 @@ public class CombatProvider {
 	 * @return if player is ready to fight
 	 */
 	public boolean shouldFight() {
-		return !needDepositItems() && getAssignment().getRequiredInventory().hasValidInventory() && hasValidEquipment();
+		return !needDepositItems() && hasValidInventory() && hasValidEquipment();
 	}
 
 
@@ -114,8 +117,8 @@ public class CombatProvider {
 	 * else means that player does not have item equipped nor in inventory
 	 * @return
 	 */
-	private boolean hasValidEquipment() {
-		equipment = getAssignment().getRequiredEquipment().getNeededItems();
+	public boolean hasValidEquipment() {
+		equipment = getNeededEquipmentItems();
 		valid = true;
 		for(RequiredEquipment equipment : equipment){
 			if(methodProvider.equipment.isWearingItem(equipment.getSlot(), equipment.getItemName())) {
@@ -425,11 +428,62 @@ public class CombatProvider {
 		return unecessaryItems;
 	}
 	
-	
+	/**
+	 * Shall return if inventory contains items that are not necessary for the specific trip.
+	 * @return
+	 */
 	public boolean inventoryContainsUnecessaryItems(){
 		unecessaryItems = (ArrayList<Item>) getUnecessaryItems();
 		return unecessaryItems != null && !unecessaryItems.isEmpty();
 	}
+	
+	
+	/**
+	 * Valid inventory means that the player has the exact amount of required items for the certain task.
+	 * @return
+	 */
+	public boolean hasValidInventory(){
+		for(RequiredItem item : getAssignment().getRequiredInventory().getRequiredItems()){
+			if(!item.getException().getAsBoolean() && methodProvider.inventory.getAmount(item.getItemID()) != item.getAmount()){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
+	/**
+	 * @return a list of items that are required but that player does not have in his inventory
+	 */
+	public List<RequiredEquipment> getNeededEquipmentItems(){
+		neededEquipmentItems = new ArrayList<RequiredEquipment>();
+		for(RequiredEquipment item : getAssignment().getRequiredEquipment().getRequiredEquipment()){
+			if(!methodProvider.equipment.isWearingItem(item.getSlot(), item.getItemName())){
+				neededEquipmentItems.add(item);
+			}
+		}
+		return neededEquipmentItems;
+	}
+	
+	/**
+	 * @return a list of items that are required but that player does not have in his inventory
+	 */
+	public List<RequiredItem> getNeededInventoryItems(){
+		neededInventoryItems = new ArrayList<RequiredItem>();
+		for(RequiredItem item : getAssignment().getRequiredInventory().getRequiredItems()){
+			if(methodProvider.inventory.getAmount(item.getItemID()) != item.getAmount()){
+				neededInventoryItems.add(item);
+			}
+		}
+		return neededInventoryItems;
+	}
+	
+
+	
+
+	
+	
+
 	
 	
 	

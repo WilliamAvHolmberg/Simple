@@ -22,7 +22,6 @@ public class CombatAssignment {
 	private IaoxItem food;
 	private List<IaoxItem> loot;
 	private List<TravelException> travelExceptions;
-	private ArrayList<Item> unecessaryItems;
 	
 
 	/**
@@ -35,15 +34,31 @@ public class CombatAssignment {
 	 * @param travelExceptions if there is any case when webwalking should not be used we can use
 	 * 		  a custom method called travelException that overrides the usual webwalking method
 	 */
-	public CombatAssignment(String npcName, Area npcArea, Area bankArea, IaoxInventory requiredInventory, IaoxEquipment requiredEquipment, IaoxItem food, IaoxItem[] loot, TravelException[] travelExceptions){
-		this.npcName = npcName;
-		this.npcArea = npcArea;
-		this.bankArea = bankArea;
-		this.requiredInventory = requiredInventory;
-		this.requiredEquipment = requiredEquipment;
+	public CombatAssignment(FightAssignment fightAssignment, IaoxInventory requiredInventory, IaoxEquipment requiredEquipment, IaoxItem food){
+		//inherited from fixed fightAssignment
+		this.npcName = fightAssignment.getNpcName();
+		this.npcArea = fightAssignment.getNpcArea();
+		this.bankArea = fightAssignment.getBankArea();
+		this.requiredInventory = fightAssignment.getRequiredInventory();
+		this.requiredEquipment = fightAssignment.getRequiredEquipment();
+		this.loot = fightAssignment.getLoot();
+		this.travelExceptions = fightAssignment.getTravelExceptions();
+		
+		//input when new CombatAssignment is created
 		this.food = food;
-		this.loot = Arrays.asList(loot);
-		this.travelExceptions = Arrays.asList(travelExceptions);
+		//if there is any specific item that user wants to require, we add them
+		if(requiredInventory != null && !requiredInventory.getRequiredItems().isEmpty()) {
+			requiredInventory.getRequiredItems().forEach(item -> {
+				this.requiredInventory.AddItem(item);
+			});
+		}	
+		//if there is any specific equipment that user wants to require, we add them
+				if(requiredEquipment != null && !requiredEquipment.getRequiredEquipment().isEmpty()) {
+					requiredEquipment.getRequiredEquipment().forEach(item -> {
+						this.requiredEquipment.AddItem(item);
+					});
+				}
+		
 	}
 	
 	public String getNpcName(){

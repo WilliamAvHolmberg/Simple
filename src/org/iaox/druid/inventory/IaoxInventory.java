@@ -3,6 +3,7 @@ package org.iaox.druid.inventory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 import org.iaox.druid.data.IaoxItem;
 import org.osbot.rs07.api.model.Item;
@@ -11,7 +12,6 @@ import org.osbot.rs07.script.MethodProvider;
 public class IaoxInventory {
 	
 	private List<RequiredItem> requiredItems;
-	private MethodProvider methodProvider;
 
 	/**
 	 * IaoxInventory is an object that contains information about which items that are required
@@ -19,40 +19,17 @@ public class IaoxInventory {
 	 * for the assignment
 	 * @param Arrays.asList(requiredItems)
 	 */
-	public IaoxInventory(RequiredItem[] requiredItems, MethodProvider methodProvider){
-		this.requiredItems = Arrays.asList(requiredItems);
-		this.methodProvider = methodProvider;
+	public IaoxInventory(RequiredItem[] requiredItems){
+		this.requiredItems = new ArrayList<RequiredItem>();
+		Arrays.asList(requiredItems).forEach(item -> {
+			this.requiredItems.add(item);
+		});
 	}
 	
 	public List<RequiredItem> getRequiredItems(){
 		return requiredItems;
 	}
 	
-	/**
-	 * Valid inventory means that the player has the exact amount of required items for the certain task.
-	 * @return
-	 */
-	public boolean hasValidInventory(){
-		for(RequiredItem item : requiredItems){
-			if(!item.getException().getAsBoolean() && methodProvider.inventory.getAmount(item.getItemID()) != item.getAmount()){
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * @return a list of items that are required but that player does not have in his inventory
-	 */
-	public List<RequiredItem> getNeededItems(){
-		List<RequiredItem> neededItems = new ArrayList<RequiredItem>();
-		for(RequiredItem item : requiredItems){
-			if(methodProvider.inventory.getAmount(item.getItemID()) != item.getAmount()){
-				neededItems.add(item);
-			}
-		}
-		return neededItems;
-	}
 	/**
 	 * @return a complete list of all item ids that are required
 	 */
@@ -65,30 +42,20 @@ public class IaoxInventory {
 	}
 	
 	/**
-	 * Shall return a list of items that shall be deposited from the players inventory
-	 * @return a complete list of items that inventory contains which is not required
+	 * If user wants to add an item to requiredInventory, we use this method
+	 * For instance, druidAssignment comes with one fixed requiredItem and that is falador teleport
+	 * When a new combatAssignment is created, maybe the user wants to add food to the requiredInventory.
+	 * That can be done by using this method.
 	 */
-	public List<Item> getUnecessaryItems(){
-		List<Item> unecessaryItems = new ArrayList<Item>();
-		//get all items from inventory
-		Item[] inventoryItems = methodProvider.inventory.getItems();
-		//check if inventory contains any items
-		if(inventoryItems != null && inventoryItems.length > 0 && getRequiredItemIDs() != null && !getRequiredItemIDs().isEmpty()){
-		//loop through each item and check if it is a required item
-			for(Item item : inventoryItems){
-				//if it is not a required item ,it shall be added to the list of unecessary items
-				if(item != null && !getRequiredItemIDs().contains(item.getId()))
-					unecessaryItems.add(item);
-			}
-		}
-		return unecessaryItems;
+	public void AddItem(int amount, IaoxItem item, boolean isFood, BooleanSupplier exception) {
+		requiredItems.add(new RequiredItem(amount, item, isFood, exception));
+	}
+	
+	public void AddItem(RequiredItem item) {
+		requiredItems.add(item);
 	}
 	
 	
-	public boolean inventoryContainsUnecessaryItems(){
-		List<Item> unecessaryItems = getUnecessaryItems();
-		return unecessaryItems != null && !unecessaryItems.isEmpty();
-	}
 	
 
 }
