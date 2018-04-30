@@ -113,45 +113,6 @@ public class Simple extends Script {
 		return 200;
 	}
 
-	/**
-	 * Loop through the list of required equipment Equip item if inventory contains
-	 * item Else add item to withdraw list
-	 */
-	private void handleEquipmentList() {
-		for (RequiredEquipment equipment : EQUIP_LIST) {
-			if (getEquipment().isWearingItem(equipment.getSlot(), equipment.getItemName())) {
-				log("Removing item from equipment list as we are wearing the item");
-				EQUIP_LIST.remove(equipment);
-			}else if (inventory.contains(equipment.getItemName())) {
-				equip(equipment);
-			} else {
-				log("lets add item to withdraw list: " + equipment.getItemName());
-				WITHDRAW_LIST.add(new RequiredItem(1, equipment.getIaoxItem(), false, () -> false));
-			}
-		}
-
-	}
-
-	/**
-	 * Shall equip item Close bank if bank is open, sleep until it is closed Equip
-	 * again Equip item if bank is not open
-	 * 
-	 * @param equipment
-	 */
-	private void equip(RequiredEquipment equipment) {
-		if (bank.isOpen()) {
-			log("closing bank");
-			bank.close();
-			Timing.waitCondition(() -> !bank.isOpen(), 300, 5000);
-			equip(equipment);
-		} else {
-			log("Equipping item");
-			getEquipment().equip(equipment.getSlot(), equipment.getItemName());
-			Timing.waitCondition(() -> getEquipment().isWearingItem(equipment.getSlot(), equipment.getItemName()), 300,
-					5000);
-		}
-
-	}
 
 	@Override
 	public void onPaint(Graphics2D g) {
