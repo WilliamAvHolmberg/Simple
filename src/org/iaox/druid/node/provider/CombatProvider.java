@@ -24,7 +24,7 @@ import org.osbot.rs07.script.MethodProvider;
 public class CombatProvider {
 
 	public MethodProvider methodProvider;
-	private Skill skill = Skill.STRENGTH;
+
 	private GroundItem item;
 	private Item food;
 	private int foodAmount;
@@ -49,7 +49,7 @@ public class CombatProvider {
 	 * @return the current combat assignment that is initialized onStart
 	 */
 	public CombatAssignment getAssignment(){
-		return Simple.CURRENT_ASSIGNMENT;
+		return Simple.TASK_HANDLER.getCurrentTask().getCombatAssignment();
 	}
 	/**
 	 * @return if player is in the fight area
@@ -159,13 +159,13 @@ public class CombatProvider {
 	 * @return if current attack style is equal to the preferred attack style
 	 */
 	public boolean rightStyle() {
-		if (skill.equals(Skill.STRENGTH) && (attackStyle() != 1)) {
+		if (getSkill().equals(Skill.STRENGTH) && (attackStyle() != 1)) {
 			return false;
-		} else if (skill.equals(Skill.ATTACK) && (attackStyle() != 0)) {
+		} else if (getSkill().equals(Skill.ATTACK) && (attackStyle() != 0)) {
 			return false;
-		} else if (skill.equals(Skill.DEFENCE) && (attackStyle() != 3)) {
+		} else if (getSkill().equals(Skill.DEFENCE) && (attackStyle() != 3)) {
 			return false;
-		} else if (skill.equals(Skill.RANGED) && (attackStyle() != 1)) {
+		} else if (getSkill().equals(Skill.RANGED) && (attackStyle() != 1)) {
 			return false;
 		}
 		return true;
@@ -177,16 +177,16 @@ public class CombatProvider {
 	 */
 	public void changeStyle() {
 		if (methodProvider.widgets.isVisible(593)) {
-			if (skill.equals(Skill.STRENGTH) && (attackStyle() != 1)) {
+			if (getSkill().equals(Skill.STRENGTH) && (attackStyle() != 1)) {
 				methodProvider.mouse.click(689, 270, false);// click "train
 															// strength"
-			} else if (skill.equals(Skill.ATTACK) && (attackStyle() != 0)) {
+			} else if (getSkill().equals(Skill.ATTACK) && (attackStyle() != 0)) {
 				methodProvider.mouse.click(601, 269, false); // click "train
 																// attack"
-			} else if (skill.equals(Skill.DEFENCE) && (attackStyle() != 3)) {
+			} else if (getSkill().equals(Skill.DEFENCE) && (attackStyle() != 3)) {
 				methodProvider.mouse.click(701, 335, false); // click "train
 																// def"
-			} else if (skill.equals(Skill.RANGED) && (attackStyle() != 1)) {
+			} else if (getSkill().equals(Skill.RANGED) && (attackStyle() != 1)) {
 				methodProvider.mouse.click(689, 270, false);// click "train
 															// range"
 			}
@@ -195,6 +195,10 @@ public class CombatProvider {
 			methodProvider.mouse.click(545, 190, false);
 		}
 
+	}
+
+	private Skill getSkill() {
+		return Simple.TASK_HANDLER.getCurrentTask().getSkill();
 	}
 
 	/**

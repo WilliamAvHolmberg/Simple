@@ -42,6 +42,7 @@ public class Simple extends Script {
 	public static LootHandler LOOT_HANDLER;
 	public static List<RequiredEquipment> EQUIP_LIST;
 	public static List<RequiredItem> WITHDRAW_LIST;
+	public static TaskHandler TASK_HANDLER;
 
 	@Override
 	public void onStart() throws InterruptedException {
@@ -63,20 +64,6 @@ public class Simple extends Script {
 		EQUIP_LIST = new ArrayList<RequiredEquipment>();
 		WITHDRAW_LIST = new ArrayList<RequiredItem>();
 
-		// exception: if player is in fight place and does not have to eat, then food is
-		// not required
-		RequiredItem food = new RequiredItem(5, IaoxItem.TROUT, true,
-				() -> Areas.TAVERLEY_DRUIDS.contains(myPlayer()) && myPlayer().getHealthPercent() > 40);
-		// initialize the required inventory
-		IaoxInventory druidInventory = new IaoxInventory(new RequiredItem[] {food});
-		// intialize all required equipments
-		RequiredEquipment runeScimitar = new RequiredEquipment(EquipmentSlot.WEAPON, IaoxItem.RUNE_SCIMITAR);
-		// initialize the required equipment
-		IaoxEquipment druidEquipment = new IaoxEquipment(new RequiredEquipment[] { runeScimitar });
-
-		
-		CURRENT_ASSIGNMENT = new CombatAssignment(FightAssignment.CHAOS_DRUIDS_TAVERLEY, druidInventory, druidEquipment, IaoxItem.TROUT);
-
 		nodeHandler = new ArrayList<Node>();
 		nodeHandler.add(new ActionFight().init(this));
 		nodeHandler.add(new ActionBank().init(this));
@@ -84,25 +71,36 @@ public class Simple extends Script {
 		nodeHandler.add(new WalkToFight().init(this));
 
 		// initialize experience tracker for strength
-
 		experienceTracker.getExperienceTracker().start(Skill.STRENGTH);
+
+		// initialize task handler
+		TASK_HANDLER = new TaskHandler(this);
 
 	}
 
 	@Override
 	public int onLoop() throws InterruptedException {
-			log("node handler");
+
+		if (!TASK_HANDLER.hasTask() || TASK_HANDLER.taskIsCompleted()) {
+			log("lets generate a new task");
+			TASK_HANDLER.getNewTask();
+		} else {
 			for (Node node : nodeHandler) {
 				if (node.active()) {
 					node.run();
 				}
 			}
+		}
 		return 200;
 	}
 
-
 	@Override
 	public void onPaint(Graphics2D g) {
+
+		// Print information about current task
+		if (TASK_HANDLER.getCurrentTask() != null) {
+			g.drawString("Current Task: " + TASK_HANDLER.getCurrentTask(), 50, 25);
+		}
 		// Print information about experience
 		g.drawString("XP Gained: " + experienceTracker.getGainedXP(Skill.STRENGTH), 50, 50);
 		g.drawString("XP Per Hour: " + experienceTracker.getGainedXPPerHour(Skill.STRENGTH), 50, 75);
