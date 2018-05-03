@@ -1,7 +1,7 @@
 package org.iaox.druid.data;
 
-import org.iaox.druid.gear.IaoxEquipment;
-import org.iaox.druid.gear.RequiredEquipment;
+import org.iaox.druid.equipment.IaoxEquipment;
+import org.iaox.druid.equipment.RequiredEquipment;
 
 public class RequiredEquipments {
 	

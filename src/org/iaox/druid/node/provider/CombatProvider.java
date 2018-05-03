@@ -9,7 +9,7 @@ import org.iaox.druid.Timing;
 import org.iaox.druid.data.Areas;
 import org.iaox.druid.data.IaoxItem;
 import org.iaox.druid.data.LootItems;
-import org.iaox.druid.gear.RequiredEquipment;
+import org.iaox.druid.equipment.RequiredEquipment;
 import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.loot.Loot;
 import org.iaox.druid.node.assignment.CombatAssignment;

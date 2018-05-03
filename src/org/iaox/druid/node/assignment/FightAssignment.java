@@ -6,7 +6,7 @@ import java.util.List;
 import org.iaox.druid.data.Areas;
 import org.iaox.druid.data.IaoxItem;
 import org.iaox.druid.data.LootItems;
-import org.iaox.druid.gear.IaoxEquipment;
+import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.inventory.IaoxInventory;
 import org.iaox.druid.travel.TravelException;
 import org.osbot.rs07.api.map.Area;

@@ -1,4 +1,4 @@
-package org.iaox.druid.gear;
+package org.iaox.druid.equipment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +15,6 @@ import org.osbot.rs07.script.MethodProvider;
 public class IaoxEquipment {
 	
 	private List<RequiredEquipment> requiredEquipment;
-	private ArrayList<RequiredEquipment> neededItems;
 
 	/**
 	 * IaoxEquipmentis an object that contains information about which equipment that are required
@@ -24,9 +23,12 @@ public class IaoxEquipment {
 	 * @param Arrays.asList(requiredItems)
 	 */
 	public IaoxEquipment(RequiredEquipment[] requiredEquipment){
+		
+		//EquipmentSlot.each
+		//requiredEquipment.add(new RequiredEquipment(slot, null)
 		this.requiredEquipment = new ArrayList<RequiredEquipment>();
 		Arrays.asList(requiredEquipment).forEach(item -> {
-			this.requiredEquipment.add(item);
+			//this.requiredEquipment.setEquipment(item);
 		});
 	}
 	
@@ -35,14 +37,30 @@ public class IaoxEquipment {
 	}
 	
 	/**
-	 * TODO
+	 * Shall remove current Equipment from requiredEquipment
+	 * Shall add new Equipment
 	 */
-	public void AddItem(EquipmentSlot slot, IaoxItem item) {
+	public void setEquipment(EquipmentSlot slot, IaoxItem item) {
+		//delete current Equipment from requiredEquipment
+		//requiredEquipment.remove(getEquipment(slot))
 		requiredEquipment.add(new RequiredEquipment(slot, item));
 	}
 	
-	public void AddItem(RequiredEquipment item) {
+	public void setEquipment(RequiredEquipment item) {
+		//delete current Equipment from requiredEquipment
+		//requiredEquipment.remove(getEquipment(item.getSlot()))
 		requiredEquipment.add(item);
+	}
+	
+	/**
+	 * Shall return the equipment for the specific slot that is given
+	 */
+	public RequiredEquipment getEquipment(EquipmentSlot slot) {
+		//requiredEquipment.each |equipment|
+		//if equipment.getSlot() == slot
+		//return equipment
+		//else
+		//return null
 	}
 	
 

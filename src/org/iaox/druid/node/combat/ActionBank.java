@@ -1,7 +1,7 @@
 package org.iaox.druid.node.combat;
 
 import org.iaox.druid.Timing;
-import org.iaox.druid.gear.RequiredEquipment;
+import org.iaox.druid.equipment.RequiredEquipment;
 import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.node.Node;
 

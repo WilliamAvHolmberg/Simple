@@ -1,4 +1,4 @@
-package org.iaox.druid.gear;
+package org.iaox.druid.equipment;
 
 import java.util.function.BooleanSupplier;
 

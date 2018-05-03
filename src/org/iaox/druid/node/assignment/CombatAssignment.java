@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.iaox.druid.data.IaoxItem;
-import org.iaox.druid.gear.IaoxEquipment;
+import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.inventory.IaoxInventory;
 import org.iaox.druid.travel.TravelException;
 import org.osbot.rs07.api.filter.Filter;
@@ -59,7 +59,7 @@ public class CombatAssignment {
 		//if there is any specific equipment that user wants to require, we add them
 				if(requiredEquipment != null && !requiredEquipment.getRequiredEquipment().isEmpty()) {
 					requiredEquipment.getRequiredEquipment().forEach(item -> {
-						this.requiredEquipment.AddItem(item);
+						this.requiredEquipment.setEquipment(item);
 					});
 				}
 		
