@@ -41,6 +41,7 @@ public class CombatProvider {
 	private Item[] inventoryItems;
 	private ArrayList<RequiredEquipment> neededEquipmentItems;
 	private ArrayList<RequiredItem> neededInventoryItems;
+	
 	public CombatProvider(MethodProvider methodProvider) {
 		this.methodProvider = methodProvider;
 	}

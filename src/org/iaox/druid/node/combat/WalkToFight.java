@@ -32,7 +32,7 @@ public class WalkToFight extends Node {
 		exception = false;
 		
 		//check if there is any travelExceptions for the current assignment
-		travelExceptions = combatProvider.getAssignment().getTravelExceptions();
+		travelExceptions = combatProvider.getAssignment().getTravelExceptionsToFight();
 		if(travelExceptions != null){
 			methodProvider.log("exception");
 			//loop through every single travelException that exist for the current assignment

@@ -21,7 +21,8 @@ public class CombatAssignment {
 	private IaoxEquipment requiredEquipment;
 	private IaoxItem food;
 	private List<IaoxItem> loot;
-	private List<TravelException> travelExceptions;
+	private List<TravelException> travelExceptionsToFight;
+	private List<TravelException> travelExceptionsToBank;
 	
 
 	/**
@@ -31,8 +32,10 @@ public class CombatAssignment {
 	 * @param npcName
 	 * @param npcArea
 	 * @param requiredInventory
-	 * @param travelExceptions if there is any case when webwalking should not be used we can use
+	 * @param druidTravelExceptionsToFight if there is any case when webwalking should not be used we can use
 	 * 		  a custom method called travelException that overrides the usual webwalking method
+	 * @param travelExceptionsToBank if there is any case when webwalking should not be used we can use
+	 * 		  a custom method called travelException that overrides the usual webwalking method	
 	 */
 	public CombatAssignment(FightAssignment fightAssignment, IaoxInventory requiredInventory, IaoxEquipment requiredEquipment, IaoxItem food){
 		//inherited from fixed fightAssignment
@@ -42,8 +45,9 @@ public class CombatAssignment {
 		this.requiredInventory = fightAssignment.getRequiredInventory();
 		this.requiredEquipment = fightAssignment.getRequiredEquipment();
 		this.loot = fightAssignment.getLoot();
-		this.travelExceptions = fightAssignment.getTravelExceptions();
-		
+		this.travelExceptionsToFight = fightAssignment.getTravelExceptionsToFight();
+		this.travelExceptionsToBank = fightAssignment.getTravelExceptionsToBank();
+
 		//input when new CombatAssignment is created
 		this.food = food;
 		//if there is any specific item that user wants to require, we add them
@@ -89,8 +93,12 @@ public class CombatAssignment {
 		return loot;
 	}
 
-	public List<TravelException> getTravelExceptions() {
-		return travelExceptions;
+	public List<TravelException> getTravelExceptionsToFight() {
+		return travelExceptionsToFight;
+	}
+	
+	public List<TravelException> getTravelExceptionsToBank() {
+		return travelExceptionsToBank;
 	}
 	
 	
