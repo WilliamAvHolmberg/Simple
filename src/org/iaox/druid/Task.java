@@ -6,12 +6,12 @@ import org.osbot.rs07.api.ui.Skill;
 public class Task {
 	
 	private Skill skill;
-	private int levelGoal;
+	private int experienceGoal;
 	private CombatAssignment combatAssignment;
 	
-	public Task(Skill skill, int levelGoal, CombatAssignment combatAssignment) {
+	public Task(Skill skill, int experienceGoal, CombatAssignment combatAssignment) {
 		this.skill = skill;
-		this.levelGoal = levelGoal;
+		this.experienceGoal = experienceGoal;
 		this.combatAssignment = combatAssignment;
 	}
 	
@@ -19,8 +19,8 @@ public class Task {
 		return skill;
 	}
 	
-	public int getLevelGoal() {
-		return levelGoal;
+	public int getExperienceGoal() {
+		return experienceGoal;
 	}
 	
 	public CombatAssignment getCombatAssignment() {
@@ -28,7 +28,7 @@ public class Task {
 	}
 	
 	public String toString() {
-		return skill + " -> " + levelGoal;
+		return skill + " -> " + experienceGoal;
 	}
 
 }

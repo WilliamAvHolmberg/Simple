@@ -43,11 +43,105 @@ public class TaskHandler {
 		return getCurrentTask() != null;
 	}
 	
-	public void getNewTask() {
+	public FightAssignment getSuitableFightAssignment() {
 		if(getLevel(Skill.STRENGTH) < 30 || getLevel(Skill.ATTACK) < 30) {
 			//return Seagulls
-		}else if(getLevel(Skill.STRENGTH) > 50) {
-			currentTask = new Task(Skill.STRENGTH, 99, getDruidAssignment());
+		}else {
+			return FightAssignment.CHAOS_DRUIDS_TAVERLEY;
+		}
+	}
+	
+	/**
+	 * Generate a new Task
+	 * Get random skill
+	 * Get the experience that shall be achieved during the task
+	 * @return the new Task
+	 */
+	public Task generateNewTask() {
+		skill = getRandomCombatSkill();
+		experienceGoal = getExperienceGoal(skill);
+		//should be createCombatAssignment(getSuitableFightAssignment())
+		//createCombatAssignment should get the most appropiate food
+		//get the required inventory
+		//get the required gear
+		// get best weapon etc...
+		return new Task(Skill, experienceGoal, getSuitableFightAssignment());
+	}
+
+	/**
+	 * Generate how much experience that shall be achieved
+	 * @param skill
+	 * @return experience that should be achieved
+	 */
+	private int getExperienceGoal(Skill skill) {
+		int currentLevel = methodProvider.getSkills().getStatic(skill);
+		int currentExperience = methodProvider.getSkills().getExperience(skill);
+		switch (skill) {
+		case ATTACK:
+		case DEFENCE:
+			if (currentLevel < 10) {
+				return currentExperience + 500 +  IaoxAIO.random(1000);
+			}
+			if (currentLevel < 20) {
+				return currentExperience + 1500 +  IaoxAIO.random(2000);
+			}
+			if (currentLevel < 30) {
+				return currentExperience + 2000 +  IaoxAIO.random(3000);
+			}
+			if (currentLevel < 40) {
+				return currentExperience + 3000 +  IaoxAIO.random(4000);
+			}
+			if (currentLevel < 50) {
+				return currentExperience + 4000 +  IaoxAIO.random(5000);
+			}
+			if (currentLevel < 60) {
+				return currentExperience + 4500 +  IaoxAIO.random(7500);
+			}
+			return currentExperience + 5000 +  IaoxAIO.random(10000);
+
+		case STRENGTH:
+			if (currentLevel < 10) {
+				return currentExperience + 1000 +  IaoxAIO.random(500);
+			}
+			if (currentLevel < 20) {
+				return currentExperience + 2000 +  IaoxAIO.random(1500);
+			}
+			if (currentLevel < 30) {
+				return currentExperience + 3000 +  IaoxAIO.random(2000);
+			}
+			if (currentLevel < 40) {
+				return currentExperience + 3500 +  IaoxAIO.random(3000);
+			}
+			if (currentLevel < 50) {
+				return currentExperience + 4000 +  IaoxAIO.random(5000);
+			}
+			if (currentLevel < 60) {
+				return currentExperience + 5000 +  IaoxAIO.random(5000);
+			}
+			if (currentLevel < 70) {
+				return currentExperience + 7000 +  IaoxAIO.random(10000);
+			}
+			return currentExperience + 10000 +  IaoxAIO.random(15000);
+
+	}
+
+
+
+	public Skill getRandomCombatAssignment() {
+		int task = IaoxAIO.random(1, 3);
+		if (script.getSkills().getStatic(Skill.ATTACK) >= script.getSkills().getStatic(Skill.STRENGTH)) {
+			return Skill.STRENGTH;
+		}
+		switch (task) {
+		case 1:
+			return Skill.ATTACK;
+		case 2:
+			return Skill.STRENGTH;
+		case 3:
+				return Skill.DEFENCE;
+		default:
+			return Skill.STRENGTH;
+
 		}
 	}
 	
