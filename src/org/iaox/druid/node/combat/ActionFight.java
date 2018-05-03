@@ -19,7 +19,6 @@ public class ActionFight extends Node{
 
 	@Override
 	public void run() {
-		methodProvider.log("we are in fight area");
 		if(combatProvider.shouldEat()){
 			combatProvider.eat();
 		}else if(!combatProvider.rightStyle()){

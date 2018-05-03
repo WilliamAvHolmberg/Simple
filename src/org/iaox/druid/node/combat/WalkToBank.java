@@ -1,5 +1,7 @@
 package org.iaox.druid.node.combat;
 
+import java.util.List;
+
 import org.iaox.druid.Timing;
 import org.iaox.druid.data.Areas;
 import org.iaox.druid.node.Node;
@@ -12,6 +14,7 @@ import org.osbot.rs07.event.webwalk.PathPreferenceProfile;
 public class WalkToBank extends Node{
 
 	private boolean exception;
+	private List<TravelException> travelExceptions;
 
 	@Override
 	public boolean active() {
@@ -48,13 +51,14 @@ public class WalkToBank extends Node{
 								Item teleport = methodProvider.inventory.getItem(travelException.getTeleportName());
 								if (teleport != null) {
 									teleport.interact("Break");
+									Timing.waitCondition(() -> !travelException.getArea().contains(methodProvider.myPlayer()), 300, 5000);
 									exception = true;
 								} else {
 									exception = false;
 								}
 								break;
 							case WEBWALK:
-								methodProvider.walking(travelException.getArea());
+								methodProvider.walking.webWalk(travelException.getArea());
 								exception = true;
 								break;
 							default:
@@ -66,7 +70,7 @@ public class WalkToBank extends Node{
 				}
 				//Use webwalk if either no exception were found or no exception were current
 				if(!exception){
-					methodProvider.walking(travelException.getArea());
+					methodProvider.walking.webWalk(combatProvider.getAssignment().getBankArea());
 				}
 
 	}

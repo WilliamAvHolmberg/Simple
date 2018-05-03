@@ -18,6 +18,7 @@ import org.osbot.rs07.api.model.Entity;
 import org.osbot.rs07.api.model.GroundItem;
 import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.api.model.NPC;
+import org.osbot.rs07.api.ui.EquipmentSlot;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.MethodProvider;
 
@@ -107,7 +108,7 @@ public class CombatProvider {
 	 * @return if player is ready to fight
 	 */
 	public boolean shouldFight() {
-		return !needDepositItems() && hasValidInventory() && hasValidEquipment();
+		return !needDepositItems() && hasValidEquipment() && hasValidInventory() ;
 	}
 
 
@@ -122,6 +123,9 @@ public class CombatProvider {
 		equipment = getNeededEquipmentItems();
 		valid = true;
 		for(RequiredEquipment equipment : equipment){
+			if(equipment.getIaoxItem() == null){
+				//do not check this item :)
+			}
 			if(methodProvider.equipment.isWearingItem(equipment.getSlot(), equipment.getItemName())) {
 				//everything is fine :)
 			}else if(methodProvider.inventory.contains(equipment.getItemName())){
@@ -185,7 +189,14 @@ public class CombatProvider {
 				methodProvider.mouse.click(601, 269, false); // click "train
 																// attack"
 			} else if (getSkill().equals(Skill.DEFENCE) && (attackStyle() != 3)) {
-				methodProvider.mouse.click(701, 335, false); // click "train
+				//Check if wearing weapon
+				//if not wearing weapon, we press other button in attack styles
+				//since there is only three alternatives then
+				if(methodProvider.equipment.getItemInSlot(EquipmentSlot.WEAPON.slot) != null){
+					methodProvider.mouse.click(701, 335, false); // click "train defence"
+				}else{
+					methodProvider.mouse.click(599,324, false); // click "train defence"
+				}
 																// def"
 			} else if (getSkill().equals(Skill.RANGED) && (attackStyle() != 1)) {
 				methodProvider.mouse.click(689, 270, false);// click "train
@@ -405,7 +416,9 @@ public class CombatProvider {
 			requiredItemIDs.add(item.getItemID());
 		});
 		getAssignment().getRequiredEquipment().getRequiredEquipment().forEach(item -> {
+			if(item.getIaoxItem() != null){
 			requiredItemIDs.add(item.getItemID());
+			}
 		});
 		return requiredItemIDs;
 	}
@@ -463,7 +476,7 @@ public class CombatProvider {
 	public List<RequiredEquipment> getNeededEquipmentItems(){
 		neededEquipmentItems = new ArrayList<RequiredEquipment>();
 		for(RequiredEquipment item : getAssignment().getRequiredEquipment().getRequiredEquipment()){
-			if(!methodProvider.equipment.isWearingItem(item.getSlot(), item.getItemName())){
+			if(item.getIaoxItem() != null && !methodProvider.equipment.isWearingItem(item.getSlot(), item.getItemName())){
 				neededEquipmentItems.add(item);
 			}
 		}

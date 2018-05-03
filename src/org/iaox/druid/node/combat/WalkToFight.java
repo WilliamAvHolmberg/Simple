@@ -59,13 +59,7 @@ public class WalkToFight extends Node {
 						}
 						break;
 					case WEBWALK:
-						webEvent = new WebWalkEvent(travelException.getWebWalkArea());
-						webEvent.useSimplePath();
-						ppp = new PathPreferenceProfile();
-						ppp.setAllowTeleports(true);
-						webEvent.setPathPreferenceProfile(ppp);
-						methodProvider.execute(webEvent);
-						exception = true;
+						methodProvider.walking.webWalk(travelException.getWebWalkArea());
 						break;
 					default:
 						break;
@@ -76,12 +70,8 @@ public class WalkToFight extends Node {
 		}
 		//Use webwalk if either no exception were found or no exception were current
 		if(!exception){
-			webEvent = new WebWalkEvent(combatProvider.getAssignment().getNpcArea());
-			webEvent.useSimplePath();
-			ppp = new PathPreferenceProfile();
-			ppp.setAllowTeleports(true);
-			webEvent.setPathPreferenceProfile(ppp);
-			methodProvider.execute(webEvent);
+			methodProvider.walking.webWalk(combatProvider.getAssignment().getNpcArea());
+	
 		}
 
 	}

@@ -22,6 +22,7 @@ import org.iaox.druid.node.combat.ActionBank;
 import org.iaox.druid.node.combat.ActionFight;
 import org.iaox.druid.node.combat.WalkToBank;
 import org.iaox.druid.node.combat.WalkToFight;
+import org.iaox.druid.task.TaskHandler;
 import org.iaox.druid.travel.TravelException;
 import org.iaox.druid.travel.TravelType;
 import org.osbot.rs07.api.map.constants.Banks;
@@ -43,9 +44,15 @@ public class Simple extends Script {
 	public static List<RequiredEquipment> EQUIP_LIST;
 	public static List<RequiredItem> WITHDRAW_LIST;
 	public static TaskHandler TASK_HANDLER;
+	public static boolean TRAIN_DEFENCE = true;
 
 	@Override
 	public void onStart() throws InterruptedException {
+		
+		//check if we should train defence or not
+		if(getSkills().getDynamic(Skill.DEFENCE) == 1){
+			TRAIN_DEFENCE = false;
+		}
 		// initialize item prices
 		log("Initializing item prices");
 		final RSExchange rsExchange = new RSExchange();
@@ -53,8 +60,8 @@ public class Simple extends Script {
 		// Loop through every single item and set item price according to sell average
 		// from the GE
 		for (IaoxItem item : IaoxItem.values()) {
-			price = rsExchange.getExchangeItem(item.getName()).get().getSellAverage();
-			item.setItemPrice(price);
+			//price = rsExchange.getExchangeItem(item.getName()).get().getSellAverage();
+			//item.setItemPrice(price);
 		}
 		log("Finished with initialzing item prices");
 
@@ -75,6 +82,9 @@ public class Simple extends Script {
 
 		// initialize task handler
 		TASK_HANDLER = new TaskHandler(this);
+		
+		//initialize IaoxIntelligence
+		new Thread(new IaoxIntelligence(this)).start();
 
 	}
 
@@ -83,7 +93,7 @@ public class Simple extends Script {
 
 		if (!TASK_HANDLER.hasTask() || TASK_HANDLER.taskIsCompleted()) {
 			log("lets generate a new task");
-			TASK_HANDLER.getNewTask();
+			TASK_HANDLER.generateNewTask();
 		} else {
 			for (Node node : nodeHandler) {
 				if (node.active()) {
@@ -102,8 +112,8 @@ public class Simple extends Script {
 			g.drawString("Current Task: " + TASK_HANDLER.getCurrentTask(), 50, 25);
 		}
 		// Print information about experience
-		g.drawString("XP Gained: " + experienceTracker.getGainedXP(Skill.STRENGTH), 50, 50);
-		g.drawString("XP Per Hour: " + experienceTracker.getGainedXPPerHour(Skill.STRENGTH), 50, 75);
+		g.drawString("XP Gained: " + experienceTracker.getGainedXP(TASK_HANDLER.getCurrentTask().getSkill()), 50, 50);
+		g.drawString("XP Per Hour: " + experienceTracker.getGainedXPPerHour(TASK_HANDLER.getCurrentTask().getSkill()), 50, 75);
 
 		// Print information about loot
 		g.drawString("Total loot: " + LOOT_HANDLER.getValueOfLoot(), 50, 100);

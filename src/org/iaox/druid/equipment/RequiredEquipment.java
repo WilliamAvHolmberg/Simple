@@ -38,5 +38,13 @@ public class RequiredEquipment {
 	public int getItemID(){
 		return iaoxItem.getID();
 	}	
+	
+	/**
+	 * If IaoxIntelligence wants to replace item we use this method
+	 * For instance, if we level up and want to change gear.
+	 */
+	public void replaceItem(IaoxItem item){
+		this.iaoxItem = item;
+	}
 
 }

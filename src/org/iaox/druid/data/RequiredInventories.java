@@ -8,6 +8,8 @@ public class RequiredInventories {
 	/**
 	 * Data for when no inventory is required
 	 */
+	public static IaoxInventory NONE = new IaoxInventory(new RequiredItem[]{});
+
 	
 	/**
 	 * Data for Druid Assignment

@@ -6,6 +6,9 @@ import java.util.List;
 import org.iaox.druid.data.Areas;
 import org.iaox.druid.data.IaoxItem;
 import org.iaox.druid.data.LootItems;
+import org.iaox.druid.data.RequiredEquipments;
+import org.iaox.druid.data.RequiredInventories;
+import org.iaox.druid.data.TravelExceptions;
 import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.inventory.IaoxInventory;
 import org.iaox.druid.travel.TravelException;
@@ -20,7 +23,7 @@ public enum FightAssignment {
 							RequiredInventories.druidInventory, 
 							RequiredEquipments.NONE),
 	SEAGULLS_PORT_SARIM("Seagull", Areas.SEAGULL_PORT_SARIM_NORTH.getArea(),
-							Banks.DRAYNOR_VILLAGE, LootItems.NO_LOOT,
+							Banks.DRAYNOR, LootItems.NO_LOOT,
 							TravelExceptions.NONE, TravelExceptions.NONE,
 							RequiredInventories.NONE, RequiredEquipments.NONE);
 	

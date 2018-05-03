@@ -31,6 +31,9 @@ public enum IaoxItem {
 	TUNA("Tuna", 361),
 	
 	//weapons
+	IRON_SCIMITAR("Iron Scimitar", 1323),
+	MITHRIL_SCIMITAR("Mithril Scimitar", 1329),
+	ADAMANT_SCIMITAR("Adamant Scimitar", 1331),
 	RUNE_SCIMITAR("Rune scimitar", 1333);
 	
 	

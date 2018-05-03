@@ -1,4 +1,4 @@
-package org.iaox.druid;
+package org.iaox.druid.task;
 
 import org.iaox.druid.node.assignment.CombatAssignment;
 import org.osbot.rs07.api.ui.Skill;
