@@ -1,18 +1,18 @@
 package org.iaox.druid.task;
 
-import org.iaox.druid.node.assignment.CombatAssignment;
+import org.iaox.druid.node.assignment.Assignment;
 import org.osbot.rs07.api.ui.Skill;
 
 public class Task {
 	
 	private Skill skill;
 	private int experienceGoal;
-	private CombatAssignment combatAssignment;
+	private Assignment assignment;
 	
-	public Task(Skill skill, int experienceGoal, CombatAssignment combatAssignment) {
+	public Task(Skill skill, int experienceGoal, Assignment assignment) {
 		this.skill = skill;
 		this.experienceGoal = experienceGoal;
-		this.combatAssignment = combatAssignment;
+		this.assignment = assignment;
 	}
 	
 	public Skill getSkill() {
@@ -23,8 +23,8 @@ public class Task {
 		return experienceGoal;
 	}
 	
-	public CombatAssignment getCombatAssignment() {
-		return combatAssignment;
+	public Assignment getAssignment() {
+		return assignment;
 	}
 	
 	public String toString() {

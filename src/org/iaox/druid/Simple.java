@@ -16,7 +16,7 @@ import org.iaox.druid.inventory.IaoxInventory;
 import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.loot.LootHandler;
 import org.iaox.druid.node.Node;
-import org.iaox.druid.node.assignment.CombatAssignment;
+import org.iaox.druid.node.assignment.Assignment;
 import org.iaox.druid.node.assignment.FightAssignment;
 import org.iaox.druid.node.combat.ActionBank;
 import org.iaox.druid.node.combat.ActionFight;
@@ -38,8 +38,8 @@ import com.thoughtworks.xstream.io.path.Path;
 @ScriptManifest(name = "Druid", author = "Suxen", version = 1.0, info = "", logo = "")
 public class Simple extends Script {
 
-	public static CombatAssignment CURRENT_ASSIGNMENT;
-	public List<Node> nodeHandler;
+	public static Assignment CURRENT_ASSIGNMENT;
+	public static List<Node> ALL_NODES;
 	public static LootHandler LOOT_HANDLER;
 	public static List<RequiredEquipment> EQUIP_LIST;
 	public static List<RequiredItem> WITHDRAW_LIST;
@@ -71,11 +71,11 @@ public class Simple extends Script {
 		EQUIP_LIST = new ArrayList<RequiredEquipment>();
 		WITHDRAW_LIST = new ArrayList<RequiredItem>();
 
-		nodeHandler = new ArrayList<Node>();
-		nodeHandler.add(new ActionFight().init(this));
-		nodeHandler.add(new ActionBank().init(this));
-		nodeHandler.add(new WalkToBank().init(this));
-		nodeHandler.add(new WalkToFight().init(this));
+		ALL_NODES = new ArrayList<Node>();
+		ALL_NODES.add(new ActionFight().init(this));
+		ALL_NODES.add(new ActionBank().init(this));
+		ALL_NODES.add(new WalkToBank().init(this));
+		ALL_NODES.add(new WalkToFight().init(this));
 
 		// initialize experience tracker for strength
 		experienceTracker.getExperienceTracker().start(Skill.STRENGTH);
@@ -94,12 +94,14 @@ public class Simple extends Script {
 		if (!TASK_HANDLER.hasTask() || TASK_HANDLER.taskIsCompleted()) {
 			log("lets generate a new task");
 			TASK_HANDLER.generateNewTask();
-		} else {
-			for (Node node : nodeHandler) {
+		} else if(TASK_HANDLER.getNodes() != null && !TASK_HANDLER.getNodes().isEmpty()) {
+			for (Node node : TASK_HANDLER.getNodes()) {
 				if (node.active()) {
 					node.run();
 				}
 			}
+		}else{
+			log("no nodes");
 		}
 		return 200;
 	}
@@ -110,7 +112,7 @@ public class Simple extends Script {
 		// Print information about current task
 		if (TASK_HANDLER.getCurrentTask() != null) {
 			g.drawString("Current Task: " + TASK_HANDLER.getCurrentTask(), 50, 25);
-			g.drawString("RequiredInv:" + TASK_HANDLER.getCurrentTask().getCombatAssignment().getRequiredInventory(), 50, 125);
+			g.drawString("RequiredInv:" + TASK_HANDLER.getCurrentTask().getAssignment().getRequiredInventory(), 50, 125);
 		}
 		// Print information about experience
 		g.drawString("XP Gained: " + experienceTracker.getGainedXP(TASK_HANDLER.getCurrentTask().getSkill()), 50, 50);

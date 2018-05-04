@@ -10,7 +10,9 @@ import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.equipment.RequiredEquipment;
 import org.iaox.druid.inventory.IaoxInventory;
 import org.iaox.druid.inventory.RequiredItem;
-import org.iaox.druid.node.assignment.CombatAssignment;
+import org.iaox.druid.node.Node;
+import org.iaox.druid.node.assignment.Assignment;
+import org.iaox.druid.node.assignment.AssignmentType;
 import org.iaox.druid.node.assignment.FightAssignment;
 import org.osbot.rs07.api.ui.EquipmentSlot;
 import org.osbot.rs07.api.ui.Skill;
@@ -22,17 +24,16 @@ public class TaskHandler {
 	private Task currentTask;
 	private MethodProvider methodProvider;
 	private RequiredItem food;
-	private IaoxInventory inventory;
-	private RequiredEquipment weapon;
-	private IaoxEquipment equipment;
-	private CombatAssignment combatAssignment;
+	private Assignment combatAssignment;
 	private Skill skill;
 	private int experienceGoal;
 	private FightAssignment fightAssignment;
+	public List<Node> nodes;
 
 	public TaskHandler(MethodProvider methodProvider) {
 		this.methodProvider = methodProvider;
 		this.taskList = new ArrayList<Task>();
+		this.nodes = new ArrayList<Node>();
 	}
 
 	public List<Task> getTasks() {
@@ -65,6 +66,7 @@ public class TaskHandler {
 	 * @return the new Task
 	 */
 	public void generateNewTask() {
+
 		skill = getRandomCombatSkill();
 		experienceGoal = getExperienceGoal(skill);
 		// should be createCombatAssignment(getSuitableFightAssignment())
@@ -73,6 +75,18 @@ public class TaskHandler {
 		// get the required gear
 		// get best weapon etc...
 		currentTask = new Task(skill, experienceGoal, createCombatAssignment());
+		setNodes(currentTask.getAssignment().getAssignmentType());
+	}
+
+	private void setNodes(AssignmentType assignmentType) {
+		//reset current nodes
+		nodes.clear();
+		Simple.ALL_NODES.forEach(node -> {
+			methodProvider.log(node.getAssignmentType());
+			if(node.getAssignmentType().equals(assignmentType)){
+				nodes.add(node);
+			}
+		});
 	}
 
 	/**
@@ -82,7 +96,7 @@ public class TaskHandler {
 	 * add food or not
 	 * @return
 	 */
-	private CombatAssignment createCombatAssignment() {
+	private Assignment createCombatAssignment() {
 		fightAssignment = getSuitableFightAssignment();
 		combatAssignment = null;
 		switch(fightAssignment){
@@ -90,11 +104,12 @@ public class TaskHandler {
 			//in the future, use a method like getFood() to get most suitable food
 			food = new RequiredItem(getFoodAmount(), IaoxItem.TROUT, true, () -> fightAssignment.getNpcArea().contains(methodProvider.myPlayer()) && methodProvider.myPlayer().getHealthPercent() > 40);
 			fightAssignment.getRequiredInventory().addItem(food);
-			combatAssignment = new CombatAssignment(getSuitableFightAssignment(), null, null, food.getIaoxItem());
+			fightAssignment.setFood(food.getIaoxItem());
+			combatAssignment = new Assignment(getSuitableFightAssignment(),AssignmentType.COMBAT, null, null);
 			break;
 		case SEAGULLS_PORT_SARIM:
 			//no food required
-			combatAssignment = new CombatAssignment(getSuitableFightAssignment(), null, null, null);
+			combatAssignment = new Assignment(getSuitableFightAssignment(),AssignmentType.COMBAT, null, null);
 			break;
 		}
 
@@ -193,28 +208,6 @@ public class TaskHandler {
 	}
 
 	/**
-	 * generate a new druidAssignment
-	 * 
-	 * @return
-	 */
-	private CombatAssignment getDruidAssignment() {
-		// exception: if player is in fight place and does not have to eat, then
-		// food is not required
-		food = new RequiredItem(getFoodAmount(), IaoxItem.TROUT, true,
-				() -> Areas.TAVERLEY_DRUIDS.contains(methodProvider.myPlayer())
-						&& methodProvider.myPlayer().getHealthPercent() > 60);
-		// initialize the required inventory
-		inventory = new IaoxInventory(new RequiredItem[] { food });
-		// intialize all required equipments
-		weapon = new RequiredEquipment(EquipmentSlot.WEAPON, getBestWeapon());
-		// initialize the required equipment
-		equipment = new IaoxEquipment(new RequiredEquipment[] { weapon });
-
-		return new CombatAssignment(FightAssignment.CHAOS_DRUIDS_TAVERLEY, inventory, equipment, IaoxItem.TROUT);
-
-	}
-
-	/**
 	 * Return the appropriate weapon TODO add more weapons
 	 * 
 	 * @return
@@ -231,7 +224,7 @@ public class TaskHandler {
 	 */
 	private int getFoodAmount() {
 		if (getLevel(Skill.DEFENCE) < 10) {
-			return 12;
+			return 20;
 		} else if (getLevel(Skill.DEFENCE) < 20) {
 			return 7;
 		} else if (getLevel(Skill.DEFENCE) < 30) {
@@ -248,6 +241,10 @@ public class TaskHandler {
 
 	public int getExperience(Skill skill) {
 		return methodProvider.skills.getExperience(skill);
+	}
+	
+	public List<Node> getNodes(){
+		return this.nodes;
 	}
 
 	/**

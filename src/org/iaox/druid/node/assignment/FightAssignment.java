@@ -35,6 +35,7 @@ public enum FightAssignment {
 	private List<TravelException> travelExceptionsToBank;
 	private IaoxInventory requiredInventory;
 	private IaoxEquipment requiredEquipment;
+	private IaoxItem food;
 	
 	FightAssignment(String npcName, Area npcArea, Area bankArea, IaoxItem[] loot, TravelException[] travelExceptionsToFight, TravelException[] travelExceptionsToBank,  IaoxInventory requiredInventory, IaoxEquipment requiredEquipment){
 		this.npcName = npcName;
@@ -77,6 +78,14 @@ public enum FightAssignment {
 	
 	public IaoxInventory getRequiredInventory(){
 		return requiredInventory;
+	}
+	
+	public void setFood(IaoxItem food){
+		this.food = food;
+	}
+	
+	public IaoxItem getFood(){
+		return this.food;
 	}
 
 }

@@ -112,7 +112,7 @@ public class IaoxIntelligence implements Runnable {
 	 * @return
 	 */
 	public boolean bestEquipmentIsSelected() {
-		equipment = Simple.TASK_HANDLER.getCurrentTask().getCombatAssignment().getRequiredEquipment();
+		equipment = Simple.TASK_HANDLER.getCurrentTask().getAssignment().getRequiredEquipment();
 		for (RequiredEquipment currentEquipment : equipment.getRequiredEquipment()) {
 			bestEquipment = getBestEquipment(currentEquipment.getSlot());
 			if ((currentEquipment.getIaoxItem() != null && currentEquipment.getItemID() == bestEquipment.getItemID()) || (currentEquipment.getIaoxItem() == null && bestEquipment != null)) {
@@ -126,7 +126,7 @@ public class IaoxIntelligence implements Runnable {
 	 * Shall set equipment to new best equipment
 	 */
 	public void setNewEquipment() {
-		equipment = Simple.TASK_HANDLER.getCurrentTask().getCombatAssignment().getRequiredEquipment();
+		equipment = Simple.TASK_HANDLER.getCurrentTask().getAssignment().getRequiredEquipment();
 		for (RequiredEquipment currentEquipment : equipment.getRequiredEquipment()) {
 			bestEquipment = getBestEquipment(currentEquipment.getSlot());
 			if (bestEquipment != null && (currentEquipment.getIaoxItem() == null || currentEquipment.getItemID() != bestEquipment.getItemID())) {

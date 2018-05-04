@@ -12,17 +12,21 @@ import org.osbot.rs07.api.filter.Filter;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.model.Item;
 
-public class CombatAssignment {
+public class Assignment {
 	
-	private String npcName;
-	private Area npcArea;
+	
+	//common variables that all assignments shall have
+	private AssignmentType assignmentType;
+	private Area actionArea;
 	private Area bankArea;
 	private IaoxInventory requiredInventory;
 	private IaoxEquipment requiredEquipment;
-	private IaoxItem food;
-	private List<IaoxItem> loot;
-	private List<TravelException> travelExceptionsToFight;
+	private List<TravelException> travelExceptionsToAction;
 	private List<TravelException> travelExceptionsToBank;
+	
+	//variables that are unique to each assignment
+	private FightAssignment fightAssignment;
+	
 	
 
 	/**
@@ -30,26 +34,24 @@ public class CombatAssignment {
 	 * Is an object that contains information about the CombatAssignment
 	 * This object makes it possible to create a common/general method to kill different npcs
 	 * @param npcName
-	 * @param npcArea
+	 * @param actionArea
 	 * @param requiredInventory
 	 * @param druidTravelExceptionsToFight if there is any case when webwalking should not be used we can use
 	 * 		  a custom method called travelException that overrides the usual webwalking method
 	 * @param travelExceptionsToBank if there is any case when webwalking should not be used we can use
 	 * 		  a custom method called travelException that overrides the usual webwalking method	
 	 */
-	public CombatAssignment(FightAssignment fightAssignment, IaoxInventory requiredInventory, IaoxEquipment requiredEquipment, IaoxItem food){
+	public Assignment(FightAssignment fightAssignment, AssignmentType assignmentType,IaoxInventory requiredInventory, IaoxEquipment requiredEquipment){
+		this.fightAssignment = fightAssignment;
 		//inherited from fixed fightAssignment
-		this.npcName = fightAssignment.getNpcName();
-		this.npcArea = fightAssignment.getNpcArea();
+		this.assignmentType = assignmentType;
+		this.actionArea = fightAssignment.getNpcArea();
 		this.bankArea = fightAssignment.getBankArea();
 		this.requiredInventory = fightAssignment.getRequiredInventory();
 		this.requiredEquipment = fightAssignment.getRequiredEquipment();
-		this.loot = fightAssignment.getLoot();
-		this.travelExceptionsToFight = fightAssignment.getTravelExceptionsToFight();
+		this.travelExceptionsToAction = fightAssignment.getTravelExceptionsToFight();
 		this.travelExceptionsToBank = fightAssignment.getTravelExceptionsToBank();
 
-		//input when new CombatAssignment is created
-		this.food = food;
 		//if there is any specific item that user wants to require, we add them
 		if(requiredInventory != null && !requiredInventory.getRequiredItems().isEmpty()) {
 			requiredInventory.getRequiredItems().forEach(item -> {
@@ -65,12 +67,9 @@ public class CombatAssignment {
 		
 	}
 	
-	public String getNpcName(){
-		return npcName;
-	}
 	
 	public Area getNpcArea(){
-		return npcArea;
+		return actionArea;
 	}
 	
 	public Area getBankArea(){
@@ -84,21 +83,22 @@ public class CombatAssignment {
 	public IaoxInventory getRequiredInventory(){
 		return requiredInventory;
 	}
-	
-	public IaoxItem getFood(){
-		return food;
-	}
-	
-	public List<IaoxItem> getLoot(){
-		return loot;
-	}
 
 	public List<TravelException> getTravelExceptionsToFight() {
-		return travelExceptionsToFight;
+		return travelExceptionsToAction;
 	}
 	
 	public List<TravelException> getTravelExceptionsToBank() {
 		return travelExceptionsToBank;
+	}
+
+
+	public FightAssignment getFightAssignment() {
+		return fightAssignment;
+	}
+	
+	public AssignmentType getAssignmentType(){
+		return assignmentType;
 	}
 	
 	
