@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.iaox.druid.assignment.Assignment;
+import org.iaox.druid.assignment.combat.FightAssignment;
 import org.iaox.druid.data.Areas;
 import org.iaox.druid.data.IaoxItem;
 import org.iaox.druid.data.LootItems;
@@ -12,16 +14,16 @@ import org.iaox.druid.data.Paths;
 import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.equipment.RequiredEquipment;
 import org.iaox.druid.exchange.RSExchange;
+import org.iaox.druid.intelligence.IaoxIntelligence;
 import org.iaox.druid.inventory.IaoxInventory;
 import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.loot.LootHandler;
 import org.iaox.druid.node.Node;
-import org.iaox.druid.node.assignment.Assignment;
-import org.iaox.druid.node.assignment.FightAssignment;
 import org.iaox.druid.node.combat.ActionBank;
 import org.iaox.druid.node.combat.ActionFight;
 import org.iaox.druid.node.combat.WalkToBank;
 import org.iaox.druid.node.combat.WalkToFight;
+import org.iaox.druid.node.woodcutting.ActionChop;
 import org.iaox.druid.task.TaskHandler;
 import org.iaox.druid.travel.TravelException;
 import org.iaox.druid.travel.TravelType;
@@ -35,7 +37,7 @@ import org.osbot.rs07.script.ScriptManifest;
 
 import com.thoughtworks.xstream.io.path.Path;
 
-@ScriptManifest(name = "Druid", author = "Suxen", version = 1.0, info = "", logo = "")
+@ScriptManifest(name = "BestFarmerEUWest", author = "Suxen", version = 1.0, info = "", logo = "")
 public class Simple extends Script {
 
 	public static Assignment CURRENT_ASSIGNMENT;
@@ -45,6 +47,7 @@ public class Simple extends Script {
 	public static List<RequiredItem> WITHDRAW_LIST;
 	public static TaskHandler TASK_HANDLER;
 	public static boolean TRAIN_DEFENCE = true;
+	private IaoxIntelligence iaoxIntelligence;
 
 	@Override
 	public void onStart() throws InterruptedException {
@@ -72,19 +75,24 @@ public class Simple extends Script {
 		WITHDRAW_LIST = new ArrayList<RequiredItem>();
 
 		ALL_NODES = new ArrayList<Node>();
+		
+		//initialize combat nodes
 		ALL_NODES.add(new ActionFight().init(this));
 		ALL_NODES.add(new ActionBank().init(this));
 		ALL_NODES.add(new WalkToBank().init(this));
 		ALL_NODES.add(new WalkToFight().init(this));
+		
+		//initialize wc nodes
+		ALL_NODES.add(new ActionChop().init(this));
 
-		// initialize experience tracker for strength
-		experienceTracker.getExperienceTracker().start(Skill.STRENGTH);
+
 
 		// initialize task handler
 		TASK_HANDLER = new TaskHandler(this);
 		
 		//initialize IaoxIntelligence
-		new Thread(new IaoxIntelligence(this)).start();
+		iaoxIntelligence = new IaoxIntelligence(this);
+		new Thread(iaoxIntelligence).start();
 
 	}
 
@@ -93,7 +101,7 @@ public class Simple extends Script {
 
 		if (!TASK_HANDLER.hasTask() || TASK_HANDLER.taskIsCompleted()) {
 			log("lets generate a new task");
-			TASK_HANDLER.generateNewTask();
+			TASK_HANDLER.setNewTask(iaoxIntelligence.generateNewTask());
 		} else if(TASK_HANDLER.getNodes() != null && !TASK_HANDLER.getNodes().isEmpty()) {
 			for (Node node : TASK_HANDLER.getNodes()) {
 				if (node.active()) {
@@ -113,6 +121,8 @@ public class Simple extends Script {
 		if (TASK_HANDLER.getCurrentTask() != null) {
 			g.drawString("Current Task: " + TASK_HANDLER.getCurrentTask(), 50, 25);
 			g.drawString("RequiredInv:" + TASK_HANDLER.getCurrentTask().getAssignment().getRequiredInventory(), 50, 125);
+			g.drawString("RequiredEquipment:" + TASK_HANDLER.getCurrentTask().getAssignment().getRequiredEquipment(), 50, 150);
+
 		}
 		// Print information about experience
 		g.drawString("XP Gained: " + experienceTracker.getGainedXP(TASK_HANDLER.getCurrentTask().getSkill()), 50, 50);

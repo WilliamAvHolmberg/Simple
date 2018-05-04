@@ -3,9 +3,9 @@ package org.iaox.druid.node.combat;
 import java.util.Arrays;
 import java.util.List;
 
+import org.iaox.druid.assignment.AssignmentType;
 import org.iaox.druid.data.Areas;
 import org.iaox.druid.node.Node;
-import org.iaox.druid.node.assignment.AssignmentType;
 import org.iaox.druid.travel.TravelException;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.Item;
@@ -32,7 +32,7 @@ public class WalkToFight extends Node {
 		// webwalking shall be used
 		exception = false;
 		//check if there is any travelExceptions for the current assignment
-				travelExceptions = combatProvider.getAssignment().getTravelExceptionsToFight();
+		travelExceptions = combatProvider.getAssignment().getTravelExceptionsToFight();
 		// first of all, check if player should eat.
 		if (combatProvider.shouldEat()) {
 			combatProvider.eat();
@@ -76,7 +76,7 @@ public class WalkToFight extends Node {
 			// Use webwalk if either no exception were found or no exception
 			// were current
 			if (!exception) {
-				methodProvider.walking.webWalk(combatProvider.getAssignment().getNpcArea());
+				methodProvider.walking.webWalk(combatProvider.getAssignment().getActionArea());
 
 			}
 		}

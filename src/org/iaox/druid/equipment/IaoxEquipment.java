@@ -15,6 +15,7 @@ import org.osbot.rs07.script.MethodProvider;
 public class IaoxEquipment {
 
 	private List<RequiredEquipment> requiredEquipment;
+	private String string;
 
 	/**
 	 * IaoxEquipmentis an object that contains information about which equipment
@@ -68,6 +69,16 @@ public class IaoxEquipment {
 			}
 		}
 		return null;
+	}
+	
+	public String toString() {
+		string = null;
+		requiredEquipment.forEach(reqItem -> {
+			if(reqItem.getIaoxItem() != null){
+			string += "hello" + reqItem.getItemName();
+			}
+		});
+		return string;
 	}
 
 }

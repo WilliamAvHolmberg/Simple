@@ -1,6 +1,6 @@
 package org.iaox.druid.task;
 
-import org.iaox.druid.node.assignment.Assignment;
+import org.iaox.druid.assignment.Assignment;
 import org.osbot.rs07.api.ui.Skill;
 
 public class Task {

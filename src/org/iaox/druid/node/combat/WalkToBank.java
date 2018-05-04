@@ -3,9 +3,9 @@ package org.iaox.druid.node.combat;
 import java.util.List;
 
 import org.iaox.druid.Timing;
+import org.iaox.druid.assignment.AssignmentType;
 import org.iaox.druid.data.Areas;
 import org.iaox.druid.node.Node;
-import org.iaox.druid.node.assignment.AssignmentType;
 import org.iaox.druid.travel.TravelException;
 import org.osbot.rs07.api.map.constants.Banks;
 import org.osbot.rs07.api.model.Item;

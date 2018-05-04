@@ -1,9 +1,11 @@
-	package org.iaox.druid.node.assignment;
+	package org.iaox.druid.assignment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.iaox.druid.assignment.combat.FightAssignment;
+import org.iaox.druid.assignment.woodcutting.WoodcuttingAssignment;
 import org.iaox.druid.data.IaoxItem;
 import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.inventory.IaoxInventory;
@@ -26,20 +28,14 @@ public class Assignment {
 	
 	//variables that are unique to each assignment
 	private FightAssignment fightAssignment;
+	private WoodcuttingAssignment woodcuttingAssignment;
 	
 	
 
 	/**
-	 * In order to make the script more flexible I created CombatAssignment which
-	 * Is an object that contains information about the CombatAssignment
-	 * This object makes it possible to create a common/general method to kill different npcs
-	 * @param npcName
-	 * @param actionArea
-	 * @param requiredInventory
-	 * @param druidTravelExceptionsToFight if there is any case when webwalking should not be used we can use
-	 * 		  a custom method called travelException that overrides the usual webwalking method
-	 * @param travelExceptionsToBank if there is any case when webwalking should not be used we can use
-	 * 		  a custom method called travelException that overrides the usual webwalking method	
+	 * In order to make the script more flexible I created Assignment which
+	 * Is an object that contains information about the current Assignment
+	 * This object makes it possible to create a common/general method assign different assignments such as combat or skilling
 	 */
 	public Assignment(FightAssignment fightAssignment, AssignmentType assignmentType,IaoxInventory requiredInventory, IaoxEquipment requiredEquipment){
 		this.fightAssignment = fightAssignment;
@@ -68,7 +64,34 @@ public class Assignment {
 	}
 	
 	
-	public Area getNpcArea(){
+	public Assignment(WoodcuttingAssignment woodcuttingAssignment, AssignmentType assignmentType,IaoxInventory requiredInventory, IaoxEquipment requiredEquipment){
+		this.woodcuttingAssignment = woodcuttingAssignment;
+		//inherited from fixed fightAssignment
+		this.assignmentType = assignmentType;
+		this.actionArea = woodcuttingAssignment.getTreeArea();
+		this.bankArea = woodcuttingAssignment.getBankArea();
+		this.requiredInventory = woodcuttingAssignment.getRequiredInventory();
+		this.requiredEquipment = woodcuttingAssignment.getRequiredEquipment();
+		this.travelExceptionsToAction = woodcuttingAssignment.getTravelExceptionsToFight();
+		this.travelExceptionsToBank = woodcuttingAssignment.getTravelExceptionsToBank();
+
+		//if there is any specific item that user wants to require, we add them
+		if(requiredInventory != null && !requiredInventory.getRequiredItems().isEmpty()) {
+			requiredInventory.getRequiredItems().forEach(item -> {
+				this.requiredInventory.addItem(item);
+			});
+		}	
+		//if there is any specific equipment that user wants to require, we add them
+				if(requiredEquipment != null && !requiredEquipment.getRequiredEquipment().isEmpty()) {
+					requiredEquipment.getRequiredEquipment().forEach(item -> {
+						this.requiredEquipment.setEquipment(item);
+					});
+				}
+		
+	}
+	
+	
+	public Area getActionArea(){
 		return actionArea;
 	}
 	
@@ -92,7 +115,10 @@ public class Assignment {
 		return travelExceptionsToBank;
 	}
 
-
+	public WoodcuttingAssignment getWoodcuttingAssignment() {
+		return woodcuttingAssignment;
+	}
+	
 	public FightAssignment getFightAssignment() {
 		return fightAssignment;
 	}
@@ -100,6 +126,9 @@ public class Assignment {
 	public AssignmentType getAssignmentType(){
 		return assignmentType;
 	}
+
+
+
 	
 	
 

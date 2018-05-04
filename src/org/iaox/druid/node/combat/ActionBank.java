@@ -1,10 +1,10 @@
 package org.iaox.druid.node.combat;
 
 import org.iaox.druid.Timing;
+import org.iaox.druid.assignment.AssignmentType;
 import org.iaox.druid.equipment.RequiredEquipment;
 import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.node.Node;
-import org.iaox.druid.node.assignment.AssignmentType;
 
 public class ActionBank extends Node {
 

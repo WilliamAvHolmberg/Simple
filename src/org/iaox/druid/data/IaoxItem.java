@@ -6,6 +6,10 @@ import java.util.List;
 
 public enum IaoxItem {
 	
+	//axes
+	BRONZE_AXE("Bronze axe",1351), MITHRIL_AXE("Mithril axe", 1355),
+	ADAMANT_AXE("Adamant axe", 1357), RUNE_AXE("Rune axe", 1359),
+		
 	//teleport tablets and runes
 	FALADOR_TELEPORT("Falador teleport", 8009),
 	CAMELOT_TELEPORT("Camelot teleport", 8009),
@@ -46,7 +50,6 @@ public enum IaoxItem {
 	
 	//boots
 	DESERT_BOOTS("Desert boots", 1837),
-	
 	
 	//robes
 	ZAMORAK_ROBE_BOTTOM("Zamorak robe", 1033),

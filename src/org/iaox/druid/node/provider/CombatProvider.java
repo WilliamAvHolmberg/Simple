@@ -6,13 +6,13 @@ import java.util.List;
 
 import org.iaox.druid.Simple;
 import org.iaox.druid.Timing;
+import org.iaox.druid.assignment.Assignment;
 import org.iaox.druid.data.Areas;
 import org.iaox.druid.data.IaoxItem;
 import org.iaox.druid.data.LootItems;
 import org.iaox.druid.equipment.RequiredEquipment;
 import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.loot.Loot;
-import org.iaox.druid.node.assignment.Assignment;
 import org.osbot.rs07.api.map.constants.Banks;
 import org.osbot.rs07.api.model.Entity;
 import org.osbot.rs07.api.model.GroundItem;
@@ -58,7 +58,7 @@ public class CombatProvider {
 	 * @return if player is in the fight area
 	 */
 	public boolean inFightArea() {
-		return getAssignment().getNpcArea().contains(methodProvider.myPlayer());
+		return getAssignment().getActionArea().contains(methodProvider.myPlayer());
 	}
 
 	/**
@@ -247,7 +247,7 @@ public class CombatProvider {
 		return methodProvider.getNpcs()
 				.closest(npc -> !npc.isUnderAttack() && npc.getHealthPercent() > 0 && npc.getInteracting() == null
 						&& Arrays.asList(name).contains(npc.getName()) && npc.exists()
-						&& getAssignment().getNpcArea().contains(npc) && npc.hasAction("Attack"));
+						&& getAssignment().getActionArea().contains(npc) && npc.hasAction("Attack"));
 	}
 
 	/**
@@ -354,7 +354,7 @@ public class CombatProvider {
 	private GroundItem getClosestLoot() {
 		return methodProvider.groundItems
 				.closest(i -> IaoxItem.getItemIDS(getAssignment().getFightAssignment().getLoot()).contains(i.getId())
-						&& getAssignment().getNpcArea().contains(i)
+						&& getAssignment().getActionArea().contains(i)
 						&& i.getPosition().distance(methodProvider.myPlayer()) < 7);
 	}
 

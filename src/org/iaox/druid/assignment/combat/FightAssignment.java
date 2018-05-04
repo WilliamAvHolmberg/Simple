@@ -1,4 +1,4 @@
-package org.iaox.druid.node.assignment;
+package org.iaox.druid.assignment.combat;
 
 import java.util.Arrays;
 import java.util.List;
