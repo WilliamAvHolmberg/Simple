@@ -53,7 +53,7 @@ public class CombatAssignment {
 		//if there is any specific item that user wants to require, we add them
 		if(requiredInventory != null && !requiredInventory.getRequiredItems().isEmpty()) {
 			requiredInventory.getRequiredItems().forEach(item -> {
-				this.requiredInventory.AddItem(item);
+				this.requiredInventory.addItem(item);
 			});
 		}	
 		//if there is any specific equipment that user wants to require, we add them

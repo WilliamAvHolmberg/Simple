@@ -110,6 +110,7 @@ public class Simple extends Script {
 		// Print information about current task
 		if (TASK_HANDLER.getCurrentTask() != null) {
 			g.drawString("Current Task: " + TASK_HANDLER.getCurrentTask(), 50, 25);
+			g.drawString("RequiredInv:" + TASK_HANDLER.getCurrentTask().getCombatAssignment().getRequiredInventory(), 50, 125);
 		}
 		// Print information about experience
 		g.drawString("XP Gained: " + experienceTracker.getGainedXP(TASK_HANDLER.getCurrentTask().getSkill()), 50, 50);

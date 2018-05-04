@@ -29,12 +29,28 @@ public enum IaoxItem {
 	//food
 	TROUT("Trout", 333),
 	TUNA("Tuna", 361),
-	
+
 	//weapons
 	IRON_SCIMITAR("Iron Scimitar", 1323),
 	MITHRIL_SCIMITAR("Mithril Scimitar", 1329),
 	ADAMANT_SCIMITAR("Adamant Scimitar", 1331),
-	RUNE_SCIMITAR("Rune scimitar", 1333);
+	RUNE_SCIMITAR("Rune scimitar", 1333),
+	
+	//amulets
+	AMULET_OF_STRENGTH("Amulet of strength", 1725),
+	
+	//capes
+	BLACK_CAPE("Black cape", 1019),
+	//hats
+	RED_HAT("Red hat", 2910),
+	
+	//boots
+	DESERT_BOOTS("Desert boots", 1837),
+	
+	
+	//robes
+	ZAMORAK_ROBE_BOTTOM("Zamorak robe", 1033),
+	ZAMORAK_ROBE_TOP("Zamorak robe", 1035);
 	
 	
 	

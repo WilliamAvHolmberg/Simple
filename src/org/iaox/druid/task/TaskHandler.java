@@ -88,8 +88,8 @@ public class TaskHandler {
 		switch(fightAssignment){
 		case CHAOS_DRUIDS_TAVERLEY:
 			//in the future, use a method like getFood() to get most suitable food
-			food = new RequiredItem(getFoodAmount(), IaoxItem.TROUT, true, () -> fightAssignment.getNpcArea().contains(methodProvider.myPlayer()));
-			fightAssignment.getRequiredInventory().AddItem(food);
+			food = new RequiredItem(getFoodAmount(), IaoxItem.TROUT, true, () -> fightAssignment.getNpcArea().contains(methodProvider.myPlayer()) && methodProvider.myPlayer().getHealthPercent() > 40);
+			fightAssignment.getRequiredInventory().addItem(food);
 			combatAssignment = new CombatAssignment(getSuitableFightAssignment(), null, null, food.getIaoxItem());
 			break;
 		case SEAGULLS_PORT_SARIM:
@@ -163,8 +163,16 @@ public class TaskHandler {
 
 	public Skill getRandomCombatSkill() {
 		int task = Simple.random(1, 3);
+		//if strength level is below attack level
 		if (methodProvider.getSkills().getStatic(Skill.ATTACK) >= methodProvider.getSkills()
 				.getStatic(Skill.STRENGTH)) {
+			return Skill.STRENGTH;
+		}
+		
+		//if str level is 30 and atk is not 30
+		//We want the bot to get 30 atk 30 str as soon as possible
+		if (methodProvider.getSkills().getStatic(Skill.ATTACK) < 30 &&
+				methodProvider.getSkills().getStatic(Skill.STRENGTH) >= 30 ) {
 			return Skill.STRENGTH;
 		}
 		switch (task) {
@@ -223,11 +231,11 @@ public class TaskHandler {
 	 */
 	private int getFoodAmount() {
 		if (getLevel(Skill.DEFENCE) < 10) {
-			return 7;
+			return 12;
 		} else if (getLevel(Skill.DEFENCE) < 20) {
-			return 6;
+			return 7;
 		} else if (getLevel(Skill.DEFENCE) < 30) {
-			return 4;
+			return 6;
 		} else if (getLevel(Skill.DEFENCE) < 40) {
 			return 2;
 		}

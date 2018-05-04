@@ -35,7 +35,6 @@ public class IaoxIntelligence implements Runnable {
 		while (methodProvider.getClient().isLoggedIn()) {
 			methodProvider.log("running: thread");
 			if (Simple.TASK_HANDLER.getCurrentTask() != null && !bestEquipmentIsSelected()) {
-				methodProvider.log("not best equip");
 				setNewEquipment();
 			}
 			try {
@@ -58,10 +57,14 @@ public class IaoxIntelligence implements Runnable {
 	public RequiredEquipment getBestEquipment(EquipmentSlot slot) {
 		switch (slot) {
 		case AMULET:
-			break;
+			return new RequiredEquipment(slot, IaoxItem.AMULET_OF_STRENGTH);
 		case ARROWS:
 			break;
 		case CAPE:
+			level = getLevel(Skill.DEFENCE);
+			if (level < 20) {
+				return new RequiredEquipment(slot, IaoxItem.BLACK_CAPE);
+			}
 			break;
 		case CHEST:
 			// case (chest

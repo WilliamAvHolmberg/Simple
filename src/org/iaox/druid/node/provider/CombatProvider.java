@@ -71,7 +71,7 @@ public class CombatProvider {
 	 * @return if player has to eat
 	 */
 	public boolean shouldEat() {
-		return methodProvider.myPlayer().getHealthPercent() < 40;
+		return methodProvider.myPlayer().getHealthPercent() < 60;
 	}
 	
 	public boolean inventoryContainFood(){
