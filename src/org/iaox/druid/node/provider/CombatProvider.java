@@ -72,8 +72,10 @@ public class CombatProvider {
 	 * @return if player has to eat
 	 */
 	public boolean shouldEat() {
-		return methodProvider.myPlayer().getHealthPercent() < 70;
+		methodProvider.log(getHealthPercent());
+		return getHealthPercent() < 70;
 	}
+	
 
 	public boolean inventoryContainFood() {
 		return methodProvider.inventory.contains(getAssignment().getFightAssignment().getFood().getID());
@@ -515,6 +517,10 @@ public class CombatProvider {
 			}
 		}
 		return neededInventoryItems;
+	}
+	
+	public int getHealthPercent(){
+		return methodProvider.getSkills().getDynamic(Skill.HITPOINTS)/methodProvider.getSkills().getStatic(Skill.HITPOINTS) * 100;
 	}
 
 }

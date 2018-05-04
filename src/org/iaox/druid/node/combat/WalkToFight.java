@@ -35,6 +35,7 @@ public class WalkToFight extends Node {
 		travelExceptions = combatProvider.getAssignment().getTravelExceptionsToFight();
 		// first of all, check if player should eat.
 		if (combatProvider.shouldEat()) {
+			methodProvider.log("has to eat");
 			combatProvider.eat();
 		} else if (travelExceptions != null) {
 			methodProvider.log("exception");
