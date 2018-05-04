@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.iaox.druid.data.Areas;
 import org.iaox.druid.node.Node;
+import org.iaox.druid.node.assignment.AssignmentType;
 import org.iaox.druid.travel.TravelException;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.Item;
@@ -74,6 +75,11 @@ public class WalkToFight extends Node {
 	
 		}
 
+	}
+	
+	@Override
+	public AssignmentType getAssignmentType() {
+		return AssignmentType.COMBAT;
 	}
 
 }

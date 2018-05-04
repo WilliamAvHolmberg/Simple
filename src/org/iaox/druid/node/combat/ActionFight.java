@@ -7,6 +7,7 @@ import org.iaox.druid.Simple;
 import org.iaox.druid.Timing;
 import org.iaox.druid.data.Areas;
 import org.iaox.druid.node.Node;
+import org.iaox.druid.node.assignment.AssignmentType;
 import org.osbot.rs07.api.model.NPC;
 import org.osbot.rs07.api.ui.Skill;
 
@@ -41,6 +42,11 @@ public class ActionFight extends Node{
 			//find new target and attack
 			combatProvider.attackNewTarget();
 		}
+	}
+	
+	@Override
+	public AssignmentType getAssignmentType() {
+		return AssignmentType.COMBAT;
 	}
 
 }

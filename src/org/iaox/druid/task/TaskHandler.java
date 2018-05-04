@@ -202,7 +202,7 @@ public class TaskHandler {
 		// food is not required
 		food = new RequiredItem(getFoodAmount(), IaoxItem.TROUT, true,
 				() -> Areas.TAVERLEY_DRUIDS.contains(methodProvider.myPlayer())
-						&& methodProvider.myPlayer().getHealthPercent() > 40);
+						&& methodProvider.myPlayer().getHealthPercent() > 60);
 		// initialize the required inventory
 		inventory = new IaoxInventory(new RequiredItem[] { food });
 		// intialize all required equipments

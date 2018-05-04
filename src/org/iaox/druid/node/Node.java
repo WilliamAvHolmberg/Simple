@@ -1,4 +1,5 @@
 package org.iaox.druid.node;
+import org.iaox.druid.node.assignment.AssignmentType;
 import org.iaox.druid.node.provider.CombatProvider;
 import org.osbot.rs07.script.MethodProvider;
 
@@ -15,5 +16,6 @@ public abstract class Node {
 	
 	public abstract boolean active();
 	public abstract void run();
+	public abstract AssignmentType getAssignmentType();
 
 }

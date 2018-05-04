@@ -4,6 +4,7 @@ import org.iaox.druid.Timing;
 import org.iaox.druid.equipment.RequiredEquipment;
 import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.node.Node;
+import org.iaox.druid.node.assignment.AssignmentType;
 
 public class ActionBank extends Node {
 
@@ -159,6 +160,11 @@ public class ActionBank extends Node {
 		methodProvider.bank.deposit(item.getItemID(), amount);
 		// sleep until inventory contains the item
 		Timing.waitCondition(() -> methodProvider.inventory.getAmount(item.getItemID()) == item.getAmount(), 600, 3000);
+	}
+
+	@Override
+	public AssignmentType getAssignmentType() {
+		return AssignmentType.COMBAT;
 	}
 
 }
