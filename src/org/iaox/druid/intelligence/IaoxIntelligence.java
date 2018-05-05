@@ -18,12 +18,13 @@ public class IaoxIntelligence implements Runnable {
 	private IaoxEquipment equipment;
 	private RequiredEquipment bestEquipment;
 	
-	private WoodcuttingIntelligence woodcuttingIntelligence;
 	private CombatIntelligence combatIntelligence;
+	private WoodcuttingIntelligence woodcuttingIntelligence;
+	private AgilityIntelligence agilityIntelligence;
+
 	private Object skill;
 	private AssignmentType type;
 	private int randomInteger;
-
 	/**
 	 * Supposed to work as the "brain" of this script Make sure that the right
 	 * task is done Make sure that the rigth gear is choosen
@@ -39,6 +40,7 @@ public class IaoxIntelligence implements Runnable {
 		this.methodProvider = methodProvider;
 		this.combatIntelligence = new CombatIntelligence(methodProvider);
 		this.woodcuttingIntelligence = new WoodcuttingIntelligence(methodProvider);
+		this.agilityIntelligence = new AgilityIntelligence(methodProvider);
 	}
 
 	/**
@@ -60,6 +62,10 @@ public class IaoxIntelligence implements Runnable {
 					//check so we got the right axe
 					//if we can equip axe - add axe to requiredEquipment
 					//else add axe to requiredInventory
+					break;
+				case AGILITY:
+					agilityIntelligence.check();
+					//nothing to check right now
 					break;
 				default:
 					break;
@@ -86,21 +92,25 @@ public class IaoxIntelligence implements Runnable {
 			return combatIntelligence.generateNewTask();
 		case WOODCUTTING:
 			return woodcuttingIntelligence.generateNewTask();
+		case AGILITY:
+			return agilityIntelligence.generateNewTask();
 		}
 		return combatIntelligence.generateNewTask();
+		
 	}
 
+	/**
+	 * Shall do combat 70% of time
+	 * Agility 15%
+	 * Woodcutting 15%
+	 * @return
+	 */
 	private AssignmentType generateRandomAssignmentType() {
 		randomInteger = Simple.random(100);
-		//Shall do combat 70% of the time
-		if(randomInteger < 70){
-			return AssignmentType.COMBAT;
-		}
-		//shall do skilling 30% of time
-		//in this case we have only added woodcutting so its woodcutting 30% :)
-		//ONLY DO WOODCUTTING if combat level is above 52. Aggro monsters in draynor area.
-		else if(methodProvider.myPlayer().getCombatLevel() > 52){
+		if(randomInteger < 25 && methodProvider.myPlayer().getCombatLevel() > 52){
 			return AssignmentType.WOODCUTTING;
+		}else if(randomInteger < 50){
+			return AssignmentType.AGILITY;
 		}
 		
 		return AssignmentType.COMBAT;

@@ -2,43 +2,32 @@ package org.iaox.druid;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.iaox.druid.assignment.Assignment;
-import org.iaox.druid.assignment.combat.FightAssignment;
-import org.iaox.druid.data.Areas;
 import org.iaox.druid.data.IaoxItem;
-import org.iaox.druid.data.LootItems;
-import org.iaox.druid.data.Paths;
-import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.equipment.RequiredEquipment;
 import org.iaox.druid.exchange.RSExchange;
 import org.iaox.druid.intelligence.IaoxIntelligence;
-import org.iaox.druid.inventory.IaoxInventory;
 import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.loot.LootHandler;
 import org.iaox.druid.node.Node;
-import org.iaox.druid.node.combat.FightBank;
+import org.iaox.druid.node.agility.AgilityAction;
+import org.iaox.druid.node.agility.AgilityBank;
+import org.iaox.druid.node.agility.WalkToAgilityBank;
+import org.iaox.druid.node.agility.WalkToAgilityCourse;
 import org.iaox.druid.node.combat.ActionFight;
-import org.iaox.druid.node.combat.WalkToFightBank;
+import org.iaox.druid.node.combat.FightBank;
 import org.iaox.druid.node.combat.WalkToFight;
+import org.iaox.druid.node.combat.WalkToFightBank;
 import org.iaox.druid.node.woodcutting.ActionChop;
 import org.iaox.druid.node.woodcutting.WCBank;
 import org.iaox.druid.node.woodcutting.WalkToTree;
 import org.iaox.druid.node.woodcutting.WalkToWCBank;
 import org.iaox.druid.task.TaskHandler;
-import org.iaox.druid.travel.TravelException;
-import org.iaox.druid.travel.TravelType;
-import org.osbot.rs07.api.map.constants.Banks;
-import org.osbot.rs07.api.model.Entity;
-import org.osbot.rs07.api.ui.EquipmentSlot;
 import org.osbot.rs07.api.ui.Skill;
-import org.osbot.rs07.api.util.GraphicUtilities;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
-
-import com.thoughtworks.xstream.io.path.Path;
 
 @ScriptManifest(name = "BestFarmerEUWest", author = "Suxen", version = 1.0, info = "", logo = "")
 public class Simple extends Script {
@@ -86,6 +75,12 @@ public class Simple extends Script {
 		ALL_NODES.add(new WalkToWCBank().init(this));
 		ALL_NODES.add(new WalkToTree().init(this));
 		ALL_NODES.add(new WCBank().init(this));
+		
+		//initialize agility nodes
+		ALL_NODES.add(new AgilityBank().init(this));
+		ALL_NODES.add(new WalkToAgilityCourse().init(this));
+		ALL_NODES.add(new WalkToAgilityBank().init(this));
+		ALL_NODES.add(new AgilityAction().init(this));
 
 
 
@@ -106,10 +101,7 @@ public class Simple extends Script {
 		} else if(TASK_HANDLER.getNodes() != null && !TASK_HANDLER.getNodes().isEmpty()) {
 			for (Node node : TASK_HANDLER.getNodes()) {
 				if (node.active()) {
-					log(node);
 					node.run();
-				}else{
-					log("no active node");
 				}
 			}
 		}else{

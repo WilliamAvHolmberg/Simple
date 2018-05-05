@@ -12,8 +12,8 @@ public enum IaoxItem {
 		
 	//teleport tablets and runes
 	FALADOR_TELEPORT("Falador teleport", 8009),
-	CAMELOT_TELEPORT("Camelot teleport", 8009),
-	VARROCK_TELEPORT("Varrock teleport", 8009),
+	CAMELOT_TELEPORT("Camelot teleport", 8010),
+	VARROCK_TELEPORT("Varrock teleport", 8007),
 	LAW_RUNE("Law rune", 563),
 	NATURE_RUNE("Nature rune", 561),
 	

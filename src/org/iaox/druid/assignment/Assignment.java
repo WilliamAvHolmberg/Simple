@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.iaox.druid.assignment.agility.AgilityAssignment;
 import org.iaox.druid.assignment.combat.FightAssignment;
 import org.iaox.druid.assignment.woodcutting.WoodcuttingAssignment;
 import org.iaox.druid.data.IaoxItem;
@@ -29,6 +30,7 @@ public class Assignment {
 	//variables that are unique to each assignment
 	private FightAssignment fightAssignment;
 	private WoodcuttingAssignment woodcuttingAssignment;
+	private AgilityAssignment agilityAssignment;
 	
 	
 
@@ -91,6 +93,33 @@ public class Assignment {
 	}
 	
 	
+	public Assignment(AgilityAssignment agilityAssignment, AssignmentType assignmentType,IaoxInventory requiredInventory, IaoxEquipment requiredEquipment){
+		this.agilityAssignment = agilityAssignment;
+		//inherited from fixed fightAssignment
+		this.assignmentType = assignmentType;
+		this.actionArea = agilityAssignment.getCourseArea();
+		this.bankArea = agilityAssignment.getBankArea();
+		this.requiredInventory = agilityAssignment.getRequiredInventory();
+		this.requiredEquipment = agilityAssignment.getRequiredEquipment();
+		this.travelExceptionsToAction = agilityAssignment.getTravelExceptionsToCourse();
+		this.travelExceptionsToBank = agilityAssignment.getTravelExceptionsToBank();
+
+		//if there is any specific item that user wants to require, we add them
+		if(requiredInventory != null && !requiredInventory.getRequiredItems().isEmpty()) {
+			requiredInventory.getRequiredItems().forEach(item -> {
+				this.requiredInventory.addItem(item);
+			});
+		}	
+		//if there is any specific equipment that user wants to require, we add them
+				if(requiredEquipment != null && !requiredEquipment.getRequiredEquipment().isEmpty()) {
+					requiredEquipment.getRequiredEquipment().forEach(item -> {
+						this.requiredEquipment.setEquipment(item);
+					});
+				}
+		
+	}
+
+
 	public Area getActionArea(){
 		return actionArea;
 	}
@@ -122,14 +151,18 @@ public class Assignment {
 	public FightAssignment getFightAssignment() {
 		return fightAssignment;
 	}
-	
-	public AssignmentType getAssignmentType(){
-		return assignmentType;
-	}
-
 
 	public void updateWoodcuttingAssignment(WoodcuttingAssignment newAssignment) {
 		woodcuttingAssignment = newAssignment;
+	}
+	
+	public AgilityAssignment getAgilityAssignment() {
+		return agilityAssignment;
+	}
+	
+	
+	public AssignmentType getAssignmentType(){
+		return assignmentType;
 	}
 
 

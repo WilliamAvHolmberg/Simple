@@ -2,6 +2,7 @@ package org.iaox.druid.data;
 
 import org.iaox.druid.inventory.IaoxInventory;
 import org.iaox.druid.inventory.RequiredItem;
+import org.osbot.rs07.script.MethodProvider;
 
 public class RequiredInventories {
 	
@@ -20,4 +21,17 @@ public class RequiredInventories {
 	// initialize the required inventory
 	public static IaoxInventory druidInventory = new IaoxInventory(new RequiredItem[] { faladorTeleport });
 
+
+	private static RequiredItem camelotTeleport;
+
+	
+	/**
+	 * Data for gnome course assignment
+	 */
+	
+	//initialize all required items
+	public static IaoxInventory getGnomeInventory(MethodProvider methodProvider){
+	camelotTeleport = new RequiredItem(1, IaoxItem.CAMELOT_TELEPORT, false, () -> methodProvider.myPosition().getX() < 2874);
+		return new IaoxInventory(new RequiredItem[]{camelotTeleport});
+	}
 }

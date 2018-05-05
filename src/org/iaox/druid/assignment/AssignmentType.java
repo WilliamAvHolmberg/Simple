@@ -1,5 +1,5 @@
 package org.iaox.druid.assignment;
 
 public enum AssignmentType {
-	COMBAT, WOODCUTTING
+	COMBAT, WOODCUTTING, AGILITY
 }

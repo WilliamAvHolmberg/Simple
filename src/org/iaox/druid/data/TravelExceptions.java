@@ -36,4 +36,11 @@ public class TravelExceptions {
 	//Draft Druid travelExceptions to Bank
 	public static TravelException[] druidTravelExceptionsToBank = new TravelException[] { taverleyDungeonToFalador};
 
+	
+	
+	//initialize a travel exception for going to gnome course from right side of white wolf mountain
+	public static TravelException rightSideOfMountainToGnomeCourse = new TravelException(TravelType.TELEPORT, Areas.RIGHT_SIDE_OF_WHITE_MOUNTAIN.getArea(), "Camelot teleport");
+
+	//Draft gnome exceptions
+	public static TravelException[] gnomeTravelToCourse = new TravelException[]{rightSideOfMountainToGnomeCourse};
 }

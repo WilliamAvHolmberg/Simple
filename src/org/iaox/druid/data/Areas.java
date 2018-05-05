@@ -12,6 +12,8 @@ public enum Areas {
 	TAVERLEY_DUNGEON_STAIRS(new Area(new Position(2886,9795,0),new Position(2882,9800,0))),
 	FALADOR(new Area(2937, 3392, 3066, 3308)),
 	WHOLE_RUNESCAPE(new Area(1305, 4055, 3897, 2467)), 
+	LEFT_SIDE_OF_WHITE_MOUNTAIN(new Area(2858, 3767, 2006, 2669)),
+	RIGHT_SIDE_OF_WHITE_MOUNTAIN(new Area(2865, 3828, 3474, 2873)),
 	SEAGULL_PORT_SARIM_NORTH(new Area(
 		    new int[][]{
 		        { 3025, 3238 },

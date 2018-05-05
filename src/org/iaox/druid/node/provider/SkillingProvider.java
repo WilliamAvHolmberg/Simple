@@ -7,9 +7,13 @@ import java.util.List;
 import org.iaox.druid.Simple;
 import org.iaox.druid.Timing;
 import org.iaox.druid.assignment.Assignment;
+import org.iaox.druid.assignment.agility.AgilityAssignment;
+import org.iaox.druid.assignment.agility.AgilityObstacle;
+import org.iaox.druid.assignment.agility.GnomeData;
 import org.iaox.druid.data.Areas;
 import org.iaox.druid.data.IaoxItem;
 import org.iaox.druid.data.LootItems;
+import org.iaox.druid.data.WebBank;
 import org.iaox.druid.equipment.RequiredEquipment;
 import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.loot.Loot;
@@ -66,7 +70,14 @@ public class SkillingProvider {
 	 * @return if player is in the bank
 	 */
 	public boolean inBankArea() {
-		return getAssignment().getBankArea().contains(methodProvider.myPlayer());
+		return getBankArea().contains(methodProvider.myPlayer());
+	}
+	
+	public Area getBankArea(){
+		if(getAssignment().getBankArea() != null){
+			return getAssignment().getBankArea();
+		}
+		return WebBank.getNearest(methodProvider).getArea();	
 	}
 
 	/**
@@ -281,6 +292,48 @@ public class SkillingProvider {
 			}
 		}
 		return neededInventoryItems;
+	}
+
+	public void breakTab(Item teleport) {
+		if (methodProvider.bank.isOpen()) {
+			methodProvider.log("closing bank");
+			methodProvider.bank.close();
+			Timing.waitCondition(() -> !methodProvider.bank.isOpen(), 300, 5000);
+			breakTab(teleport);
+		} else {
+			methodProvider.log("breaking tab");
+			teleport.interact("Break");
+		}
+	}
+	
+	public AgilityAssignment getAgilityAssignment(){
+		return getAssignment().getAgilityAssignment();
+	}
+	
+	/**
+	 * Check if player is in agility area
+	 * Loop through each and every obstacle area and check if player is in agility area
+	 * if not, return false;
+	 * @return
+	 */
+	public boolean inAgilityArea(){
+		//this checks all "roof levels" (Z coord)
+		for(Area area : getAgilityAssignment().getCourseAreaAllPlanes()){
+			if(playerInArea(area)){
+				return true;
+			}
+		}
+
+		for(AgilityObstacle course : getAssignment().getAgilityAssignment().getObstacles()){
+			if(course.getArea().contains(methodProvider.myPlayer())){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean playerInArea(Area area) {
+		return area.contains(methodProvider.myPlayer());
 	}
 
 

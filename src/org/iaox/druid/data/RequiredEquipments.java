@@ -9,5 +9,5 @@ public class RequiredEquipments {
 	 * Data for when no equipment is required
 	 */
 	public static IaoxEquipment NONE = new IaoxEquipment(new RequiredEquipment[] {});
-
+	
 }

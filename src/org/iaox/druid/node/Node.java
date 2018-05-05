@@ -1,5 +1,6 @@
 package org.iaox.druid.node;
 import org.iaox.druid.assignment.AssignmentType;
+import org.iaox.druid.node.provider.AgilityProvider;
 import org.iaox.druid.node.provider.CombatProvider;
 import org.iaox.druid.node.provider.SkillingProvider;
 import org.iaox.druid.node.provider.WoodcuttingProvider;
@@ -11,12 +12,14 @@ public abstract class Node {
 	public CombatProvider combatProvider;
 	public SkillingProvider skillingProvider;
 	public WoodcuttingProvider woodcuttingProvider;
+	public AgilityProvider agilityProvider;
 	
 	public Node init(MethodProvider methodProvider){
 		this.methodProvider = methodProvider;
 		this.combatProvider = new CombatProvider(methodProvider);
 		this.skillingProvider = new SkillingProvider(methodProvider);
 		this.woodcuttingProvider = new WoodcuttingProvider(methodProvider, skillingProvider);
+		this.agilityProvider = new AgilityProvider(methodProvider, skillingProvider);
 		return this;
 	}
 	
