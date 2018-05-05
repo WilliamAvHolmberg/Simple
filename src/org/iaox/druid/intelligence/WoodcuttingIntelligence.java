@@ -29,6 +29,7 @@ public class WoodcuttingIntelligence {
 	private boolean inInventory;
 	private boolean foundAxe;
 	private boolean replacedAxe;
+	private int level;
 
 	public WoodcuttingIntelligence(MethodProvider methodProvider) {
 		this.methodProvider = methodProvider;
@@ -146,10 +147,21 @@ public class WoodcuttingIntelligence {
 	}
 
 	public Assignment createWoodcuttingAssignment() {
-		woodcuttingAssignment = WoodcuttingAssignment.NORMAL_TREE_DRAYNOR_LOCATION_1;
+		woodcuttingAssignment = getAppropiateAssignment();
 		bestAxe = getAxe();
 		woodcuttingAssignment.setAxe(bestAxe);
 		return new Assignment(woodcuttingAssignment, AssignmentType.WOODCUTTING, null, null);
+	}
+
+	private WoodcuttingAssignment getAppropiateAssignment() {
+		level = getLevel(Skill.WOODCUTTING);
+		if(level < 25){
+			return WoodcuttingAssignment.NORMAL_TREE_DRAYNOR_LOCATION_1;
+		}
+		if(level < 35){
+			return WoodcuttingAssignment.OAK_TREE_DRAYNOR_LOCATION_1;
+		}
+		return WoodcuttingAssignment.WILLOW_TREE_DRAYNOR_LOCATION_1;
 	}
 
 	/**

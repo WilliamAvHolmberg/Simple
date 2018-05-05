@@ -1,6 +1,7 @@
 package org.iaox.druid.intelligence;
 
 import org.iaox.druid.Simple;
+import org.iaox.druid.assignment.AssignmentType;
 import org.iaox.druid.data.IaoxItem;
 import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.equipment.RequiredEquipment;
@@ -20,6 +21,8 @@ public class IaoxIntelligence implements Runnable {
 	private WoodcuttingIntelligence woodcuttingIntelligence;
 	private CombatIntelligence combatIntelligence;
 	private Object skill;
+	private AssignmentType type;
+	private int randomInteger;
 
 	/**
 	 * Supposed to work as the "brain" of this script Make sure that the right
@@ -76,8 +79,26 @@ public class IaoxIntelligence implements Runnable {
 	 */
 	public Task generateNewTask() {
 		//TODO - get a randomized task - can either be combat or skilling
-		//return combatIntelligence.generateNewTask();
-		return woodcuttingIntelligence.generateNewTask();
+		//Shall do combat 70% of the time
+		type = generateRandomAssignmentType();
+		switch(type){
+		case COMBAT:
+			return combatIntelligence.generateNewTask();
+		case WOODCUTTING:
+			return woodcuttingIntelligence.generateNewTask();
+		}
+		return combatIntelligence.generateNewTask();
+	}
+
+	private AssignmentType generateRandomAssignmentType() {
+		randomInteger = Simple.random(100);
+		//Shall do combat 70% of the time
+		if(randomInteger < 70){
+			return AssignmentType.COMBAT;
+		}
+		//shall do skilling 30% of time
+		//in this case we have only added woodcutting so its woodcutting 30% :)
+		return AssignmentType.WOODCUTTING;
 	}
 
 	public void sleep(int millis) {
