@@ -3,6 +3,7 @@ package org.iaox.druid.intelligence;
 import org.iaox.druid.Simple;
 import org.iaox.druid.assignment.Assignment;
 import org.iaox.druid.assignment.AssignmentType;
+import org.iaox.druid.assignment.mining.MiningAssignment;
 import org.iaox.druid.assignment.woodcutting.WoodcuttingAssignment;
 import org.iaox.druid.data.IaoxItem;
 import org.iaox.druid.equipment.IaoxEquipment;
@@ -14,11 +15,11 @@ import org.osbot.rs07.api.ui.EquipmentSlot;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.MethodProvider;
 
-public class WoodcuttingIntelligence {
+public class MiningIntelligence {
 
 	private MethodProvider methodProvider;
-	private IaoxItem bestAxe;
-	private WoodcuttingAssignment woodcuttingAssignment;
+	private IaoxItem bestPickaxe;
+	private MiningAssignment miningAssignment;
 	private Skill skill;
 	private int experienceGoal;
 	private int currentLevel;
@@ -26,12 +27,12 @@ public class WoodcuttingIntelligence {
 	private IaoxEquipment equipment;
 	private RequiredEquipment currentAxe;
 	private IaoxInventory inventory;
-	private boolean inInventory;
 	private boolean foundAxe;
 	private boolean replacedAxe;
 	private int level;
+	private boolean inInventory;
 
-	public WoodcuttingIntelligence(MethodProvider methodProvider) {
+	public MiningIntelligence(MethodProvider methodProvider) {
 		this.methodProvider = methodProvider;
 	}
 
@@ -40,63 +41,62 @@ public class WoodcuttingIntelligence {
 	 * check for best axe TODO - Hop worlds if crowded etc.
 	 */
 	public void check() {
-		bestAxe = getAxe();
-
+		bestPickaxe = getPickAxe();
 		// check so the best available axe is assigned to assignment
-		if (getAssignment().getPickaxe().getID() != bestAxe.getID()) {
+		if (getAssignment().getPickaxe().getID() != bestPickaxe.getID()) {
 			methodProvider.log("best axe not selected");
-			getAssignment().setAxe(bestAxe);
+			getAssignment().setAxe(bestPickaxe);
 		}
 
 		//check if the best axe is required - either in inventory or equipment
-		if (!canEquipAxe() && !bestAxeIsInRequiredInventory()) {
+		if (!canEquipAxe() && !bestPickaxeIsInRequiredInventory()) {
 			setRequiredInventory();
-		}else if ( !bestAxeIsInRequiredEquipment()) {
+		}else if ( !bestPickaxeIsInRequiredEquipment()) {
 			setRequiredEquipment();
 		}
 		
 		if(getAssignment() != getAppropiateAssignment()){
-			woodcuttingAssignment = getAppropiateAssignment();
-			woodcuttingAssignment.setAxe(bestAxe);
-			getTask().getAssignment().updateWoodcuttingAssignment(woodcuttingAssignment);
+			miningAssignment = getAppropiateAssignment();
+			miningAssignment.setAxe(bestPickaxe);
+			getTask().getAssignment().updateMiningAssignment(miningAssignment);
 		}else{
 		}
 	
 	}
 
 	private boolean canEquipAxe() {
-		switch (getAxe()) {
-		case BRONZE_AXE:
+		switch (getPickAxe()) {
+		case BRONZE_PICKAXE:
 			return true;
-		case MITHRIL_AXE:
+		case MITHRIL_PICKAXE:
 			return getLevel(Skill.ATTACK) >= 20;
-		case ADAMANT_AXE:
+		case ADAMANT_PICKAXE:
 			return getLevel(Skill.ATTACK) >= 30;
-		case RUNE_AXE:
+		case RUNE_PICKAXE:
 			return getLevel(Skill.ATTACK) >= 40;
 		default:
 			return false;
 		}
 	}
 
-	private boolean bestAxeIsInRequiredEquipment() {
+	private boolean bestPickaxeIsInRequiredEquipment() {
 		equipment = Simple.TASK_HANDLER.getCurrentTask().getAssignment().getRequiredEquipment();
-		bestAxe = getAxe();
-		if (equipment.getEquipment(EquipmentSlot.WEAPON).getIaoxItem() == null || (equipment.getEquipment(EquipmentSlot.WEAPON).getIaoxItem() != null && equipment.getEquipment(EquipmentSlot.WEAPON).getItemID() != bestAxe.getID())) {
+		bestPickaxe = getPickAxe();
+		if (equipment.getEquipment(EquipmentSlot.WEAPON).getIaoxItem() == null || (equipment.getEquipment(EquipmentSlot.WEAPON).getIaoxItem() != null && equipment.getEquipment(EquipmentSlot.WEAPON).getItemID() != bestPickaxe.getID())) {
 			return false;
 		}
 		return true;
 	}
 
-	private boolean bestAxeIsInRequiredInventory() {
+	private boolean bestPickaxeIsInRequiredInventory() {
 		inventory = Simple.TASK_HANDLER.getCurrentTask().getAssignment().getRequiredInventory();
-		bestAxe = getAxe();
+		bestPickaxe = getPickAxe();
 		inInventory = false;
 		foundAxe = false;
 		for (RequiredItem requiredItem : inventory.getRequiredItems()) {
-			if (requiredItem.getIaoxItem() != null && requiredItem.getIaoxItem().name().contains("axe")) {
+			if (requiredItem.getIaoxItem() != null && requiredItem.getIaoxItem().name().contains("pickaxe")) {
 				// nested is bad.. but in this case, it becomes clearer
-				if (requiredItem.getItemID() != bestAxe.getID()) {
+				if (requiredItem.getItemID() != bestPickaxe.getID()) {
 					return false;
 				}else{
 					foundAxe = true;
@@ -108,23 +108,23 @@ public class WoodcuttingIntelligence {
 	
 	private void setRequiredInventory() {
 		inventory = Simple.TASK_HANDLER.getCurrentTask().getAssignment().getRequiredInventory();
-		bestAxe = getAxe();
+		bestPickaxe = getPickAxe();
 		inInventory = false;
 		replacedAxe = false;
 		for (RequiredItem requiredItem : inventory.getRequiredItems()) {
-			if (requiredItem.getIaoxItem() != null && requiredItem.getIaoxItem().name().contains("axe")) {
+			if (requiredItem.getIaoxItem() != null && requiredItem.getIaoxItem().name().contains("pickaxe")) {
 				// nested is bad.. but in this case, it becomes clearer
-				if (requiredItem.getItemID() != bestAxe.getID()) {
+				if (requiredItem.getItemID() != bestPickaxe.getID()) {
 					// remove item from requiredInv
 					inventory.getRequiredItems().remove(requiredItem);
 					// add best axe to inv
-					inventory.getRequiredItems().add(new RequiredItem(1, bestAxe, false, () -> false));
+					inventory.getRequiredItems().add(new RequiredItem(1, bestPickaxe, false, () -> false));
 					replacedAxe = true;
 				}
 			}
 		}
 		if(!replacedAxe){
-			inventory.getRequiredItems().add(new RequiredItem(1, bestAxe, false, () -> false));
+			inventory.getRequiredItems().add(new RequiredItem(1, bestPickaxe, false, () -> false));
 		}
 	}
 
@@ -133,10 +133,10 @@ public class WoodcuttingIntelligence {
 	 */
 	private void setRequiredEquipment() {
 		equipment = Simple.TASK_HANDLER.getCurrentTask().getAssignment().getRequiredEquipment();
-		bestAxe = getAxe();
+		bestPickaxe = getPickAxe();
 		currentAxe = equipment.getEquipment(EquipmentSlot.WEAPON);
-		if (currentAxe.getIaoxItem() == null || currentAxe.getIaoxItem().getID() != bestAxe.getID()) {
-			currentAxe.replaceItem(bestAxe);
+		if (currentAxe.getIaoxItem() == null || currentAxe.getIaoxItem().getID() != bestPickaxe.getID()) {
+			currentAxe.replaceItem(bestPickaxe);
 		}
 	}
 
@@ -147,66 +147,46 @@ public class WoodcuttingIntelligence {
 	 * @return the new Task
 	 */
 	public Task generateNewTask() {
-		skill = Skill.WOODCUTTING;
+		skill = Skill.MINING;
 		experienceGoal = getExperienceGoal(skill);
-		return new Task(skill, experienceGoal, createWoodcuttingAssignment());
+		return new Task(skill, experienceGoal, createMiningAssignment());
 	}
 
-	public Assignment createWoodcuttingAssignment() {
-		woodcuttingAssignment = getAppropiateAssignment();
-		bestAxe = getAxe();
-		woodcuttingAssignment.setAxe(bestAxe);
-		return new Assignment(woodcuttingAssignment, AssignmentType.WOODCUTTING, null, null);
+	public Assignment createMiningAssignment() {
+		miningAssignment = getAppropiateAssignment();
+		bestPickaxe = getPickAxe();
+		miningAssignment.setAxe(bestPickaxe);
+		return new Assignment(miningAssignment, AssignmentType.MINING, null, null);
 	}
 
-	private WoodcuttingAssignment getAppropiateAssignment() {
-		level = getLevel(Skill.WOODCUTTING);
-		if(level < 25){
-			return WoodcuttingAssignment.NORMAL_TREE_DRAYNOR_LOCATION_1;
-		}
-		if(level < 35){
-			return WoodcuttingAssignment.OAK_TREE_DRAYNOR_LOCATION_1;
-		}
-		return WoodcuttingAssignment.WILLOW_TREE_DRAYNOR_LOCATION_1;
+	/**
+	 * TODO - Add more mining assignments
+	 * @return
+	 */
+	private MiningAssignment getAppropiateAssignment() {
+		return MiningAssignment.TIN_ORE_VARROCK;
 	}
 
 	/**
 	 * @return the best available axe
 	 */
-	private IaoxItem getAxe() {
-		if (methodProvider.getSkills().getStatic(Skill.WOODCUTTING) < 21) {
-			return IaoxItem.BRONZE_AXE;
+	private IaoxItem getPickAxe() {
+		if (methodProvider.getSkills().getStatic(Skill.MINING) < 21) {
+			return IaoxItem.BRONZE_PICKAXE;
 		}
 
-		if (methodProvider.getSkills().getStatic(Skill.WOODCUTTING) < 31) {
-			return IaoxItem.MITHRIL_AXE;
+		if (methodProvider.getSkills().getStatic(Skill.MINING) < 31) {
+			return IaoxItem.MITHRIL_PICKAXE;
 		}
 
-		if (methodProvider.getSkills().getStatic(Skill.WOODCUTTING) < 41) {
-			return IaoxItem.ADAMANT_AXE;
+		if (methodProvider.getSkills().getStatic(Skill.MINING) < 41) {
+			return IaoxItem.ADAMANT_PICKAXE;
 		}
 
-		return IaoxItem.RUNE_AXE;
+		return IaoxItem.RUNE_PICKAXE;
 	}
 
-	/**
-	 * @return the best available axe
-	 */
-	public static IaoxItem getAxe(MethodProvider methodProvider) {
-		if (methodProvider.getSkills().getStatic(Skill.WOODCUTTING) < 21) {
-			return IaoxItem.BRONZE_AXE;
-		}
 
-		if (methodProvider.getSkills().getStatic(Skill.WOODCUTTING) < 31) {
-			return IaoxItem.MITHRIL_AXE;
-		}
-
-		if (methodProvider.getSkills().getStatic(Skill.WOODCUTTING) < 41) {
-			return IaoxItem.ADAMANT_AXE;
-		}
-
-		return IaoxItem.RUNE_AXE;
-	}
 
 	/**
 	 * Generate how much experience that shall be achieved
@@ -249,8 +229,8 @@ public class WoodcuttingIntelligence {
 		return methodProvider.skills.getExperience(skill);
 	}
 
-	public WoodcuttingAssignment getAssignment() {
-		return Simple.TASK_HANDLER.getCurrentTask().getAssignment().getWoodcuttingAssignment();
+	public MiningAssignment getAssignment() {
+		return Simple.TASK_HANDLER.getCurrentTask().getAssignment().getMiningAssignment();
 	}
 	
 	public Task getTask(){

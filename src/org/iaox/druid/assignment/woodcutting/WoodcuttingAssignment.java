@@ -67,7 +67,7 @@ public enum WoodcuttingAssignment {
 	}
 	
 	
-	public List<TravelException> getTravelExceptionsToFight() {
+	public List<TravelException> getTravelExceptionsToTree() {
 		return travelExceptionsToTree;
 	}
 	
@@ -87,7 +87,7 @@ public enum WoodcuttingAssignment {
 		this.currentAxe = axe;
 	}
 	
-	public IaoxItem getAxe(){
+	public IaoxItem getPickaxe(){
 		return this.currentAxe;
 	}
 	

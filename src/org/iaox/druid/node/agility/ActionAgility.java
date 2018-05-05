@@ -12,7 +12,7 @@ import org.iaox.druid.node.Node;
 import org.osbot.rs07.api.model.NPC;
 import org.osbot.rs07.api.ui.Skill;
 
-public class AgilityAction extends Node {
+public class ActionAgility extends Node {
 
 	private boolean climbed;
 	private List<AgilityObstacle> obstacles;
@@ -41,8 +41,10 @@ public class AgilityAction extends Node {
 			}
 		}
 		
+		//TODO - returns a false position when for instance, cross a tightrope
+		//has to fix this in the future
+		//
 		if(!climbed && methodProvider.myPosition().getZ() == 0){
-			methodProvider.log("lets walk to first pos");
 			methodProvider.walking.webWalk(skillingProvider.getAgilityAssignment().getObstacles().get(0).getArea());
 		}
 	}

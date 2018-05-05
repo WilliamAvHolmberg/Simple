@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.iaox.druid.assignment.agility.AgilityAssignment;
 import org.iaox.druid.assignment.combat.FightAssignment;
+import org.iaox.druid.assignment.mining.MiningAssignment;
 import org.iaox.druid.assignment.woodcutting.WoodcuttingAssignment;
 import org.iaox.druid.data.IaoxItem;
 import org.iaox.druid.equipment.IaoxEquipment;
@@ -31,6 +32,7 @@ public class Assignment {
 	private FightAssignment fightAssignment;
 	private WoodcuttingAssignment woodcuttingAssignment;
 	private AgilityAssignment agilityAssignment;
+	private MiningAssignment miningAssignment;
 	
 	
 
@@ -74,8 +76,34 @@ public class Assignment {
 		this.bankArea = woodcuttingAssignment.getBankArea();
 		this.requiredInventory = woodcuttingAssignment.getRequiredInventory();
 		this.requiredEquipment = woodcuttingAssignment.getRequiredEquipment();
-		this.travelExceptionsToAction = woodcuttingAssignment.getTravelExceptionsToFight();
+		this.travelExceptionsToAction = woodcuttingAssignment.getTravelExceptionsToTree();
 		this.travelExceptionsToBank = woodcuttingAssignment.getTravelExceptionsToBank();
+
+		//if there is any specific item that user wants to require, we add them
+		if(requiredInventory != null && !requiredInventory.getRequiredItems().isEmpty()) {
+			requiredInventory.getRequiredItems().forEach(item -> {
+				this.requiredInventory.addItem(item);
+			});
+		}	
+		//if there is any specific equipment that user wants to require, we add them
+				if(requiredEquipment != null && !requiredEquipment.getRequiredEquipment().isEmpty()) {
+					requiredEquipment.getRequiredEquipment().forEach(item -> {
+						this.requiredEquipment.setEquipment(item);
+					});
+				}
+		
+	}
+	
+	public Assignment(MiningAssignment miningAssignment, AssignmentType assignmentType,IaoxInventory requiredInventory, IaoxEquipment requiredEquipment){
+		this.miningAssignment = miningAssignment;
+		//inherited from fixed fightAssignment
+		this.assignmentType = assignmentType;
+		this.actionArea = miningAssignment.getRockArea();
+		this.bankArea = miningAssignment.getBankArea();
+		this.requiredInventory = miningAssignment.getRequiredInventory();
+		this.requiredEquipment = miningAssignment.getRequiredEquipment();
+		this.travelExceptionsToAction = miningAssignment.getTravelExceptionsToRock();
+		this.travelExceptionsToBank = miningAssignment.getTravelExceptionsToBank();
 
 		//if there is any specific item that user wants to require, we add them
 		if(requiredInventory != null && !requiredInventory.getRequiredItems().isEmpty()) {
@@ -143,13 +171,13 @@ public class Assignment {
 	public List<TravelException> getTravelExceptionsToBank() {
 		return travelExceptionsToBank;
 	}
-
-	public WoodcuttingAssignment getWoodcuttingAssignment() {
-		return woodcuttingAssignment;
-	}
 	
 	public FightAssignment getFightAssignment() {
 		return fightAssignment;
+	}
+
+	public WoodcuttingAssignment getWoodcuttingAssignment() {
+		return woodcuttingAssignment;
 	}
 
 	public void updateWoodcuttingAssignment(WoodcuttingAssignment newAssignment) {
@@ -158,6 +186,14 @@ public class Assignment {
 	
 	public AgilityAssignment getAgilityAssignment() {
 		return agilityAssignment;
+	}
+	
+	public MiningAssignment getMiningAssignment() {
+		return miningAssignment;
+	}
+
+	public void updateMiningAssignment(MiningAssignment newAssignment) {
+		miningAssignment = newAssignment;
 	}
 	
 	

@@ -12,7 +12,7 @@ import org.iaox.druid.intelligence.IaoxIntelligence;
 import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.loot.LootHandler;
 import org.iaox.druid.node.Node;
-import org.iaox.druid.node.agility.AgilityAction;
+import org.iaox.druid.node.agility.ActionAgility;
 import org.iaox.druid.node.agility.AgilityBank;
 import org.iaox.druid.node.agility.WalkToAgilityBank;
 import org.iaox.druid.node.agility.WalkToAgilityCourse;
@@ -20,6 +20,10 @@ import org.iaox.druid.node.combat.ActionFight;
 import org.iaox.druid.node.combat.FightBank;
 import org.iaox.druid.node.combat.WalkToFight;
 import org.iaox.druid.node.combat.WalkToFightBank;
+import org.iaox.druid.node.mining.ActionMine;
+import org.iaox.druid.node.mining.MiningBank;
+import org.iaox.druid.node.mining.WalkToMiningBank;
+import org.iaox.druid.node.mining.WalkToRock;
 import org.iaox.druid.node.woodcutting.ActionChop;
 import org.iaox.druid.node.woodcutting.WCBank;
 import org.iaox.druid.node.woodcutting.WalkToTree;
@@ -80,7 +84,13 @@ public class Simple extends Script {
 		ALL_NODES.add(new AgilityBank().init(this));
 		ALL_NODES.add(new WalkToAgilityCourse().init(this));
 		ALL_NODES.add(new WalkToAgilityBank().init(this));
-		ALL_NODES.add(new AgilityAction().init(this));
+		ALL_NODES.add(new ActionAgility().init(this));
+		
+		//initialize mining nodes
+		ALL_NODES.add(new MiningBank().init(this));
+		ALL_NODES.add(new WalkToRock().init(this));
+		ALL_NODES.add(new WalkToMiningBank().init(this));
+		ALL_NODES.add(new ActionMine().init(this));
 
 
 

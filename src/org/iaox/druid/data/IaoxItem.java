@@ -7,9 +7,17 @@ import java.util.List;
 public enum IaoxItem {
 	
 	//axes
-	BRONZE_AXE("Bronze axe",1351), MITHRIL_AXE("Mithril axe", 1355),
-	ADAMANT_AXE("Adamant axe", 1357), RUNE_AXE("Rune axe", 1359),
-		
+	BRONZE_AXE("Bronze axe",1351), 
+	MITHRIL_AXE("Mithril axe", 1355),
+	ADAMANT_AXE("Adamant axe", 1357), 
+	RUNE_AXE("Rune axe", 1359),
+	
+	//pickaxe
+	BRONZE_PICKAXE("Bronze pickaxe",1265),
+	MITHRIL_PICKAXE("Mithril pickaxe",1273), 
+	ADAMANT_PICKAXE("Adamant pickaxe",1271), 
+	RUNE_PICKAXE("Rune pickaxe",1275),
+	
 	//teleport tablets and runes
 	FALADOR_TELEPORT("Falador teleport", 8009),
 	CAMELOT_TELEPORT("Camelot teleport", 8010),
