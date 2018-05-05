@@ -19,11 +19,13 @@ import org.iaox.druid.inventory.IaoxInventory;
 import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.loot.LootHandler;
 import org.iaox.druid.node.Node;
-import org.iaox.druid.node.combat.ActionBank;
+import org.iaox.druid.node.combat.FightBank;
 import org.iaox.druid.node.combat.ActionFight;
-import org.iaox.druid.node.combat.WalkToBank;
+import org.iaox.druid.node.combat.WalkToFightBank;
 import org.iaox.druid.node.combat.WalkToFight;
 import org.iaox.druid.node.woodcutting.ActionChop;
+import org.iaox.druid.node.woodcutting.WCBank;
+import org.iaox.druid.node.woodcutting.WalkToWCBank;
 import org.iaox.druid.task.TaskHandler;
 import org.iaox.druid.travel.TravelException;
 import org.iaox.druid.travel.TravelType;
@@ -78,12 +80,14 @@ public class Simple extends Script {
 		
 		//initialize combat nodes
 		ALL_NODES.add(new ActionFight().init(this));
-		ALL_NODES.add(new ActionBank().init(this));
-		ALL_NODES.add(new WalkToBank().init(this));
+		ALL_NODES.add(new FightBank().init(this));
+		ALL_NODES.add(new WalkToFightBank().init(this));
 		ALL_NODES.add(new WalkToFight().init(this));
 		
 		//initialize wc nodes
 		ALL_NODES.add(new ActionChop().init(this));
+		ALL_NODES.add(new WalkToWCBank().init(this));
+		ALL_NODES.add(new WCBank().init(this));
 
 
 
@@ -98,7 +102,7 @@ public class Simple extends Script {
 
 	@Override
 	public int onLoop() throws InterruptedException {
-
+		log(getHealth());
 		if (!TASK_HANDLER.hasTask() || TASK_HANDLER.taskIsCompleted()) {
 			log("lets generate a new task");
 			TASK_HANDLER.setNewTask(iaoxIntelligence.generateNewTask());
@@ -113,6 +117,11 @@ public class Simple extends Script {
 		}
 		return 200;
 	}
+	
+	public long getHealth(){
+		return getSkills().getDynamic(Skill.HITPOINTS);
+	}
+
 
 	@Override
 	public void onPaint(Graphics2D g) {

@@ -1,4 +1,4 @@
-package org.iaox.druid.node.combat;
+package org.iaox.druid.node.woodcutting;
 
 import java.util.List;
 
@@ -12,14 +12,14 @@ import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.event.WebWalkEvent;
 import org.osbot.rs07.event.webwalk.PathPreferenceProfile;
 
-public class WalkToBank extends Node{
+public class WalkToWCBank extends Node{
 
 	private boolean exception;
 	private List<TravelException> travelExceptions;
 
 	@Override
 	public boolean active() {
-		return !combatProvider.shouldFight() && !combatProvider.inBankArea();
+		return !woodcuttingProvider.shouldCut() && !woodcuttingProvider.inBankArea() ;
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class WalkToBank extends Node{
 	
 	@Override
 	public AssignmentType getAssignmentType() {
-		return AssignmentType.COMBAT;
+		return AssignmentType.WOODCUTTING;
 	}
 
 }

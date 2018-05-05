@@ -76,8 +76,8 @@ public class IaoxIntelligence implements Runnable {
 	 */
 	public Task generateNewTask() {
 		//TODO - get a randomized task - can either be combat or skilling
-		return combatIntelligence.generateNewTask();
-		//return woodcuttingIntelligence.generateNewTask();
+		//return combatIntelligence.generateNewTask();
+		return woodcuttingIntelligence.generateNewTask();
 	}
 
 	public void sleep(int millis) {

@@ -155,7 +155,7 @@ public class CombatIntelligence {
 		switch(fightAssignment){
 		case CHAOS_DRUIDS_TAVERLEY:
 			//in the future, use a method like getFood() to get most suitable food
-			food = new RequiredItem(getFoodAmount(), IaoxItem.TROUT, true, () -> fightAssignment.getNpcArea().contains(methodProvider.myPlayer()) && getHealthPercent() > 40);
+			food = new RequiredItem(getFoodAmount(), IaoxItem.TROUT, true, () -> fightAssignment.getNpcArea().contains(methodProvider.myPlayer()) && !(getHealth() < 25 && !methodProvider.inventory.contains(IaoxItem.TROUT.getID())));
 			fightAssignment.getRequiredInventory().addItem(food);
 			fightAssignment.setFood(food.getIaoxItem());
 			combatAssignment = new Assignment(getSuitableFightAssignment(),AssignmentType.COMBAT, null, null);
@@ -169,8 +169,8 @@ public class CombatIntelligence {
 		return combatAssignment;
 	}
 	
-	public int getHealthPercent(){
-		return methodProvider.getSkills().getDynamic(Skill.HITPOINTS)/methodProvider.getSkills().getStatic(Skill.HITPOINTS) * 100;
+	public int getHealth(){
+		return methodProvider.getSkills().getDynamic(Skill.HITPOINTS);
 	}
 
 	/**

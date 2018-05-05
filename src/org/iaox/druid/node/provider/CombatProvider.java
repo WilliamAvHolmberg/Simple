@@ -72,8 +72,10 @@ public class CombatProvider {
 	 * @return if player has to eat
 	 */
 	public boolean shouldEat() {
-		methodProvider.log(getHealthPercent());
-		return getHealthPercent() < 70;
+		if(methodProvider.getSkills().getStatic(Skill.HITPOINTS) < 30){
+			return false;
+		}
+		return getHealth() < 20;
 	}
 	
 
@@ -398,6 +400,7 @@ public class CombatProvider {
 			if (food != null) {
 				food.interact("Eat");
 				Timing.waitCondition(() -> methodProvider.inventory.getAmount(food.getId()) < foodAmount, 600, 3000);
+				Timing.sleep(3500);
 			}
 		} else {
 			methodProvider.bank.close();
@@ -484,6 +487,7 @@ public class CombatProvider {
 		for (RequiredItem item : getAssignment().getRequiredInventory().getRequiredItems()) {
 			if (!item.getException().getAsBoolean()
 					&& methodProvider.inventory.getAmount(item.getItemID()) != item.getAmount()) {
+				methodProvider.log("false" + item.getAmount());
 				return false;
 			}
 		}
@@ -519,8 +523,9 @@ public class CombatProvider {
 		return neededInventoryItems;
 	}
 	
-	public int getHealthPercent(){
-		return methodProvider.getSkills().getDynamic(Skill.HITPOINTS)/methodProvider.getSkills().getStatic(Skill.HITPOINTS) * 100;
+	public int getHealth(){
+		return methodProvider.getSkills().getDynamic(Skill.HITPOINTS);
 	}
+
 
 }

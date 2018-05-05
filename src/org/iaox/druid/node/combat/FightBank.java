@@ -6,7 +6,7 @@ import org.iaox.druid.equipment.RequiredEquipment;
 import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.node.Node;
 
-public class ActionBank extends Node {
+public class FightBank extends Node {
 
 	private long amountOfItemInInventory;
 

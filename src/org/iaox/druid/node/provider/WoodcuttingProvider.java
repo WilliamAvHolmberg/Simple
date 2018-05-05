@@ -226,13 +226,12 @@ public class WoodcuttingProvider {
 	 * died
 	 */
 	public void chopNewTree() {
-		methodProvider.log("lets attack a new target");
 		tree = getClosestAvailableTree();
 		if (tree != null && tree.interact("Chop down")) {
 			lastInteractedObject = tree;
 			methodProvider.log("lets sleep");
 			// Sleep until player is cutting tree or tree does not exist
-			Timing.waitCondition(() -> playerIsCuttingTree() || !tree.exists(), 150, 5000);
+			Timing.waitCondition(() -> !treeStillExists() || !tree.exists(), 150, 5000);
 		}
 	}
 

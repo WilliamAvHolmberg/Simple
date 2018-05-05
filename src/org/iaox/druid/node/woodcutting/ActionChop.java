@@ -15,8 +15,7 @@ public class ActionChop extends Node{
 
 	@Override
 	public boolean active() {
-		//player shouldCut && woodcuttingProvider.inActionArea()
-		return woodcuttingProvider.shouldCut();
+		return woodcuttingProvider.shouldCut() && woodcuttingProvider.inTreeArea() ;
 	}
 
 	@Override
@@ -25,7 +24,7 @@ public class ActionChop extends Node{
 		if(!methodProvider.getSettings().isRunning() && methodProvider.getSettings().getRunEnergy() > 5) {
 			methodProvider.getSettings().setRunning(true);
 			Timing.waitCondition(() -> methodProvider.getSettings().isRunning(), 150, 3000);
-		}else if(woodcuttingProvider.playerIsCuttingTree() && woodcuttingProvider.treeStillExists()){
+		}else if(woodcuttingProvider.treeStillExists() && (woodcuttingProvider.playerIsCuttingTree() || methodProvider.myPlayer().isMoving() )){
 			methodProvider.log("We are already woodcutting");
 			woodcuttingProvider.woodcuttingSleep();
 		}else {
