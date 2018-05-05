@@ -95,6 +95,12 @@ public class Simple extends Script {
 
 	@Override
 	public int onLoop() throws InterruptedException {
+		
+		//check if intelligence is running
+		if(!iaoxIntelligence.RUNNING){
+			new Thread(iaoxIntelligence).start();
+		}
+			
 		if (!TASK_HANDLER.hasTask() || TASK_HANDLER.taskIsCompleted()) {
 			log("lets generate a new task");
 			TASK_HANDLER.setNewTask(iaoxIntelligence.generateNewTask());

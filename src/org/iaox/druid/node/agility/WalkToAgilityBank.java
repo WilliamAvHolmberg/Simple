@@ -19,7 +19,7 @@ public class WalkToAgilityBank extends Node{
 
 	@Override
 	public boolean active() {
-		return !skillingProvider.shouldPeformSkillingAction() && !skillingProvider.inBankArea() ;
+		return !skillingProvider.shouldPeformSkillingAction() && !agilityProvider.inBankArea() ;
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class WalkToAgilityBank extends Node{
 				}
 				//Use webwalk if either no exception were found or no exception were current
 				if(!exception){
-					methodProvider.walking.webWalk(skillingProvider.getBankArea());
+					methodProvider.walking.webWalk(agilityProvider.getBankArea());
 				}
 
 	}

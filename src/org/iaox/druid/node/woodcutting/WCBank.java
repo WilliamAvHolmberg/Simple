@@ -12,7 +12,7 @@ public class WCBank extends Node {
 
 	@Override
 	public boolean active() {
-		return !skillingProvider.shouldPeformSkillingAction() && skillingProvider.inBankArea() ;
+		return !skillingProvider.shouldPeformSkillingAction() && woodcuttingProvider.inBankArea() ;
 	}
 
 	/**

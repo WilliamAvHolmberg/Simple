@@ -3,6 +3,9 @@ package org.iaox.druid.node.provider;
 import java.util.Arrays;
 
 import org.iaox.druid.Timing;
+import org.iaox.druid.data.Areas;
+import org.iaox.druid.data.WebBank;
+import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.model.RS2Object;
 import org.osbot.rs07.script.MethodProvider;
 
@@ -30,6 +33,24 @@ public class WoodcuttingProvider {
 	public RS2Object getClosestAvailableTree() {
 		return methodProvider.objects.closest(object -> Arrays.asList(skillingProvider.getAssignment().getWoodcuttingAssignment().getTreeIDs()).contains(object.getId())
 				&& skillingProvider.getSkillingArea().contains(object));
+	}
+	
+	/**
+	 * @return if player is in the bank
+	 */
+	public boolean inBankArea() {
+		return getBankArea().contains(methodProvider.myPlayer());
+	}
+	
+	/**
+	 * If player is on right side of white mountain, we have to find closest bank
+	 * @return
+	 */
+	public Area getBankArea(){
+		if( Areas.RIGHT_SIDE_OF_WHITE_MOUNTAIN.contains(methodProvider.myPlayer())){
+			return skillingProvider.getAssignment().getBankArea();
+		}
+		return WebBank.getNearest(methodProvider).getArea();	
 	}
 	
 	/**

@@ -13,7 +13,7 @@ import org.osbot.rs07.api.map.Area;
 
 public enum AgilityAssignment {
 	GNOME_COURSE(GnomeData.GNOME_OBSTACLES, 1,
-					GnomeData.gnomeAgilityArea, new Area[]{GnomeData.gnomeAgilityAreaPlane0, GnomeData.gnomeAgilityAreaPlane1,GnomeData.gnomeAgilityAreaPlane2,},
+					GnomeData.gnomeAgilityAreaPlane0, new Area[]{GnomeData.gnomeAgilityAreaPlane0, GnomeData.gnomeAgilityAreaPlane1,GnomeData.gnomeAgilityAreaPlane2,},
 					null,
 					TravelExceptions.gnomeTravelToCourse, TravelExceptions.NONE,
 					RequiredInventories.NONE, RequiredEquipments.NONE);

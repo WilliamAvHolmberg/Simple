@@ -57,7 +57,7 @@ public class WalkToTree extends Node {
 						// in order to use webwalk instead
 						Item teleport = methodProvider.inventory.getItem(travelException.getTeleportName());
 						if (teleport != null) {
-							teleport.interact("Break");
+							skillingProvider.breakTab(teleport);
 							exception = true;
 						} else {
 							exception = false;

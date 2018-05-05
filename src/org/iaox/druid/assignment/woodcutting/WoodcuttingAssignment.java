@@ -18,15 +18,15 @@ import org.osbot.rs07.api.map.constants.Banks;
 public enum WoodcuttingAssignment {
 	NORMAL_TREE_DRAYNOR_LOCATION_1(WCObjectIDs.NORMAL_TREE_ID, 1, 
 									WCAreas.WHOLE_DRAYNOR_AREA, Banks.DRAYNOR, 
-									TravelExceptions.NONE, TravelExceptions.druidTravelExceptionsToBank,
+									TravelExceptions.leftSideOfWolfMountainToRightSide, TravelExceptions.druidTravelExceptionsToBank,
 									RequiredInventories.NONE, RequiredEquipments.NONE),
 	OAK_TREE_DRAYNOR_LOCATION_1(WCObjectIDs.OAK_TREE_ID, 15,
 									WCAreas.WHOLE_DRAYNOR_AREA, Banks.DRAYNOR,
-									TravelExceptions.NONE, TravelExceptions.druidTravelExceptionsToBank,
+									TravelExceptions.leftSideOfWolfMountainToRightSide, TravelExceptions.druidTravelExceptionsToBank,
 									RequiredInventories.NONE, RequiredEquipments.NONE),
 	WILLOW_TREE_DRAYNOR_LOCATION_1(WCObjectIDs.WILLOW_TREE_ID, 30,
 									WCAreas.WILLOW_TREE_DRAYNOR_LOCATION_1, Banks.DRAYNOR,
-									TravelExceptions.NONE, TravelExceptions.druidTravelExceptionsToBank,
+									TravelExceptions.leftSideOfWolfMountainToRightSide, TravelExceptions.druidTravelExceptionsToBank,
 									RequiredInventories.NONE, RequiredEquipments.NONE);
 	;
 	private Integer[] treeIDs;

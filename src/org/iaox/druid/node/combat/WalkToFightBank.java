@@ -71,7 +71,7 @@ public class WalkToFightBank extends Node{
 				}
 				//Use webwalk if either no exception were found or no exception were current
 				if(!exception){
-					methodProvider.walking.webWalk(combatProvider.getAssignment().getBankArea());
+					methodProvider.walking.webWalk(combatProvider.getBankArea());
 				}
 
 	}

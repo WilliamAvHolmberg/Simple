@@ -25,6 +25,7 @@ public class IaoxIntelligence implements Runnable {
 	private Object skill;
 	private AssignmentType type;
 	private int randomInteger;
+	public boolean RUNNING = false;
 	/**
 	 * Supposed to work as the "brain" of this script Make sure that the right
 	 * task is done Make sure that the rigth gear is choosen
@@ -41,6 +42,9 @@ public class IaoxIntelligence implements Runnable {
 		this.combatIntelligence = new CombatIntelligence(methodProvider);
 		this.woodcuttingIntelligence = new WoodcuttingIntelligence(methodProvider);
 		this.agilityIntelligence = new AgilityIntelligence(methodProvider);
+		
+		//set running to true as thread is started when intelligence is initialized
+		RUNNING = true;
 	}
 
 	/**
@@ -49,7 +53,12 @@ public class IaoxIntelligence implements Runnable {
 	 * That is not necessary when performing a woodcutting assignment 
 	 */
 	public void run() {
-
+		//running is a variable that is used in the main loop to check if this thread is running
+		//set to true when this thread is started
+		methodProvider.log("intelligence started");
+		if(!RUNNING){
+			RUNNING = true;
+		}
 		while (methodProvider.getClient().isLoggedIn()) {
 			if (Simple.TASK_HANDLER.getCurrentTask() != null) {
 				switch(Simple.TASK_HANDLER.getCurrentTask().getAssignment().getAssignmentType()){
@@ -74,6 +83,9 @@ public class IaoxIntelligence implements Runnable {
 			}
 			sleep(5000);
 		}
+		//set running to false when thread stops running, meaning when player logs out
+		RUNNING = false;
+		methodProvider.log("intelligence shut down");
 	}
 	
 	
@@ -100,12 +112,18 @@ public class IaoxIntelligence implements Runnable {
 	}
 
 	/**
+	 * Always do agility if level is below 30
 	 * Shall do combat 70% of time
 	 * Agility 15%
 	 * Woodcutting 15%
 	 * @return
 	 */
 	private AssignmentType generateRandomAssignmentType() {
+		//always train agility to level 30 first thing we do
+		if(methodProvider.getSkills().getStatic(Skill.AGILITY) < 30){
+			return AssignmentType.AGILITY;
+		}
+		
 		randomInteger = Simple.random(100);
 		if(randomInteger < 25 && methodProvider.myPlayer().getCombatLevel() > 52){
 			return AssignmentType.WOODCUTTING;

@@ -50,20 +50,16 @@ public class WoodcuttingIntelligence {
 
 		//check if the best axe is required - either in inventory or equipment
 		if (!canEquipAxe() && !bestAxeIsInRequiredInventory()) {
-			methodProvider.log("best axe not in inv");
 			setRequiredInventory();
 		}else if ( !bestAxeIsInRequiredEquipment()) {
-			methodProvider.log("best axe not not in req equipment");
 			setRequiredEquipment();
 		}
 		
 		if(getAssignment() != getAppropiateAssignment()){
-			methodProvider.log("should update wc assignment");
 			woodcuttingAssignment = getAppropiateAssignment();
 			woodcuttingAssignment.setAxe(bestAxe);
 			getTask().getAssignment().updateWoodcuttingAssignment(woodcuttingAssignment);
 		}else{
-			methodProvider.log("should not update wc assignment");
 		}
 	
 	}

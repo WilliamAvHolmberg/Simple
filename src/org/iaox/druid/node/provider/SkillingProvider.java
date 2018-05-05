@@ -66,19 +66,10 @@ public class SkillingProvider {
 		return getSkillingArea().contains(methodProvider.myPlayer());
 	}
 
-	/**
-	 * @return if player is in the bank
-	 */
-	public boolean inBankArea() {
-		return getBankArea().contains(methodProvider.myPlayer());
-	}
+
 	
-	public Area getBankArea(){
-		if(getAssignment().getBankArea() != null){
-			return getAssignment().getBankArea();
-		}
-		return WebBank.getNearest(methodProvider).getArea();	
-	}
+	
+	
 
 	/**
 	 * @return if player has to eat

@@ -10,9 +10,11 @@ import org.iaox.druid.assignment.Assignment;
 import org.iaox.druid.data.Areas;
 import org.iaox.druid.data.IaoxItem;
 import org.iaox.druid.data.LootItems;
+import org.iaox.druid.data.WebBank;
 import org.iaox.druid.equipment.RequiredEquipment;
 import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.loot.Loot;
+import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.constants.Banks;
 import org.osbot.rs07.api.model.Entity;
 import org.osbot.rs07.api.model.GroundItem;
@@ -65,7 +67,14 @@ public class CombatProvider {
 	 * @return if player is in the bank
 	 */
 	public boolean inBankArea() {
-		return getAssignment().getBankArea().contains(methodProvider.myPlayer());
+		return getBankArea().contains(methodProvider.myPlayer());
+	}
+
+	public Area getBankArea() {
+		if(Areas.LEFT_SIDE_OF_WHITE_MOUNTAIN.contains(methodProvider.myPlayer())){
+			return WebBank.getNearest(methodProvider).getArea();
+		}
+		return getAssignment().getBankArea();
 	}
 
 	/**

@@ -5,6 +5,9 @@ import org.iaox.druid.Timing;
 import org.iaox.druid.assignment.Assignment;
 import org.iaox.druid.assignment.agility.AgilityAssignment;
 import org.iaox.druid.assignment.agility.AgilityObstacle;
+import org.iaox.druid.data.Areas;
+import org.iaox.druid.data.WebBank;
+import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.model.RS2Object;
 import org.osbot.rs07.script.MethodProvider;
 import org.osbot.rs07.script.Script;
@@ -24,6 +27,24 @@ public class AgilityProvider {
 
 	public AgilityAssignment getAssignment() {
 		return Simple.TASK_HANDLER.getCurrentTask().getAssignment().getAgilityAssignment();
+	}
+	
+	/**
+	 * @return if player is in the bank
+	 */
+	public boolean inBankArea() {
+		return getBankArea().contains(methodProvider.myPlayer());
+	}
+	
+	/**
+	 * If player is on left side of white mountain, we have to find closest bank
+	 * @return
+	 */
+	public Area getBankArea(){
+		if(getAssignment().getBankArea() != null){
+			return getAssignment().getBankArea();
+		}
+		return WebBank.getNearest(methodProvider).getArea();	
 	}
 
 	public boolean playerInAgilityArea() {
