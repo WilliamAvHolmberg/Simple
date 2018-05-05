@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.iaox.druid.assignment.agility.AgilityAssignment;
 import org.iaox.druid.assignment.combat.FightAssignment;
+import org.iaox.druid.assignment.fishing.FishingAssignment;
 import org.iaox.druid.assignment.mining.MiningAssignment;
 import org.iaox.druid.assignment.woodcutting.WoodcuttingAssignment;
 import org.iaox.druid.data.IaoxItem;
@@ -33,6 +34,7 @@ public class Assignment {
 	private WoodcuttingAssignment woodcuttingAssignment;
 	private AgilityAssignment agilityAssignment;
 	private MiningAssignment miningAssignment;
+	private FishingAssignment fishingAssignment;
 	
 	
 
@@ -146,6 +148,32 @@ public class Assignment {
 				}
 		
 	}
+	
+	public Assignment(FishingAssignment fishingAssignment, AssignmentType assignmentType,IaoxInventory requiredInventory, IaoxEquipment requiredEquipment){
+		this.fishingAssignment = fishingAssignment;
+		//inherited from fixed fightAssignment
+		this.assignmentType = assignmentType;
+		this.actionArea = fishingAssignment.getFishingArea();
+		this.bankArea = fishingAssignment.getBankArea();
+		this.requiredInventory = fishingAssignment.getRequiredInventory();
+		this.requiredEquipment = fishingAssignment.getRequiredEquipment();
+		this.travelExceptionsToAction = fishingAssignment.getTravelExceptionsToFishingSpot();
+		this.travelExceptionsToBank = fishingAssignment.getTravelExceptionsToBank();
+
+		//if there is any specific item that user wants to require, we add them
+		if(requiredInventory != null && !requiredInventory.getRequiredItems().isEmpty()) {
+			requiredInventory.getRequiredItems().forEach(item -> {
+				this.requiredInventory.addItem(item);
+			});
+		}	
+		//if there is any specific equipment that user wants to require, we add them
+				if(requiredEquipment != null && !requiredEquipment.getRequiredEquipment().isEmpty()) {
+					requiredEquipment.getRequiredEquipment().forEach(item -> {
+						this.requiredEquipment.setEquipment(item);
+					});
+				}
+		
+	}
 
 
 	public Area getActionArea(){
@@ -196,10 +224,21 @@ public class Assignment {
 		miningAssignment = newAssignment;
 	}
 	
+	public FishingAssignment getFishingAssignment() {
+		return fishingAssignment;
+	}
+
+	public void updateFishingAssignment(FishingAssignment newAssignment) {
+		fishingAssignment = newAssignment;
+	}
+	
+	
 	
 	public AssignmentType getAssignmentType(){
 		return assignmentType;
 	}
+
+
 
 
 

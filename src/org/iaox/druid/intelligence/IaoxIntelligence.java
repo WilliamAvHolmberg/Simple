@@ -22,10 +22,12 @@ public class IaoxIntelligence implements Runnable {
 	private WoodcuttingIntelligence woodcuttingIntelligence;
 	private AgilityIntelligence agilityIntelligence;
 	private MiningIntelligence miningIntelligence;
-
+	private FishingIntelligence fishingIntelligence;
+	
 	private AssignmentType type;
 	private int randomInteger;
 	public boolean RUNNING = false;
+
 	/**
 	 * Supposed to work as the "brain" of this script Make sure that the right
 	 * task is done Make sure that the rigth gear is choosen
@@ -43,6 +45,7 @@ public class IaoxIntelligence implements Runnable {
 		this.woodcuttingIntelligence = new WoodcuttingIntelligence(methodProvider);
 		this.agilityIntelligence = new AgilityIntelligence(methodProvider);
 		this.miningIntelligence = new MiningIntelligence(methodProvider);
+		this.fishingIntelligence = new FishingIntelligence(methodProvider);
 		
 		//set running to true as thread is started when intelligence is initialized
 		RUNNING = true;
@@ -81,6 +84,10 @@ public class IaoxIntelligence implements Runnable {
 					miningIntelligence.check();
 					//nothing to check right now
 					break;
+				case FISHING:
+					fishingIntelligence.check();
+					//nothing to check right now
+					break;
 				default:
 					break;
 				
@@ -113,6 +120,8 @@ public class IaoxIntelligence implements Runnable {
 			return agilityIntelligence.generateNewTask();
 		case MINING:
 			return miningIntelligence.generateNewTask();
+		case FISHING:
+			return fishingIntelligence.generateNewTask();
 		}
 		return combatIntelligence.generateNewTask();
 		
@@ -127,22 +136,26 @@ public class IaoxIntelligence implements Runnable {
 	 * @return
 	 */
 	private AssignmentType generateRandomAssignmentType() {
-		return AssignmentType.MINING;
+		return AssignmentType.FISHING;
+		/*
 		//always train agility to level 30 first thing we do
-		/*if(methodProvider.getSkills().getStatic(Skill.AGILITY) < 30){
+		if(methodProvider.getSkills().getStatic(Skill.AGILITY) < 30){
 			return AssignmentType.AGILITY;
 		}
 		
 		randomInteger = Simple.random(100);
-		if(randomInteger < 20 && methodProvider.myPlayer().getCombatLevel() > 52){
+		if(randomInteger < 15 && methodProvider.myPlayer().getCombatLevel() > 52){
 			return AssignmentType.WOODCUTTING;
-		}else if(randomInteger < 40){
+		}else if(randomInteger < 30){
 			return AssignmentType.MINING;
+		}else if(randomInteger < 40){
+			return AssignmentType.FISHING;
 		}else if(randomInteger < 50){
 			return AssignmentType.AGILITY;
 		}
 		
-		return AssignmentType.COMBAT;*/
+		return AssignmentType.COMBAT;
+		*/
 	}
 
 	public void sleep(int millis) {

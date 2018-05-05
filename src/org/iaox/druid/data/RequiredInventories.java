@@ -34,4 +34,12 @@ public class RequiredInventories {
 	camelotTeleport = new RequiredItem(1, IaoxItem.CAMELOT_TELEPORT, false, () -> methodProvider.myPosition().getX() < 2874);
 		return new IaoxInventory(new RequiredItem[]{camelotTeleport});
 	}
+	
+	/**
+	 * Fishing data
+	 */
+	
+	private static RequiredItem smallFishingNet = new RequiredItem(1, IaoxItem.SMALL_FISHING_NET, false, () -> false);
+	
+	public static IaoxInventory SCHRIMP_INVENTORY = new IaoxInventory(new RequiredItem[] {smallFishingNet});
 }

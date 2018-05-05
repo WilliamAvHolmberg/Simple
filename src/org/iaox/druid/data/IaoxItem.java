@@ -18,6 +18,12 @@ public enum IaoxItem {
 	ADAMANT_PICKAXE("Adamant pickaxe",1271), 
 	RUNE_PICKAXE("Rune pickaxe",1275),
 	
+	//fishing gear
+	SMALL_FISHING_NET("Small fishing net", 303),
+	FLY_FISHING_ROD("Fly fishing rod", 309),
+	FEATHER("Feather", 314),
+	HARPOON("Harpoon", 311),
+	
 	//teleport tablets and runes
 	FALADOR_TELEPORT("Falador teleport", 8009),
 	CAMELOT_TELEPORT("Camelot teleport", 8010),
@@ -62,6 +68,9 @@ public enum IaoxItem {
 	//robes
 	ZAMORAK_ROBE_BOTTOM("Zamorak robe", 1033),
 	ZAMORAK_ROBE_TOP("Zamorak robe", 1035);
+	
+	
+	
 	
 	
 	

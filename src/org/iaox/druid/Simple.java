@@ -20,6 +20,10 @@ import org.iaox.druid.node.combat.ActionFight;
 import org.iaox.druid.node.combat.FightBank;
 import org.iaox.druid.node.combat.WalkToFight;
 import org.iaox.druid.node.combat.WalkToFightBank;
+import org.iaox.druid.node.fishing.ActionFish;
+import org.iaox.druid.node.fishing.FishingBank;
+import org.iaox.druid.node.fishing.WalkToFishingBank;
+import org.iaox.druid.node.fishing.WalkToFishingSpot;
 import org.iaox.druid.node.mining.ActionMine;
 import org.iaox.druid.node.mining.MiningBank;
 import org.iaox.druid.node.mining.WalkToMiningBank;
@@ -91,6 +95,12 @@ public class Simple extends Script {
 		ALL_NODES.add(new WalkToRock().init(this));
 		ALL_NODES.add(new WalkToMiningBank().init(this));
 		ALL_NODES.add(new ActionMine().init(this));
+		
+		//initialize fishing nodes
+		ALL_NODES.add(new FishingBank().init(this));
+		ALL_NODES.add(new WalkToFishingSpot().init(this));
+		ALL_NODES.add(new WalkToFishingBank().init(this));
+		ALL_NODES.add(new ActionFish().init(this));
 
 
 
