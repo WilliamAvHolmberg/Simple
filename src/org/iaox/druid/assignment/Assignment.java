@@ -128,6 +128,11 @@ public class Assignment {
 	}
 
 
+	public void updateWoodcuttingAssignment(WoodcuttingAssignment newAssignment) {
+		woodcuttingAssignment = newAssignment;
+	}
+
+
 
 	
 	

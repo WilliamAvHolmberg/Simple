@@ -56,6 +56,16 @@ public class WoodcuttingIntelligence {
 			methodProvider.log("best axe not not in req equipment");
 			setRequiredEquipment();
 		}
+		
+		if(getAssignment() != getAppropiateAssignment()){
+			methodProvider.log("should update wc assignment");
+			woodcuttingAssignment = getAppropiateAssignment();
+			woodcuttingAssignment.setAxe(bestAxe);
+			getTask().getAssignment().updateWoodcuttingAssignment(woodcuttingAssignment);
+		}else{
+			methodProvider.log("should not update wc assignment");
+		}
+	
 	}
 
 	private boolean canEquipAxe() {
@@ -245,6 +255,10 @@ public class WoodcuttingIntelligence {
 
 	public WoodcuttingAssignment getAssignment() {
 		return Simple.TASK_HANDLER.getCurrentTask().getAssignment().getWoodcuttingAssignment();
+	}
+	
+	public Task getTask(){
+		return Simple.TASK_HANDLER.getCurrentTask();
 	}
 
 }

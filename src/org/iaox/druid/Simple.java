@@ -25,6 +25,7 @@ import org.iaox.druid.node.combat.WalkToFightBank;
 import org.iaox.druid.node.combat.WalkToFight;
 import org.iaox.druid.node.woodcutting.ActionChop;
 import org.iaox.druid.node.woodcutting.WCBank;
+import org.iaox.druid.node.woodcutting.WalkToTree;
 import org.iaox.druid.node.woodcutting.WalkToWCBank;
 import org.iaox.druid.task.TaskHandler;
 import org.iaox.druid.travel.TravelException;
@@ -54,10 +55,6 @@ public class Simple extends Script {
 	@Override
 	public void onStart() throws InterruptedException {
 		
-		//check if we should train defence or not
-		if(getSkills().getDynamic(Skill.DEFENCE) == 1){
-			TRAIN_DEFENCE = false;
-		}
 		// initialize item prices
 		log("Initializing item prices");
 		final RSExchange rsExchange = new RSExchange();
@@ -87,6 +84,7 @@ public class Simple extends Script {
 		//initialize wc nodes
 		ALL_NODES.add(new ActionChop().init(this));
 		ALL_NODES.add(new WalkToWCBank().init(this));
+		ALL_NODES.add(new WalkToTree().init(this));
 		ALL_NODES.add(new WCBank().init(this));
 
 
@@ -102,14 +100,16 @@ public class Simple extends Script {
 
 	@Override
 	public int onLoop() throws InterruptedException {
-		log(getHealth());
 		if (!TASK_HANDLER.hasTask() || TASK_HANDLER.taskIsCompleted()) {
 			log("lets generate a new task");
 			TASK_HANDLER.setNewTask(iaoxIntelligence.generateNewTask());
 		} else if(TASK_HANDLER.getNodes() != null && !TASK_HANDLER.getNodes().isEmpty()) {
 			for (Node node : TASK_HANDLER.getNodes()) {
 				if (node.active()) {
+					log(node);
 					node.run();
+				}else{
+					log("no active node");
 				}
 			}
 		}else{

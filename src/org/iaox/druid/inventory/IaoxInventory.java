@@ -78,9 +78,9 @@ public class IaoxInventory {
 	}
 
 	public String toString() {
-		string = null;
+		string = "";
 		requiredItems.forEach(reqItem -> {
-			string += reqItem.getIaoxItem().getName() + ":" + reqItem.getAmount();
+			string += reqItem.getIaoxItem().getName() + ":" + reqItem.getAmount() + ",";
 		});
 		return string;
 	}

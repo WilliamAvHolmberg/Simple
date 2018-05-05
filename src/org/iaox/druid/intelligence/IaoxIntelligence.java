@@ -98,7 +98,12 @@ public class IaoxIntelligence implements Runnable {
 		}
 		//shall do skilling 30% of time
 		//in this case we have only added woodcutting so its woodcutting 30% :)
-		return AssignmentType.WOODCUTTING;
+		//ONLY DO WOODCUTTING if combat level is above 52. Aggro monsters in draynor area.
+		else if(methodProvider.myPlayer().getCombatLevel() > 52){
+			return AssignmentType.WOODCUTTING;
+		}
+		
+		return AssignmentType.COMBAT;
 	}
 
 	public void sleep(int millis) {

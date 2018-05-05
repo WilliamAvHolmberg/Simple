@@ -19,7 +19,7 @@ public class WalkToTree extends Node {
 
 	@Override
 	public boolean active() {
-		return woodcuttingProvider.shouldCut() && !woodcuttingProvider.inTreeArea() ;
+		return skillingProvider.shouldPeformSkillingAction() && !skillingProvider.inSkillingArea() ;
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class WalkToTree extends Node {
 
 	@Override
 	public AssignmentType getAssignmentType() {
-		return AssignmentType.COMBAT;
+		return AssignmentType.WOODCUTTING;
 	}
 
 }

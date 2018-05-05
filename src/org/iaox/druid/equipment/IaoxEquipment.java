@@ -72,10 +72,10 @@ public class IaoxEquipment {
 	}
 	
 	public String toString() {
-		string = null;
+		string = "";
 		requiredEquipment.forEach(reqItem -> {
 			if(reqItem.getIaoxItem() != null){
-			string += "hello" + reqItem.getItemName();
+			string += reqItem.getItemName() + ",";
 			}
 		});
 		return string;

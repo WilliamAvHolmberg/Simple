@@ -19,7 +19,7 @@ public class WalkToWCBank extends Node{
 
 	@Override
 	public boolean active() {
-		return !woodcuttingProvider.shouldCut() && !woodcuttingProvider.inBankArea() ;
+		return !skillingProvider.shouldPeformSkillingAction() && !skillingProvider.inBankArea() ;
 	}
 
 	@Override
