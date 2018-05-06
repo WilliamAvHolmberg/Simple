@@ -5,6 +5,7 @@ import org.iaox.druid.assignment.Assignment;
 import org.iaox.druid.assignment.AssignmentType;
 import org.iaox.druid.assignment.woodcutting.WoodcuttingAssignment;
 import org.iaox.druid.data.IaoxItem;
+import org.iaox.druid.data.RequiredInventories;
 import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.equipment.RequiredEquipment;
 import org.iaox.druid.inventory.IaoxInventory;

@@ -1,9 +1,8 @@
-package org.iaox.druid.node.agility;
+package org.iaox.druid.node.crafting;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.iaox.druid.Timing;
 import org.iaox.druid.assignment.AssignmentType;
 import org.iaox.druid.data.Areas;
 import org.iaox.druid.node.Node;
@@ -13,18 +12,19 @@ import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.event.WebWalkEvent;
 import org.osbot.rs07.event.webwalk.PathPreferenceProfile;
 
-public class WalkToAgilityCourse extends Node {
+public class WalkToCraftingArea extends Node {
 
 	private List<TravelException> travelExceptions;
 	private boolean exception;
 
 	@Override
 	public boolean active() {
-		return skillingProvider.shouldPeformSkillingAction() && !skillingProvider.inAgilityArea() ;
+		return craftingProvider.shouldPeformSkillingAction() && !skillingProvider.inSkillingArea() ;
 	}
 
 	@Override
 	public void run() {
+		methodProvider.log("lets go to area");
 		// initialize a boolean called exception
 		// boolean will set to true if any TravelException is found
 		// if boolean is false after checking every travelException that exist
@@ -59,7 +59,6 @@ public class WalkToAgilityCourse extends Node {
 						Item teleport = methodProvider.inventory.getItem(travelException.getTeleportName());
 						if (teleport != null) {
 							skillingProvider.breakTab(teleport);
-							Timing.waitCondition(() -> !travelException.getArea().contains(methodProvider.myPlayer()), 300, 5000);
 							exception = true;
 						} else {
 							exception = false;
@@ -86,7 +85,7 @@ public class WalkToAgilityCourse extends Node {
 
 	@Override
 	public AssignmentType getAssignmentType() {
-		return AssignmentType.AGILITY;
+		return AssignmentType.CRAFTING;
 	}
 
 }

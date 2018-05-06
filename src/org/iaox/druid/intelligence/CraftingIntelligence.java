@@ -3,22 +3,30 @@ package org.iaox.druid.intelligence;
 import org.iaox.druid.Simple;
 import org.iaox.druid.assignment.Assignment;
 import org.iaox.druid.assignment.AssignmentType;
+import org.iaox.druid.assignment.crafting.CraftingAssignment;
 import org.iaox.druid.assignment.fishing.FishingAssignment;
+import org.iaox.druid.data.Areas;
+import org.iaox.druid.data.IaoxItem;
 import org.iaox.druid.data.RequiredInventories;
+import org.iaox.druid.inventory.IaoxInventory;
+import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.task.Task;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.MethodProvider;
 
-public class FishingIntelligence {
+public class CraftingIntelligence {
 
 	private MethodProvider methodProvider;
-	private FishingAssignment fishingAssignment;
+	private CraftingAssignment craftingAssignment;
 	private Skill skill;
 	private int experienceGoal;
 	private int currentLevel;
 	private int currentExperience;
+	private RequiredItem sodaAsh;
+	private RequiredItem bucketOfSand;
+	private IaoxInventory moltenGlassInventory;
 	
-	public FishingIntelligence(MethodProvider methodProvider) {
+	public CraftingIntelligence(MethodProvider methodProvider) {
 		this.methodProvider = methodProvider;
 	}
 
@@ -29,8 +37,8 @@ public class FishingIntelligence {
 	public void check() {
 		
 		if(getAssignment() != getAppropiateAssignment()){
-			fishingAssignment = getAppropiateAssignment();
-			getTask().getAssignment().updateFishingAssignment(fishingAssignment);
+			craftingAssignment = getAppropiateAssignment();
+			getTask().getAssignment().updateCraftingAssignment(craftingAssignment);
 		}else{
 		}
 	
@@ -45,18 +53,29 @@ public class FishingIntelligence {
 	 * @return the new Task
 	 */
 	public Task generateNewTask() {
-		skill = Skill.FISHING;
+		skill = Skill.CRAFTING;
 		experienceGoal = getExperienceGoal(skill);
-		return new Task(skill, experienceGoal, createfishingAssignment());
+		return new Task(skill, experienceGoal, createCraftingAssignment());
 	}
 
-	public Assignment createfishingAssignment() {
-		fishingAssignment = getAppropiateAssignment();
-		return new Assignment(fishingAssignment, AssignmentType.FISHING, null, null);
+	public Assignment createCraftingAssignment() {
+		craftingAssignment = getAppropiateAssignment();
+		//Exception - if inv contains the item, amount is not required to be set at 14
+		sodaAsh = new RequiredItem(14, IaoxItem.SODA_ASH, false, () ->  (playerInLeftSideOfMountain() || craftingAssignment.getCraftingArea().contains(methodProvider.myPlayer()) && methodProvider.inventory.contains(IaoxItem.SODA_ASH.getID())));
+		
+		//Exception - if inv contains the item, amount is not required to be set at 14
+		bucketOfSand = new RequiredItem(14, IaoxItem.BUCKET_OF_SAND, false, () -> playerInLeftSideOfMountain() || craftingAssignment.getCraftingArea().contains(methodProvider.myPlayer()) && methodProvider.inventory.contains(IaoxItem.BUCKET_OF_SAND.getID()));
+		
+		moltenGlassInventory = new IaoxInventory(new RequiredItem[]{sodaAsh, bucketOfSand,RequiredInventories.getLeftSideMountainInventory(methodProvider)});
+		return new Assignment(craftingAssignment, AssignmentType.CRAFTING, moltenGlassInventory, null);
+	}
+	
+	private boolean playerInLeftSideOfMountain(){
+		return Areas.LEFT_SIDE_OF_WHITE_MOUNTAIN.contains(methodProvider.myPlayer());
 	}
 
-	private FishingAssignment getAppropiateAssignment() {
-		return FishingAssignment.SCHRIMPS_LUBRIDGE_AREA_1;
+	private CraftingAssignment getAppropiateAssignment() {
+		return CraftingAssignment.MOLTEN_GLASS;
 	}
 
 
@@ -101,8 +120,8 @@ public class FishingIntelligence {
 		return methodProvider.skills.getExperience(skill);
 	}
 
-	public FishingAssignment getAssignment() {
-		return Simple.TASK_HANDLER.getCurrentTask().getAssignment().getFishingAssignment();
+	public CraftingAssignment getAssignment() {
+		return Simple.TASK_HANDLER.getCurrentTask().getAssignment().getCraftingAssignment();
 	}
 	
 	public Task getTask(){

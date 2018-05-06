@@ -2,7 +2,10 @@ package org.iaox.druid.intelligence;
 
 import org.iaox.druid.Simple;
 import org.iaox.druid.assignment.AssignmentType;
+import org.iaox.druid.data.Areas;
 import org.iaox.druid.data.IaoxItem;
+import org.iaox.druid.data.RequiredInventories;
+import org.iaox.druid.data.TravelExceptions;
 import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.equipment.RequiredEquipment;
 import org.iaox.druid.task.Task;
@@ -23,10 +26,13 @@ public class IaoxIntelligence implements Runnable {
 	private AgilityIntelligence agilityIntelligence;
 	private MiningIntelligence miningIntelligence;
 	private FishingIntelligence fishingIntelligence;
+	private CraftingIntelligence craftingIntelligence;
 	
 	private AssignmentType type;
 	private int randomInteger;
 	public boolean RUNNING = false;
+	private Task task;
+
 
 	/**
 	 * Supposed to work as the "brain" of this script Make sure that the right
@@ -46,6 +52,7 @@ public class IaoxIntelligence implements Runnable {
 		this.agilityIntelligence = new AgilityIntelligence(methodProvider);
 		this.miningIntelligence = new MiningIntelligence(methodProvider);
 		this.fishingIntelligence = new FishingIntelligence(methodProvider);
+		this.craftingIntelligence = new CraftingIntelligence(methodProvider);
 		
 		//set running to true as thread is started when intelligence is initialized
 		RUNNING = true;
@@ -65,6 +72,7 @@ public class IaoxIntelligence implements Runnable {
 		}
 		while (methodProvider.getClient().isLoggedIn()) {
 			if (Simple.TASK_HANDLER.getCurrentTask() != null) {
+				teleportCheck();
 				switch(Simple.TASK_HANDLER.getCurrentTask().getAssignment().getAssignmentType()){
 				case COMBAT:
 					combatIntelligence.check();
@@ -88,6 +96,10 @@ public class IaoxIntelligence implements Runnable {
 					fishingIntelligence.check();
 					//nothing to check right now
 					break;
+				case CRAFTING:
+					craftingIntelligence.check();
+					//nothing to check right now
+					break;
 				default:
 					break;
 				
@@ -100,7 +112,15 @@ public class IaoxIntelligence implements Runnable {
 		methodProvider.log("intelligence shut down");
 	}
 	
-	
+	/**
+	 * If player does not neeed teleport
+	 */
+	private void teleportCheck() {
+		//if !needTeleport && reqInv contains teleport
+		//remove
+		
+	}
+
 	/**
 	 * Generate a new Task Get random skill Get the experience that shall be
 	 * achieved during the task
@@ -113,18 +133,57 @@ public class IaoxIntelligence implements Runnable {
 		type = generateRandomAssignmentType();
 		switch(type){
 		case COMBAT:
-			return combatIntelligence.generateNewTask();
+			task = combatIntelligence.generateNewTask();
+			break;
 		case WOODCUTTING:
-			return woodcuttingIntelligence.generateNewTask();
+			task = woodcuttingIntelligence.generateNewTask();
+			break;
 		case AGILITY:
-			return agilityIntelligence.generateNewTask();
+			task = agilityIntelligence.generateNewTask();
+			break;
 		case MINING:
-			return miningIntelligence.generateNewTask();
+			task = miningIntelligence.generateNewTask();
+			break;
 		case FISHING:
-			return fishingIntelligence.generateNewTask();
+			task = fishingIntelligence.generateNewTask();
+			break;
+		case CRAFTING:
+			task = craftingIntelligence.generateNewTask();
+			break;
 		}
-		return combatIntelligence.generateNewTask();
+		handleTravelExceptions(task);
+		return task;
 		
+	}
+
+	private void handleTravelExceptions(Task task) {
+		//handle travel exceptions for when player is on either side of white wolf mountain and should be on the other side
+		
+		//if player is in left side of white mountain and should be on the right side
+		//add falador teleport and travel exception
+		if(needFaladorTeleport()){
+			//add req item fally tele
+			task.getAssignment().getRequiredInventory().addItem(RequiredInventories.getLeftSideMountainInventory(methodProvider));
+			//add travel exception
+			task.getAssignment().addTravelExceptionToAction(TravelExceptions.leftSideOfWhiteWolfMountainToRightSide);
+			task.getAssignment().addTravelExceptionToBank(TravelExceptions.leftSideOfWhiteWolfMountainToRightSide);
+		}else if(needCamelotTeleport()){
+			//add req item cammy tele
+			task.getAssignment().getRequiredInventory().addItem(RequiredInventories.getRightSideMountainInventory(methodProvider));
+			//add travel exception
+			task.getAssignment().addTravelExceptionToAction(TravelExceptions.rightSideOfWhiteWolfMountainToLeftSide);
+			task.getAssignment().addTravelExceptionToBank(TravelExceptions.rightSideOfWhiteWolfMountainToLeftSide);
+
+		}
+		
+	}
+	
+	public boolean needFaladorTeleport(){
+		return Areas.LEFT_SIDE_OF_WHITE_MOUNTAIN.contains(methodProvider.myPlayer()) && Areas.RIGHT_SIDE_OF_WHITE_MOUNTAIN.getArea().contains(task.getAssignment().getActionArea().getRandomPosition());
+	}
+	
+	public boolean needCamelotTeleport(){
+		return Areas.RIGHT_SIDE_OF_WHITE_MOUNTAIN.contains(methodProvider.myPlayer()) && Areas.LEFT_SIDE_OF_WHITE_MOUNTAIN.getArea().contains(task.getAssignment().getActionArea().getRandomPosition());
 	}
 
 	/**
@@ -136,26 +195,26 @@ public class IaoxIntelligence implements Runnable {
 	 * @return
 	 */
 	private AssignmentType generateRandomAssignmentType() {
-		return AssignmentType.FISHING;
-		/*
 		//always train agility to level 30 first thing we do
-		if(methodProvider.getSkills().getStatic(Skill.AGILITY) < 30){
+		if(methodProvider.getSkills().getStatic(Skill.AGILITY) < 5){
 			return AssignmentType.AGILITY;
 		}
 		
 		randomInteger = Simple.random(100);
-		if(randomInteger < 15 && methodProvider.myPlayer().getCombatLevel() > 52){
+		if(randomInteger < 10 && methodProvider.myPlayer().getCombatLevel() > 52){
 			return AssignmentType.WOODCUTTING;
-		}else if(randomInteger < 30){
+		}else if(randomInteger < 20 && methodProvider.myPlayer().getCombatLevel() > 12){
 			return AssignmentType.MINING;
-		}else if(randomInteger < 40){
+		}else if(randomInteger < 30){
 			return AssignmentType.FISHING;
-		}else if(randomInteger < 50){
+		}else if(randomInteger < 40){
 			return AssignmentType.AGILITY;
+		}else if(randomInteger < 50){
+			return AssignmentType.CRAFTING;
 		}
 		
 		return AssignmentType.COMBAT;
-		*/
+		
 	}
 
 	public void sleep(int millis) {

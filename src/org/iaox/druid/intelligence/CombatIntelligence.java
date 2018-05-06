@@ -3,9 +3,11 @@ package org.iaox.druid.intelligence;
 import org.iaox.druid.Simple;
 import org.iaox.druid.assignment.Assignment;
 import org.iaox.druid.assignment.AssignmentType;
+import org.iaox.druid.assignment.agility.AgilityAssignment;
 import org.iaox.druid.assignment.combat.FightAssignment;
 import org.iaox.druid.assignment.woodcutting.WoodcuttingAssignment;
 import org.iaox.druid.data.IaoxItem;
+import org.iaox.druid.data.RequiredInventories;
 import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.equipment.RequiredEquipment;
 import org.iaox.druid.inventory.RequiredItem;
@@ -157,15 +159,19 @@ public class CombatIntelligence {
 			//in the future, use a method like getFood() to get most suitable food
 			food = new RequiredItem(getFoodAmount(), IaoxItem.TROUT, true, () -> fightAssignment.getNpcArea().contains(methodProvider.myPlayer()) && !(getHealth() < 25 && !methodProvider.inventory.contains(IaoxItem.TROUT.getID())));
 			fightAssignment.getRequiredInventory().addItem(food);
+			//add support for teleporting if on left side of white mountain
+			fightAssignment.getRequiredInventory().addItem(RequiredInventories.getLeftSideMountainInventory(methodProvider));
 			fightAssignment.setFood(food.getIaoxItem());
-			combatAssignment = new Assignment(getSuitableFightAssignment(),AssignmentType.COMBAT, null, null);
+			combatAssignment = new Assignment(fightAssignment,AssignmentType.COMBAT, null, null);
 			break;
 		case SEAGULLS_PORT_SARIM:
 			//no food required
-			combatAssignment = new Assignment(getSuitableFightAssignment(),AssignmentType.COMBAT, null, null);
+			//add support for teleporting if on left side of white mountain
+			fightAssignment.getRequiredInventory().addItem(RequiredInventories.getLeftSideMountainInventory(methodProvider));
+			
+			combatAssignment = new Assignment(fightAssignment,AssignmentType.COMBAT, null, null);
 			break;
 		}
-
 		return combatAssignment;
 	}
 	

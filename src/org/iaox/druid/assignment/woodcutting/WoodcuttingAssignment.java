@@ -1,5 +1,6 @@
 package org.iaox.druid.assignment.woodcutting;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,15 +19,15 @@ import org.osbot.rs07.api.map.constants.Banks;
 public enum WoodcuttingAssignment {
 	NORMAL_TREE_DRAYNOR_LOCATION_1(WCObjectIDs.NORMAL_TREE_ID, 1, 
 									WCAreas.WHOLE_DRAYNOR_AREA, Banks.DRAYNOR, 
-									TravelExceptions.leftSideOfWolfMountainToRightSide, TravelExceptions.druidTravelExceptionsToBank,
+									TravelExceptions.NONE, TravelExceptions.druidTravelExceptionsToBank,
 									RequiredInventories.NONE, RequiredEquipments.NONE),
 	OAK_TREE_DRAYNOR_LOCATION_1(WCObjectIDs.OAK_TREE_ID, 15,
 									WCAreas.WHOLE_DRAYNOR_AREA, Banks.DRAYNOR,
-									TravelExceptions.leftSideOfWolfMountainToRightSide, TravelExceptions.druidTravelExceptionsToBank,
+									TravelExceptions.NONE, TravelExceptions.druidTravelExceptionsToBank,
 									RequiredInventories.NONE, RequiredEquipments.NONE),
 	WILLOW_TREE_DRAYNOR_LOCATION_1(WCObjectIDs.WILLOW_TREE_ID, 30,
 									WCAreas.WILLOW_TREE_DRAYNOR_LOCATION_1, Banks.DRAYNOR,
-									TravelExceptions.leftSideOfWolfMountainToRightSide, TravelExceptions.druidTravelExceptionsToBank,
+									TravelExceptions.NONE, TravelExceptions.druidTravelExceptionsToBank,
 									RequiredInventories.NONE, RequiredEquipments.NONE);
 	;
 	private Integer[] treeIDs;
@@ -44,8 +45,8 @@ public enum WoodcuttingAssignment {
 		this.levelRequired = levelRequired;
 		this.treeArea = treeArea;
 		this.bankArea = bankArea;
-		this.travelExceptionsToTree = Arrays.asList(travelExceptionsToTree);
-		this.travelExceptionsToBank = Arrays.asList(travelExceptionsToBank);
+		this.travelExceptionsToTree =  Arrays.asList(travelExceptionsToTree);
+		this.travelExceptionsToBank =  Arrays.asList(travelExceptionsToBank);
 		this.requiredInventory = requiredInventory;
 		this.requiredEquipment = requiredEquipment;
 	}

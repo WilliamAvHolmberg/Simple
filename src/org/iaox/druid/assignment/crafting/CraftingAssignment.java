@@ -1,4 +1,4 @@
-package org.iaox.druid.assignment.fishing;
+package org.iaox.druid.assignment.crafting;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,57 +16,53 @@ import org.iaox.druid.travel.TravelException;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.constants.Banks;
 
-public enum FishingAssignment {
-	SCHRIMPS_LUBRIDGE_AREA_1(FishingData.SHRIMP_FISHING_SPOT_IDS, 1, 
-									FishingAreas.SHRIMP_LUMBRIDGE_AREA_1, Banks.LUMBRIDGE_UPPER, 
-									TravelExceptions.NONE, TravelExceptions.druidTravelExceptionsToBank,
-									RequiredInventories.SCHRIMP_INVENTORY, RequiredEquipments.NONE, "Net");
+public enum CraftingAssignment {
+	MOLTEN_GLASS(1, CraftingAreas.FURNACE_AREA, Banks.EDGEVILLE, 
+					TravelExceptions.NONE, TravelExceptions.druidTravelExceptionsToBank,
+					RequiredInventories.NONE, RequiredEquipments.NONE, "Net", 20);
 
 
-	private Integer[] fishingSpotIDs;
 	private int levelRequired;
-	private Area treeArea;
+	private Area craftingArea;
 	private Area bankArea;
-	private List<TravelException> travelExceptionsToFishingSpot;
+	private List<TravelException> travelExceptionsToCraftingArea;
 	private List<TravelException> travelExceptionsToBank;
 	private IaoxInventory requiredInventory;
 	private IaoxEquipment requiredEquipment;
 	private String action;
+	private int xpPerAction;
 	
-	FishingAssignment(Integer[] fishingSpotIDs, int levelRequired, Area fishingArea, Area bankArea, TravelException[] travelExceptionsToFishingSpot, TravelException[] travelExceptionsToBank,  IaoxInventory requiredInventory, IaoxEquipment requiredEquipment, String action){
-		this.fishingSpotIDs = fishingSpotIDs;
+	CraftingAssignment(int levelRequired, Area craftingArea, Area bankArea, TravelException[] travelExceptionsToCraftingArea, TravelException[] travelExceptionsToBank,  IaoxInventory requiredInventory, IaoxEquipment requiredEquipment, String action, int xpPerAction){
 		this.levelRequired = levelRequired;
-		this.treeArea = fishingArea;
+		this.craftingArea = craftingArea;
 		this.bankArea = bankArea;
-		this.travelExceptionsToFishingSpot = Arrays.asList(travelExceptionsToFishingSpot);
+		this.travelExceptionsToCraftingArea = Arrays.asList(travelExceptionsToCraftingArea);
 		this.travelExceptionsToBank = Arrays.asList(travelExceptionsToBank);
 		this.requiredInventory = requiredInventory;
 		this.requiredEquipment = requiredEquipment;
 		this.action = action;
+		this.xpPerAction = xpPerAction;
 	}
-	
-	public Integer[] getFishingSpotIDs(){
-		return fishingSpotIDs;
-	}
+
 	
 	public int getLevelRequired(){
 		return levelRequired;
 	}
 	
-	public Area getFishingArea(){
-		return treeArea;
+	public Area getCraftingArea(){
+		return craftingArea;
 	}
 	
 	public Area getBankArea(){
 		return bankArea;
 	}
 	
-	public List<TravelException> getTravelExceptionsToFishingSpot() {
-		return travelExceptionsToFishingSpot;
+	public List<TravelException> getTravelExceptionsToCraftingArea() {
+		return  travelExceptionsToCraftingArea;
 	}
 	
 	public List<TravelException> getTravelExceptionsToBank() {
-		return travelExceptionsToBank;
+		return  travelExceptionsToBank;
 	}
 	
 	public IaoxEquipment getRequiredEquipment() {
@@ -79,6 +75,10 @@ public enum FishingAssignment {
 	
 	public String getAction(){
 		return action;
+	}
+	
+	public int getXpPerAction(){
+		return xpPerAction;
 	}
 
 	

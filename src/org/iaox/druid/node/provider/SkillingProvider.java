@@ -294,6 +294,7 @@ public class SkillingProvider {
 		} else {
 			methodProvider.log("breaking tab");
 			teleport.interact("Break");
+			Timing.waitCondition(() -> !methodProvider.inventory.contains(teleport.getId()), 300, 5000);
 		}
 	}
 	

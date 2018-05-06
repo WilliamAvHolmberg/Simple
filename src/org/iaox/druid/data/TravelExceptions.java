@@ -26,11 +26,14 @@ public class TravelExceptions {
 	public static TravelException taverleyDungeonToDruids = new TravelException(TravelType.PATH, Areas.TAVERLEY_DUNGEON.getArea(),
 			Paths.TAVERLEY_DUNGEON_TO_DRUIDS);
 	
+	//exception for when player is on the left side of Wolf Mountain we have to tele
+	public static TravelException leftSideOfWhiteWolfMountainToRightSide = new TravelException(TravelType.TELEPORT, Areas.LEFT_SIDE_OF_WHITE_MOUNTAIN.getArea(), "Falador teleport");
+	
 	//exception for when player is on the right side of Wolf Mountain we have to tele
-	private static TravelException leftSideOfMountainToRightSide = new TravelException(TravelType.TELEPORT, Areas.LEFT_SIDE_OF_WHITE_MOUNTAIN.getArea(), "Falador teleport");
+	public static TravelException rightSideOfWhiteWolfMountainToLeftSide = new TravelException(TravelType.TELEPORT, Areas.RIGHT_SIDE_OF_WHITE_MOUNTAIN.getArea(), "Camelot teleport");
 	
 	//Draft Druid travelExceptions to Fight
-	public static TravelException[] druidTravelExceptionsToFight = new TravelException[] { surfaceToTaverleyDungeon, taverleyDungeonToDruids, leftSideOfMountainToRightSide };
+	public static TravelException[] druidTravelExceptionsToFight = new TravelException[] { surfaceToTaverleyDungeon, taverleyDungeonToDruids, leftSideOfWhiteWolfMountainToRightSide };
 
 	
 	//initialize a travel exception for when the player is in taverley dungeon and shall teleport to falador
@@ -47,9 +50,9 @@ public class TravelExceptions {
 
 	//Draft gnome exceptions
 	public static TravelException[] gnomeTravelToCourse = new TravelException[]{rightSideOfMountainToGnomeCourse};
+
 	
 	
-	//Draft left side of wolf mountain to right side
-	public static TravelException[] leftSideOfWolfMountainToRightSide= new TravelException[]{leftSideOfMountainToRightSide};
+
 
 }

@@ -30,7 +30,7 @@ public class WalkToFishingSpot extends Node {
 		// webwalking shall be used
 		exception = false;
 		//check if there is any travelExceptions for the current assignment
-		travelExceptions = combatProvider.getAssignment().getTravelExceptionsToFight();
+		travelExceptions = combatProvider.getAssignment().getTravelExceptionsToAction();
 		// first of all, check if player should eat.
 		if (combatProvider.shouldEat()) {
 			methodProvider.log("has to eat");

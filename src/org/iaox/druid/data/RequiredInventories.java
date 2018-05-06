@@ -6,11 +6,28 @@ import org.osbot.rs07.script.MethodProvider;
 
 public class RequiredInventories {
 	
+	private static RequiredItem teleport;
+	
 	/**
 	 * Data for when no inventory is required
 	 */
 	public static IaoxInventory NONE = new IaoxInventory(new RequiredItem[]{});
 
+	/**
+	 * Data for when player is on left side of white mountain and should be on right side
+	 */
+	//initialize all required items
+	public static RequiredItem getLeftSideMountainInventory(MethodProvider methodProvider){
+		return new RequiredItem(1, IaoxItem.FALADOR_TELEPORT, false, () -> methodProvider.myPosition().getX() > 2874);
+	}
+	
+	/**
+	 * Data for when player is on left side of white mountain and should be on right side
+	 */
+	//initialize all required items
+	public static RequiredItem getRightSideMountainInventory(MethodProvider methodProvider){
+		return new RequiredItem(1, IaoxItem.CAMELOT_TELEPORT, false, () -> methodProvider.myPosition().getX() < 2874);
+	}
 	
 	/**
 	 * Data for Druid Assignment
@@ -21,9 +38,6 @@ public class RequiredInventories {
 	// initialize the required inventory
 	public static IaoxInventory druidInventory = new IaoxInventory(new RequiredItem[] { faladorTeleport });
 
-
-	private static RequiredItem camelotTeleport;
-
 	
 	/**
 	 * Data for gnome course assignment
@@ -31,8 +45,8 @@ public class RequiredInventories {
 	
 	//initialize all required items
 	public static IaoxInventory getGnomeInventory(MethodProvider methodProvider){
-	camelotTeleport = new RequiredItem(1, IaoxItem.CAMELOT_TELEPORT, false, () -> methodProvider.myPosition().getX() < 2874);
-		return new IaoxInventory(new RequiredItem[]{camelotTeleport});
+	teleport = new RequiredItem(1, IaoxItem.CAMELOT_TELEPORT, false, () -> methodProvider.myPosition().getX() < 2874);
+		return new IaoxInventory(new RequiredItem[]{teleport});
 	}
 	
 	/**
@@ -42,4 +56,6 @@ public class RequiredInventories {
 	private static RequiredItem smallFishingNet = new RequiredItem(1, IaoxItem.SMALL_FISHING_NET, false, () -> false);
 	
 	public static IaoxInventory SCHRIMP_INVENTORY = new IaoxInventory(new RequiredItem[] {smallFishingNet});
+
+
 }

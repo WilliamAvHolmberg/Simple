@@ -1,5 +1,6 @@
 package org.iaox.druid.assignment.mining;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +17,10 @@ import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.constants.Banks;
 
 public enum MiningAssignment {
-	TIN_ORE_VARROCK(MiningObjectIDs.tinRockID, 1, MiningAreas.VARROCK_TIN_1, Banks.VARROCK_WEST, TravelExceptions.leftSideOfWolfMountainToRightSide,TravelExceptions.leftSideOfWolfMountainToRightSide, RequiredInventories.NONE, RequiredEquipments.NONE);
+	TIN_ORE_VARROCK(MiningObjectIDs.tinRockID, 1, 
+						MiningAreas.VARROCK_TIN_1, Banks.VARROCK_WEST, 
+						TravelExceptions.NONE, TravelExceptions.NONE, 
+						RequiredInventories.NONE, RequiredEquipments.NONE);
 	
 	//IRON_ORE_VARROCK(MiningAreas.VARROCK_WEST_MINING_AREA, MiningAreas.VARROCK_IRON_1, Banks.VARROCK_WEST, MiningObjectIDs.ironRockID, 15),
 
@@ -65,7 +69,7 @@ public enum MiningAssignment {
 	}
 	
 	public List<TravelException> getTravelExceptionsToBank() {
-		return travelExceptionsToBank;
+		return  travelExceptionsToBank;
 	}
 	
 	public IaoxEquipment getRequiredEquipment() {

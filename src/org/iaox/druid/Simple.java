@@ -20,6 +20,10 @@ import org.iaox.druid.node.combat.ActionFight;
 import org.iaox.druid.node.combat.FightBank;
 import org.iaox.druid.node.combat.WalkToFight;
 import org.iaox.druid.node.combat.WalkToFightBank;
+import org.iaox.druid.node.crafting.ActionCraft;
+import org.iaox.druid.node.crafting.CraftingBank;
+import org.iaox.druid.node.crafting.WalkToCraftingArea;
+import org.iaox.druid.node.crafting.WalkToCraftingBank;
 import org.iaox.druid.node.fishing.ActionFish;
 import org.iaox.druid.node.fishing.FishingBank;
 import org.iaox.druid.node.fishing.WalkToFishingBank;
@@ -101,6 +105,12 @@ public class Simple extends Script {
 		ALL_NODES.add(new WalkToFishingSpot().init(this));
 		ALL_NODES.add(new WalkToFishingBank().init(this));
 		ALL_NODES.add(new ActionFish().init(this));
+		
+		//initialize crafting nodes
+		ALL_NODES.add(new CraftingBank().init(this));
+		ALL_NODES.add(new WalkToCraftingArea().init(this));
+		ALL_NODES.add(new WalkToCraftingBank().init(this));
+		ALL_NODES.add(new ActionCraft().init(this));
 
 
 
@@ -159,5 +169,7 @@ public class Simple extends Script {
 		g.drawString("Total loot: " + LOOT_HANDLER.getValueOfLoot(), 50, 100);
 
 	}
+	
+
 
 }

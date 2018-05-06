@@ -2,6 +2,7 @@ package org.iaox.druid.node;
 import org.iaox.druid.assignment.AssignmentType;
 import org.iaox.druid.node.provider.AgilityProvider;
 import org.iaox.druid.node.provider.CombatProvider;
+import org.iaox.druid.node.provider.CraftingProvider;
 import org.iaox.druid.node.provider.FishingProvider;
 import org.iaox.druid.node.provider.MiningProvider;
 import org.iaox.druid.node.provider.SkillingProvider;
@@ -17,6 +18,7 @@ public abstract class Node {
 	public AgilityProvider agilityProvider;
 	public MiningProvider miningProvider;
 	public FishingProvider fishingProvider;
+	public CraftingProvider craftingProvider;
 	
 	public Node init(MethodProvider methodProvider){
 		this.methodProvider = methodProvider;
@@ -26,6 +28,7 @@ public abstract class Node {
 		this.agilityProvider = new AgilityProvider(methodProvider, skillingProvider);
 		this.miningProvider = new MiningProvider(methodProvider, skillingProvider);
 		this.fishingProvider = new FishingProvider(methodProvider, skillingProvider);
+		this.craftingProvider = new CraftingProvider(methodProvider, skillingProvider);
 		return this;
 	}
 	

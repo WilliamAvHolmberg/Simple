@@ -6,34 +6,37 @@ import java.util.List;
 
 public enum IaoxItem {
 	
+	//crafting
+	MOLTEN_GLASS("Molten glass", 1775), 
+	SODA_ASH("Soda ash", 1781), 
+	BUCKET_OF_SAND("Bucket of sand", 1783), 
+	NEEDLE("Needle",1733), 
+	THREAD("Thread", 1734), 
+	SNAKESKIN("Snakeskin", 6289), 
+	SNAKESKIN_CHAPS("Snakeskin chaps", 6324),
 	//axes
 	BRONZE_AXE("Bronze axe",1351), 
 	MITHRIL_AXE("Mithril axe", 1355),
 	ADAMANT_AXE("Adamant axe", 1357), 
 	RUNE_AXE("Rune axe", 1359),
-	
 	//pickaxe
 	BRONZE_PICKAXE("Bronze pickaxe",1265),
 	MITHRIL_PICKAXE("Mithril pickaxe",1273), 
 	ADAMANT_PICKAXE("Adamant pickaxe",1271), 
 	RUNE_PICKAXE("Rune pickaxe",1275),
-	
 	//fishing gear
 	SMALL_FISHING_NET("Small fishing net", 303),
 	FLY_FISHING_ROD("Fly fishing rod", 309),
 	FEATHER("Feather", 314),
 	HARPOON("Harpoon", 311),
-	
 	//teleport tablets and runes
 	FALADOR_TELEPORT("Falador teleport", 8009),
 	CAMELOT_TELEPORT("Camelot teleport", 8010),
 	VARROCK_TELEPORT("Varrock teleport", 8007),
 	LAW_RUNE("Law rune", 563),
 	NATURE_RUNE("Nature rune", 561),
-	
 	//range arrows
 	MITHRIL_BOLTS("Mithril bolts", 9142),
-	
 	//herbs
 	GRIMY_IRIT("Grimy irit leaf", 209),
 	GRIMY_HARRALANDER("Grimy harralander", 205),

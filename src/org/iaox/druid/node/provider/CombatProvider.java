@@ -89,6 +89,10 @@ public class CombatProvider {
 	
 
 	public boolean inventoryContainFood() {
+		//if food is not set for this assignment, it means that we do not need food
+		if(getAssignment().getFightAssignment().getFood() == null){
+			return true;
+		}
 		return methodProvider.inventory.contains(getAssignment().getFightAssignment().getFood().getID());
 	}
 

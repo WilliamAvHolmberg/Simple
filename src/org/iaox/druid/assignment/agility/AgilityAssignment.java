@@ -1,5 +1,6 @@
 package org.iaox.druid.assignment.agility;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public enum AgilityAssignment {
 	GNOME_COURSE(GnomeData.GNOME_OBSTACLES, 1,
 					GnomeData.gnomeAgilityAreaPlane0, new Area[]{GnomeData.gnomeAgilityAreaPlane0, GnomeData.gnomeAgilityAreaPlane1,GnomeData.gnomeAgilityAreaPlane2,},
 					null,
-					TravelExceptions.gnomeTravelToCourse, TravelExceptions.NONE,
+					TravelExceptions.NONE, TravelExceptions.NONE,
 					RequiredInventories.NONE, RequiredEquipments.NONE);
 	
 	private List<AgilityObstacle> obstacles;
@@ -67,7 +68,7 @@ public enum AgilityAssignment {
 	}
 	
 	public List<TravelException> getTravelExceptionsToBank(){
-		return travelExceptionsToBank;
+		return  travelExceptionsToBank;
 	}
 	
 	public IaoxEquipment getRequiredEquipment() {

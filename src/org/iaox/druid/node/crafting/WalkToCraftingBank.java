@@ -1,4 +1,4 @@
-package org.iaox.druid.node.woodcutting;
+package org.iaox.druid.node.crafting;
 
 import java.util.List;
 
@@ -12,14 +12,14 @@ import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.event.WebWalkEvent;
 import org.osbot.rs07.event.webwalk.PathPreferenceProfile;
 
-public class WalkToWCBank extends Node{
+public class WalkToCraftingBank extends Node{
 
 	private boolean exception;
 	private List<TravelException> travelExceptions;
 
 	@Override
 	public boolean active() {
-		return !skillingProvider.shouldPeformSkillingAction() && !woodcuttingProvider.inBankArea() ;
+		return !craftingProvider.shouldPeformSkillingAction() && !craftingProvider.inBankArea() ;
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class WalkToWCBank extends Node{
 								//in order to use webwalk instead
 								Item teleport = methodProvider.inventory.getItem(travelException.getTeleportName());
 								if (teleport != null) {
-									teleport.interact("Break");
+									skillingProvider.breakTab(teleport);
 									Timing.waitCondition(() -> !travelException.getArea().contains(methodProvider.myPlayer()), 300, 5000);
 									exception = true;
 								} else {
@@ -78,7 +78,7 @@ public class WalkToWCBank extends Node{
 	
 	@Override
 	public AssignmentType getAssignmentType() {
-		return AssignmentType.WOODCUTTING;
+		return AssignmentType.CRAFTING;
 	}
 
 }
