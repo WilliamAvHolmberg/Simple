@@ -12,6 +12,7 @@ import org.iaox.druid.data.RequiredInventories;
 import org.iaox.druid.data.TravelExceptions;
 import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.inventory.IaoxInventory;
+import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.travel.TravelException;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.constants.Banks;
@@ -20,7 +21,7 @@ public enum MiningAssignment {
 	TIN_ORE_VARROCK(MiningObjectIDs.tinRockID, 1, 
 						MiningAreas.VARROCK_TIN_1, Banks.VARROCK_WEST, 
 						TravelExceptions.NONE, TravelExceptions.NONE, 
-						RequiredInventories.NONE, RequiredEquipments.NONE);
+						new IaoxInventory(new RequiredItem[]{}), RequiredEquipments.NONE);
 	
 	//IRON_ORE_VARROCK(MiningAreas.VARROCK_WEST_MINING_AREA, MiningAreas.VARROCK_IRON_1, Banks.VARROCK_WEST, MiningObjectIDs.ironRockID, 15),
 

@@ -12,6 +12,7 @@ import org.iaox.druid.data.RequiredInventories;
 import org.iaox.druid.data.TravelExceptions;
 import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.inventory.IaoxInventory;
+import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.travel.TravelException;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.constants.Banks;
@@ -25,7 +26,7 @@ public enum FightAssignment {
 	SEAGULLS_PORT_SARIM("Seagull", Areas.SEAGULL_PORT_SARIM_NORTH.getArea(),
 							Banks.DRAYNOR, LootItems.NO_LOOT,
 							TravelExceptions.NONE, TravelExceptions.NONE,
-							RequiredInventories.druidInventory, RequiredEquipments.NONE);
+							new IaoxInventory(new RequiredItem[]{}), RequiredEquipments.NONE);
 	
 	private String npcName;
 	private Area npcArea;

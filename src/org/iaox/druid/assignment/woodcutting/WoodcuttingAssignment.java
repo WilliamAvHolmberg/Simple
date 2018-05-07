@@ -12,6 +12,7 @@ import org.iaox.druid.data.RequiredInventories;
 import org.iaox.druid.data.TravelExceptions;
 import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.inventory.IaoxInventory;
+import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.travel.TravelException;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.constants.Banks;
@@ -20,15 +21,15 @@ public enum WoodcuttingAssignment {
 	NORMAL_TREE_DRAYNOR_LOCATION_1(WCObjectIDs.NORMAL_TREE_ID, 1, 
 									WCAreas.WHOLE_DRAYNOR_AREA, Banks.DRAYNOR, 
 									TravelExceptions.NONE, TravelExceptions.druidTravelExceptionsToBank,
-									RequiredInventories.NONE, RequiredEquipments.NONE),
+									new IaoxInventory(new RequiredItem[]{}), RequiredEquipments.NONE),
 	OAK_TREE_DRAYNOR_LOCATION_1(WCObjectIDs.OAK_TREE_ID, 15,
 									WCAreas.WHOLE_DRAYNOR_AREA, Banks.DRAYNOR,
 									TravelExceptions.NONE, TravelExceptions.druidTravelExceptionsToBank,
-									RequiredInventories.NONE, RequiredEquipments.NONE),
+									new IaoxInventory(new RequiredItem[]{}), RequiredEquipments.NONE),
 	WILLOW_TREE_DRAYNOR_LOCATION_1(WCObjectIDs.WILLOW_TREE_ID, 30,
 									WCAreas.WILLOW_TREE_DRAYNOR_LOCATION_1, Banks.DRAYNOR,
 									TravelExceptions.NONE, TravelExceptions.druidTravelExceptionsToBank,
-									RequiredInventories.NONE, RequiredEquipments.NONE);
+									new IaoxInventory(new RequiredItem[]{}), RequiredEquipments.NONE);
 	;
 	private Integer[] treeIDs;
 	private int levelRequired;

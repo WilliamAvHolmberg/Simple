@@ -12,6 +12,7 @@ import org.iaox.druid.data.RequiredInventories;
 import org.iaox.druid.data.TravelExceptions;
 import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.inventory.IaoxInventory;
+import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.travel.TravelException;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.constants.Banks;
@@ -19,7 +20,7 @@ import org.osbot.rs07.api.map.constants.Banks;
 public enum CraftingAssignment {
 	MOLTEN_GLASS(1, CraftingAreas.FURNACE_AREA, Banks.EDGEVILLE, 
 					TravelExceptions.NONE, TravelExceptions.druidTravelExceptionsToBank,
-					RequiredInventories.NONE, RequiredEquipments.NONE, "Net", 20);
+					new IaoxInventory(new RequiredItem[]{}), RequiredEquipments.NONE, "Net", 20);
 
 
 	private int levelRequired;
