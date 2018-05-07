@@ -10,8 +10,9 @@ public class RequiredInventories {
 	
 	/**
 	 * Data for when no inventory is required
+	 * not working atm
 	 */
-	public static IaoxInventory NONE = new IaoxInventory(new RequiredItem[]{});
+	public static final IaoxInventory NONE = new IaoxInventory(new RequiredItem[]{});
 
 	/**
 	 * Data for when player is on left side of white mountain and should be on right side

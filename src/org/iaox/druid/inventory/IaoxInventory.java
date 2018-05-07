@@ -29,6 +29,13 @@ public class IaoxInventory {
 		});
 	}
 
+	public IaoxInventory(List<RequiredItem> requiredItems) {
+		this.requiredItems = new ArrayList<RequiredItem>();
+		requiredItems.forEach(item -> {
+			this.requiredItems.add(item);
+		});
+	}
+
 	public List<RequiredItem> getRequiredItems() {
 		return requiredItems;
 	}

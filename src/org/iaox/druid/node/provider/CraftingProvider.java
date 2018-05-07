@@ -105,6 +105,11 @@ public class CraftingProvider {
 		Timing.waitCondition(() -> !inventoryContainsRawMaterial(), 300, 6000);
 	}
 
+	/**
+	 * Check if inventory contains the required raw material
+	 * Exception for teleport since falador teleport might be a "required item".
+	 * @return
+	 */
 	public boolean inventoryContainsRawMaterial() {
 		for (RequiredItem item : skillingProvider.getAssignment().getRequiredInventory().getRequiredItems()) {
 			if (!item.getIaoxItem().getName().contains("teleport") && !methodProvider.inventory.contains(item.getItemID())) {

@@ -109,7 +109,7 @@ public class CraftingIntelligence {
 		if (currentLevel < 70) {
 			return currentExperience + 7000 + Simple.random(10000);
 		}
-		return currentExperience + 10000 + Simple.random(15000);
+		return currentExperience + 50;
 	}
 
 	private int getLevel(Skill skill) {

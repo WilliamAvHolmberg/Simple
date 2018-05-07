@@ -21,12 +21,11 @@ public enum FightAssignment {
 							Banks.FALADOR_WEST,LootItems.CHAOS_DRUID_LOOT,
 							TravelExceptions.druidTravelExceptionsToFight, 
 							TravelExceptions.druidTravelExceptionsToBank,
-							RequiredInventories.druidInventory, 
-							RequiredEquipments.NONE),
+							RequiredInventories.druidInventory, RequiredEquipments.NONE),
 	SEAGULLS_PORT_SARIM("Seagull", Areas.SEAGULL_PORT_SARIM_NORTH.getArea(),
 							Banks.DRAYNOR, LootItems.NO_LOOT,
 							TravelExceptions.NONE, TravelExceptions.NONE,
-							RequiredInventories.NONE, RequiredEquipments.NONE);
+							RequiredInventories.druidInventory, RequiredEquipments.NONE);
 	
 	private String npcName;
 	private Area npcArea;
@@ -45,6 +44,7 @@ public enum FightAssignment {
 		this.bankArea = bankArea;
 		this.travelExceptionsToFight = Arrays.asList(travelExceptionsToFight);
 		this.travelExceptionsToBank = Arrays.asList(travelExceptionsToBank);
+		this.requiredEquipment = null;
 		this.requiredInventory = requiredInventory;
 		this.requiredEquipment = requiredEquipment;
 	}

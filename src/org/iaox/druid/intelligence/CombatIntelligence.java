@@ -153,6 +153,9 @@ public class CombatIntelligence {
 	 */
 	public Assignment createCombatAssignment() {
 		fightAssignment = getSuitableFightAssignment();
+		fightAssignment.getRequiredInventory().getRequiredItems().forEach(item -> {
+			methodProvider.log(item.getIaoxItem().getName());
+		});
 		combatAssignment = null;
 		switch(fightAssignment){
 		case CHAOS_DRUIDS_TAVERLEY:
