@@ -258,7 +258,7 @@ public class CombatIntelligence {
 		//We want the bot to get 30 atk 30 str as soon as possible
 		if (methodProvider.getSkills().getStatic(Skill.ATTACK) < 30 &&
 				methodProvider.getSkills().getStatic(Skill.STRENGTH) >= 30 ) {
-			return Skill.STRENGTH;
+			return Skill.ATTACK;
 		}
 		switch (task) {
 		case 1:
@@ -289,11 +289,11 @@ public class CombatIntelligence {
 		if (getLevel(Skill.DEFENCE) < 10) {
 			return 20;
 		} else if (getLevel(Skill.DEFENCE) < 20) {
-			return 7;
+			return 13;
 		} else if (getLevel(Skill.DEFENCE) < 30) {
-			return 6;
+			return 9;
 		} else if (getLevel(Skill.DEFENCE) < 40) {
-			return 2;
+			return 5;
 		}
 		return 1;
 	}

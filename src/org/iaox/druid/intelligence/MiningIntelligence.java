@@ -52,7 +52,7 @@ public class MiningIntelligence {
 		//check if the best axe is required - either in inventory or equipment
 		if (!canEquipAxe() && !bestPickaxeIsInRequiredInventory()) {
 			setRequiredInventory();
-		}else if ( !bestPickaxeIsInRequiredEquipment()) {
+		}else if (!bestPickaxeIsInRequiredEquipment()) {
 			setRequiredEquipment();
 		}
 		
@@ -97,7 +97,7 @@ public class MiningIntelligence {
 		for (RequiredItem requiredItem : inventory.getRequiredItems()) {
 			if (requiredItem.getIaoxItem() != null && requiredItem.getIaoxItem().name().contains("pickaxe")) {
 				// nested is bad.. but in this case, it becomes clearer
-				if (requiredItem.getItemID() != bestPickaxe.getID()) {
+				if (requiredItem.getItemID() != bestPickaxe.getID() && methodProvider.inventory.contains(bestPickaxe.getID())) {
 					return false;
 				}else{
 					foundAxe = true;

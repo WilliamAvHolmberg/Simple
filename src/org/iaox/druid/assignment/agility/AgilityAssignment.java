@@ -9,6 +9,7 @@ import org.iaox.druid.data.RequiredInventories;
 import org.iaox.druid.data.TravelExceptions;
 import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.inventory.IaoxInventory;
+import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.travel.TravelException;
 import org.osbot.rs07.api.map.Area;
 
@@ -17,7 +18,7 @@ public enum AgilityAssignment {
 					GnomeData.gnomeAgilityAreaPlane0, new Area[]{GnomeData.gnomeAgilityAreaPlane0, GnomeData.gnomeAgilityAreaPlane1,GnomeData.gnomeAgilityAreaPlane2,},
 					null,
 					TravelExceptions.NONE, TravelExceptions.NONE,
-					RequiredInventories.NONE, RequiredEquipments.NONE);
+					new IaoxInventory(new RequiredItem[]{}), RequiredEquipments.NONE);
 	
 	private List<AgilityObstacle> obstacles;
 	private int requiredLevel;

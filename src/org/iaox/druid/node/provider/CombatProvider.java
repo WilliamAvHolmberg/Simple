@@ -470,7 +470,7 @@ public class CombatProvider {
 			for (Item item : inventoryItems) {
 				// if it is not a required item ,it shall be added to the list
 				// of unecessary items
-				if (item != null && !getRequiredItemIDs().contains(item.getId())) {
+				if (item != null && (!getRequiredItemIDs().contains(item.getId()))) {
 					methodProvider.log("unecessary item" + item.getName());
 					unecessaryItems.add(item);
 				}

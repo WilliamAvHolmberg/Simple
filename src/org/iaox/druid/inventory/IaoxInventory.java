@@ -83,6 +83,18 @@ public class IaoxInventory {
 			requiredItems.add(item);
 		}
 	}
+	
+	public boolean contains(IaoxItem item){
+		if(requiredItems.isEmpty()){
+			return false;
+		}
+		for(RequiredItem reqItem : requiredItems){
+			if(reqItem.getIaoxItem() == item){
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public String toString() {
 		string = "";
@@ -90,6 +102,15 @@ public class IaoxInventory {
 			string += reqItem.getIaoxItem().getName() + ":" + reqItem.getAmount() + ",";
 		});
 		return string;
+	}
+
+	public void remove(IaoxItem item) {
+		for(RequiredItem reqItem : requiredItems){
+			if(reqItem.getIaoxItem().getName().equals(item.getName())){
+				requiredItems.remove(reqItem);
+			}
+		}
+		
 	}
 
 }

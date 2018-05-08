@@ -1,5 +1,7 @@
 package org.iaox.druid.intelligence;
 
+import java.util.List;
+
 import org.iaox.druid.Simple;
 import org.iaox.druid.assignment.AssignmentType;
 import org.iaox.druid.data.Areas;
@@ -8,6 +10,8 @@ import org.iaox.druid.data.RequiredInventories;
 import org.iaox.druid.data.TravelExceptions;
 import org.iaox.druid.equipment.IaoxEquipment;
 import org.iaox.druid.equipment.RequiredEquipment;
+import org.iaox.druid.inventory.IaoxInventory;
+import org.iaox.druid.inventory.RequiredItem;
 import org.iaox.druid.task.Task;
 import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.api.ui.EquipmentSlot;
@@ -32,6 +36,7 @@ public class IaoxIntelligence implements Runnable {
 	private int randomInteger;
 	public boolean RUNNING = false;
 	private Task task;
+	private IaoxInventory requiredInventory;
 
 
 	/**
@@ -70,7 +75,7 @@ public class IaoxIntelligence implements Runnable {
 		if(!RUNNING){
 			RUNNING = true;
 		}
-		while (methodProvider.getClient().isLoggedIn()) {
+		while (methodProvider.getClient().isLoggedIn() && Simple.RUNNING) {
 			if (Simple.TASK_HANDLER.getCurrentTask() != null) {
 				teleportCheck();
 				switch(Simple.TASK_HANDLER.getCurrentTask().getAssignment().getAssignmentType()){
@@ -113,11 +118,18 @@ public class IaoxIntelligence implements Runnable {
 	}
 	
 	/**
-	 * If player does not neeed teleport
+	 * Remove teleport from req inv if not needed anymore
 	 */
 	private void teleportCheck() {
-		//if !needTeleport && reqInv contains teleport
-		//remove
+		
+		requiredInventory = task.getAssignment().getRequiredInventory();
+		if(requiredInventory.contains(IaoxItem.FALADOR_TELEPORT) && !needFaladorTeleport()){
+			requiredInventory.remove(IaoxItem.FALADOR_TELEPORT);
+		}
+		
+		if(requiredInventory.contains(IaoxItem.CAMELOT_TELEPORT) && !needCamelotTeleport()){
+			requiredInventory.remove(IaoxItem.CAMELOT_TELEPORT);
+		}
 		
 	}
 
@@ -178,8 +190,13 @@ public class IaoxIntelligence implements Runnable {
 		
 	}
 	
+	/**
+	 * If original required items contains fally tele, return true
+	 * If we are on l
+	 * @return
+	 */
 	public boolean needFaladorTeleport(){
-		return Areas.LEFT_SIDE_OF_WHITE_MOUNTAIN.contains(methodProvider.myPlayer()) && Areas.RIGHT_SIDE_OF_WHITE_MOUNTAIN.getArea().contains(task.getAssignment().getActionArea().getRandomPosition());
+		return ((task.getAssignment().getAssignmentType() == AssignmentType.COMBAT && task.getAssignment().getFightAssignment().getRequiredInventory().contains(IaoxItem.FALADOR_TELEPORT))) || (Areas.LEFT_SIDE_OF_WHITE_MOUNTAIN.contains(methodProvider.myPlayer()) && Areas.RIGHT_SIDE_OF_WHITE_MOUNTAIN.getArea().contains(task.getAssignment().getActionArea().getRandomPosition()));
 	}
 	
 	public boolean needCamelotTeleport(){
@@ -201,15 +218,15 @@ public class IaoxIntelligence implements Runnable {
 		}
 		
 		randomInteger = Simple.random(100);
-		if(randomInteger < 10 && methodProvider.myPlayer().getCombatLevel() > 52){
+		if(randomInteger < 7 && methodProvider.myPlayer().getCombatLevel() > 52){
 			return AssignmentType.WOODCUTTING;
-		}else if(randomInteger < 20 && methodProvider.myPlayer().getCombatLevel() > 12){
+		}else if(randomInteger < 14 && methodProvider.myPlayer().getCombatLevel() > 12){
 			return AssignmentType.MINING;
-		}else if(randomInteger < 30){
+		}else if(randomInteger < 21){
 			return AssignmentType.FISHING;
-		}else if(randomInteger < 40){
+		}else if(randomInteger < 28){
 			return AssignmentType.AGILITY;
-		}else if(randomInteger < 50){
+		}else if(randomInteger < 35){
 			return AssignmentType.CRAFTING;
 		}
 		

@@ -52,6 +52,7 @@ public class Simple extends Script {
 	public static TaskHandler TASK_HANDLER;
 	public static boolean TRAIN_DEFENCE = true;
 	private IaoxIntelligence iaoxIntelligence;
+	public static boolean RUNNING = true;
 
 	@Override
 	public void onStart() throws InterruptedException {
@@ -168,6 +169,12 @@ public class Simple extends Script {
 		// Print information about loot
 		g.drawString("Total loot: " + LOOT_HANDLER.getValueOfLoot(), 50, 100);
 
+	}
+	
+	@Override
+	public void onExit() throws InterruptedException {
+		RUNNING = false;
+		super.onExit();
 	}
 	
 
